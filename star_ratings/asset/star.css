@@ -1,0 +1,6 @@
+span.start_vote{float:left;width:20px;height:20px;cursor:pointer;}
+span.start_vote:hover{background:url('images/star1.png') no-repeat center center;background-size:20px;}
+.start_vote_gold{float:left;width:20px;height:20px;background:url('images/star1.png') no-repeat center center;background-size:20px;cursor:pointer;}
+.start_vote_gray{float:left;width:20px;height:20px;background:url('images/star2.png') no-repeat center center;background-size:20px;cursor:pointer;}
+.vote_label{float:left;font-size:12px;line-height:20px;margin-left:10px;color:#000;}
+.votename{display:none;}

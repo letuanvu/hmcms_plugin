@@ -1,0 +1,13 @@
+.addslider {
+    background: #fff;
+}
+.slide_img img{
+	width:200px;
+	height:auto;
+}
+.nivoslider_config_bar {
+    width: 100%;
+	height: 500px;
+	position:relative;
+	overflow: hidden;
+}

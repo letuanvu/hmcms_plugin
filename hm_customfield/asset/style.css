@@ -1,0 +1,22 @@
+.customfield_line {
+    position: relative;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #e5e5e5;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    background: #fff;
+    clear: both;
+}
+ul.hm_customfield_ajax_list {
+    background: #E9EAED;
+    padding: 10px;
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+    clear: both;
+}
+ul.hm_customfield_ajax_list li {
+    margin-bottom: 5px;
+    clear: both;
+}

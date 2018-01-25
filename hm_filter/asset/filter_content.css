@@ -1,0 +1,74 @@
+.filter_step_content{
+    float: left;
+    display: block;
+    width: 100%;
+    position: relative;
+}
+.filter_value_line_highlight{
+	border: dashed 1px #ccc;
+	height:42px;
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+}
+.filter_step_title {
+    font-size: 13px;
+    color: #035284;
+    margin: 0px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: solid 1px;
+    padding-bottom: 10px;
+}
+.filter_value_line {
+    width: 100%;
+    float: left;
+}
+.filter_group_taxonomy_value_input,
+.filter_option_taxonomy_value_input {
+    margin-bottom: 10px;
+}
+.filter_step_1_control {
+    margin-top: 10px;
+    clear: both;
+}
+.filter_value_line span {
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+    text-align: left;
+    position: relative;
+    padding: 10px;
+    cursor: pointer;
+}
+.filter_value_line span input {
+    float: left;
+    width: 60%;
+    height: 22px;
+    border: none;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.38);
+}
+.remove_filter_group_taxonomy,
+.remove_filter_option_taxonomy {
+    position: relative;
+    float: right;
+    line-height: 16px;
+    font-size: 12px;
+}
+.filter_content_box_title {
+    padding: 5px;
+    margin: 10px 0px;
+    float: left;
+    width: 100%;
+    clear: both;
+}
+.filter_extends_wrapper{
+	margin:10px 0px;
+}
+.edit_filter_group_taxonomy_input_type {
+    float: right;
+    height: 20px;
+    width: 20%;
+    font-size: 12px;
+}
