@@ -8,17 +8,25 @@
 			$class="start_vote start_vote_gray";
 		}
 		echo '<span class="'.$class.'" data-vote="'.$i.'" data-id="'.$id.'" data-option-name="'.$option.'" data-name="'.$name.'"></span>';
-		
+
 	}
 	?>
-	<div xmlns:v="http://rdf.data-vocabulary.org/#" typeof="v:Review-aggregate" class="vote_label">
-		<span property="v:itemreviewed" class="votename"><?php echo $name; ?></span>
-		<span rel="v:rating">
-			<span typeof="v:Rating">
-				<span property="v:average"><?php echo $average; ?></span>/
-				<span property="v:best">5</span>, tổng số 
-				<span property="v:votes"><?php echo $number_vote; ?></span> lượt bình chọn
-			</span>
-		</span>
+	<div class="vote_label">
+		<script type="application/ld+json">
+			{
+				"@context": "http://schema.org/",
+				"@type": "Product",
+				"name": "<?php echo $name; ?>",
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingValue": "<?php echo $average; ?>",
+					"reviewCount": "<?php echo $number_vote; ?>"
+				}
+			}
+		</script>
+		<span class="votename"><?php echo $name; ?></span>
+		<span><?php echo $average; ?></span>/
+		<span>5</span>, tổng số
+		<span><?php echo $number_vote; ?></span> lượt bình chọn
 	</div>
 </div>
