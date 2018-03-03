@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "CKEditor",
+    "key": "hm_ckeditor",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Thay thế bộ soạn thảo thành CKEditor",
+    "version_cms": "1+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_ckeditor.zip"
+  }
+}

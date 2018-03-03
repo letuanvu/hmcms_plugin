@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Trang tĩnh",
+    "key": "page",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo trang tĩnh cho website",
+    "version_cms": "1.0",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/page.zip"
+  }
+}

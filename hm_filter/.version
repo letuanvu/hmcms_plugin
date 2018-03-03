@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Bộ lọc cho danh mục",
+    "key": "hm_filter",
+    "version_number": "3",
+    "version": "1.2",
+    "description": "Tạo bộ lọc cho từng danh mục",
+    "version_cms": "1.2",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_filter1.2.zip"
+  }
+}

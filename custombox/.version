@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Custombox",
+    "key": "custombox",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo popup quảng cáo hoặc thông báo sử dụng custombox",
+    "version_cms": "1",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/custombox.zip"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Bài viết",
+    "key": "post",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo bài viết cho website",
+    "version_cms": "1.0",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/post.zip"
+  }
+}

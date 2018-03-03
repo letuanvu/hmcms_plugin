@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Facebook Fanpage Chat",
+    "key": "hm_fbchat",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Chat với khách hàng thông qua FaceBook",
+    "version_cms": "1+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_fbchat.zip"
+  }
+}

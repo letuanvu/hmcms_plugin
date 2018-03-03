@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Slider cho nội dung",
+    "key": "content_slider",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo một slider riêng đi kèm theo mỗi bài viết",
+    "version_cms": "1.3+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/content_slider.zip"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Tiny MCE",
+    "key": "hm_tinymce",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Thay thế bộ soạn thảo thành Tiny MCE (Tiếng Việt)",
+    "version_cms": "1+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_tinymce.zip"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Express form",
+    "key": "express_form",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo form liên hệ thông báo về email cho người quản trị",
+    "version_cms": "1.1.5",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/express_form.zip"
+  }
+}

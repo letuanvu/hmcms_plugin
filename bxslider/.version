@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "bxSlider",
+    "key": "bxslider",
+    "version_number": "2",
+    "version": "1.1",
+    "description": "Thêm bxSlider vào giao diện của bạn",
+    "version_cms": "1",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/bxslider1.1.zip"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Banner chạy dọc hai bên website",
+    "key": "float_banner",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo banner chạy dọc hai bên website",
+    "version_cms": "1+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/float_banner.zip"
+  }
+}

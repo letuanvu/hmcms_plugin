@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Lưu ảnh tự động",
+    "key": "auto_save_image",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tự động lưu ảnh trong bài viết khi bạn copy từ web khác về thư viện của web",
+    "version_cms": "1.2.09+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/auto_save_image.zip"
+  }
+}

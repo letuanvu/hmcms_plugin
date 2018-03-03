@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Chặn truy cập theo IP",
+    "key": "ban_ip",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Chặn truy cập từ các IP bạn cài đặt",
+    "version_cms": "1+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/ban_ip.zip"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Bộ đếm truy cập",
+    "key": "visitor_counter",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Tạo bộ đếm số người online, truy cập hôm nay, tháng này ...",
+    "version_cms": "1.2.04+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/visitor_counter.zip"
+  }
+}

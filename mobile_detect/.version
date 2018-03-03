@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Giao diện mobile",
+    "key": "mobile_detect",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Giúp bạn tùy chọn giao diện riêng cho mobile hoặc tablet",
+    "version_cms": "1.2.06+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/mobile_detect.zip"
+  }
+}

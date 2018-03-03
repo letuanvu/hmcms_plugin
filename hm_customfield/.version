@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Trường tùy biến",
+    "key": "hm_customfield",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Hỗ trợ tạo thêm các trường nhập liệu cho content và taxonomy",
+    "version_cms": "1.1.3+",
+    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_customfield1.0.zip"
+  }
+}
