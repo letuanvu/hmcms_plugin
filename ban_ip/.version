@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Chặn truy cập từ các IP bạn cài đặt",
     "version_cms": "1+",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/ban_ip.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/ban_ip/ban_ip.tar.gz"
   }
 }

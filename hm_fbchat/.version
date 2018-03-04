@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Chat với khách hàng thông qua FaceBook",
     "version_cms": "1+",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_fbchat.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/hm_fbchat/hm_fbchat.tar.gz"
   }
 }

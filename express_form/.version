@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo form liên hệ thông báo về email cho người quản trị",
     "version_cms": "1.1.5",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/express_form.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/express_form/express_form.tar.gz"
   }
 }

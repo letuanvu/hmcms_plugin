@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo thông báo web đang trong chế độ bảo trì",
     "version_cms": "1.2.09",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/maintenance.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/maintenance/maintenance.tar.gz"
   }
 }

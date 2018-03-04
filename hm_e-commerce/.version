@@ -7,6 +7,6 @@
     "version": "1.3",
     "description": "Plugin hỗ trợ tạo website bán hàng, chỉ hoạt động với giao diện có hỗ trợ",
     "version_cms": "1.2.09+",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/hm_e-commerce1.3.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/hm_e-commerce/hm_e-commerce.tar.gz"
   }
 }

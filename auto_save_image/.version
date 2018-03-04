@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tự động lưu ảnh trong bài viết khi bạn copy từ web khác về thư viện của web",
     "version_cms": "1.2.09+",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/auto_save_image.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/auto_save_image/auto_save_image.tar.gz"
   }
 }

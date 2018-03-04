@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo bình chọn dạng ngôi sao cho bài viết và danh mục",
     "version_cms": "1.3.2+",
-    "download": "http://hoamaisoft.com/hm_content/uploads/plugin/plugin-files/star_ratings.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/star_ratings/star_ratings.tar.gz"
   }
 }
