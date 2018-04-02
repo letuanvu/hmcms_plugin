@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Chặn truy cập theo IP",
+    "alias": "ban_ip"
+  },
+  {
+    "name": "Star ratings",
+    "alias": "star_ratings"
+  },
+  {
+    "name": "Banner chạy dọc hai bên website",
+    "alias": "float_banner"
+  },
+  {
+    "name": "Slider cho nội dung",
+    "alias": "content_slider"
+  },
+  {
+    "name": "Nivo Slider",
+    "alias": "nivoslider"
+  },
+  {
+    "name": "Simple Cache",
+    "alias": "simple_cache"
+  },
+  {
+    "name": "Custombox",
+    "alias": "custombox"
+  },
+  {
+    "name": "Lưu ảnh tự động",
+    "alias": "auto_save_image"
+  },
+  {
+    "name": "Chế độ bảo trì",
+    "alias": "maintenance"
+  },
+  {
+    "name": "Giao diện mobile",
+    "alias": "mobile_detect"
+  },
+  {
+    "name": "Bộ đếm truy cập",
+    "alias": "visitor_counter"
+  },
+  {
+    "name": "Bộ lọc cho danh mục",
+    "alias": "hm_filter"
+  },
+  {
+    "name": "Trang tĩnh",
+    "alias": "page"
+  },
+  {
+    "name": "Express form",
+    "alias": "express_form"
+  },
+  {
+    "name": "HM E-commerce",
+    "alias": "hm_e-commerce"
+  },
+  {
+    "name": "Facebook Fanpage Chat",
+    "alias": "hm_fbchat"
+  },
+  {
+    "name": "bxSlider",
+    "alias": "bxslider"
+  },
+  {
+    "name": "Trường tùy biến",
+    "alias": "hm_customfield"
+  },
+  {
+    "name": "CKEditor",
+    "alias": "hm_ckeditor"
+  },
+  {
+    "name": "Tiny MCE",
+    "alias": "hm_tinymce"
+  },
+  {
+    "name": "Không lưu lịch sử",
+    "alias": "hm_no-history"
+  },
+  {
+    "name": "hm SEO",
+    "alias": "hm_seo"
+  },
+  {
+    "name": "Bình luận bằng FaceBook",
+    "alias": hm_fbcmt"
+  }
+]
