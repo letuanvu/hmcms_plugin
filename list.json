@@ -1,94 +1,117 @@
 [
   {
     "name": "Chặn truy cập theo IP",
-    "alias": "ban_ip"
+    "alias": "ban_ip",
+    "description": "Chặn truy cập từ các IP bạn cài đặt"
   },
   {
     "name": "Star ratings",
-    "alias": "star_ratings"
+    "alias": "star_ratings",
+    "description": "Tạo bình chọn dạng ngôi sao cho bài viết và danh mục"
   },
   {
     "name": "Banner chạy dọc hai bên website",
-    "alias": "float_banner"
+    "alias": "float_banner",
+    "description": "Tạo banner chạy dọc hai bên website"
   },
   {
     "name": "Slider cho nội dung",
-    "alias": "content_slider"
+    "alias": "content_slider",
+    "description": "Tạo một slider riêng đi kèm theo mỗi bài viết"
   },
   {
     "name": "Nivo Slider",
-    "alias": "nivoslider"
+    "alias": "nivoslider",
+    "description": "Thêm Nivo Slider vào giao diện của bạn"
   },
   {
     "name": "Simple Cache",
-    "alias": "simple_cache"
+    "alias": "simple_cache",
+    "description": "Tạo cache cho website giúp tăng tốc độ tải trang"
   },
   {
     "name": "Custombox",
-    "alias": "custombox"
+    "alias": "custombox",
+    "description": "Tạo popup quảng cáo hoặc thông báo sử dụng custombox"
   },
   {
     "name": "Lưu ảnh tự động",
-    "alias": "auto_save_image"
+    "alias": "auto_save_image",
+    "description": "Tự động lưu ảnh trong bài viết khi bạn copy từ web khác về thư viện của web"
   },
   {
     "name": "Chế độ bảo trì",
-    "alias": "maintenance"
+    "alias": "maintenance",
+    "description": "Tạo thông báo web đang trong chế độ bảo trì"
   },
   {
     "name": "Giao diện mobile",
-    "alias": "mobile_detect"
+    "alias": "mobile_detect",
+    "description": "Giúp bạn tùy chọn giao diện riêng cho mobile hoặc tablet"
   },
   {
     "name": "Bộ đếm truy cập",
-    "alias": "visitor_counter"
+    "alias": "visitor_counter",
+    "description": "Tạo bộ đếm số người online, truy cập hôm nay, tháng này ..."
   },
   {
     "name": "Bộ lọc cho danh mục",
-    "alias": "hm_filter"
+    "alias": "hm_filter",
+    "description": "Tạo bộ lọc cho từng danh mục"
   },
   {
     "name": "Trang tĩnh",
-    "alias": "page"
+    "alias": "page",
+    "description": "Tạo trang tĩnh cho website"
   },
   {
     "name": "Express form",
-    "alias": "express_form"
+    "alias": "express_form",
+    "description": "Tạo form liên hệ thông báo về email cho người quản trị"
   },
   {
     "name": "HM E-commerce",
-    "alias": "hm_e-commerce"
+    "alias": "hm_e-commerce",
+    "description": "Plugin hỗ trợ tạo website bán hàng, chỉ hoạt động với giao diện có hỗ trợ"
   },
   {
     "name": "Facebook Fanpage Chat",
-    "alias": "hm_fbchat"
+    "alias": "hm_fbchat",
+    "description": "Chat với khách hàng thông qua FaceBook"
   },
   {
     "name": "bxSlider",
-    "alias": "bxslider"
+    "alias": "bxslider",
+    "description": "Thêm bxSlider vào giao diện của bạn"
   },
   {
     "name": "Trường tùy biến",
-    "alias": "hm_customfield"
+    "alias": "hm_customfield",
+    "description": "Hỗ trợ tạo thêm các trường nhập liệu cho content và taxonomy"
   },
   {
     "name": "CKEditor",
-    "alias": "hm_ckeditor"
+    "alias": "hm_ckeditor",
+    "description": "Thay thế bộ soạn thảo thành CKEditor"
   },
   {
     "name": "Tiny MCE",
-    "alias": "hm_tinymce"
+    "alias": "hm_tinymce",
+    "description": "Thay thế bộ soạn thảo thành Tiny MCE (Tiếng Việt)"
   },
   {
     "name": "Không lưu lịch sử",
-    "alias": "hm_no-history"
+    "alias": "hm_no-history",
+    "description": "Bỏ qua việc lưu lại lịch sử chỉnh sửa nội dung"
   },
   {
     "name": "hm SEO",
-    "alias": "hm_seo"
+    "alias": "hm_seo",
+    "description": "Thêm các hỗ trợ SEO cho website"
   },
   {
     "name": "Bình luận bằng FaceBook",
-    "alias": "hm_fbcmt"
+    "alias": "hm_fbcmt",
+    "description": "Nhúng bình luận facebook vào website"
   }
 ]
