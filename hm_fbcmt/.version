@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Bình luận bằng Facebook",
+    "key": "hm_fbcmt",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Nhúng bình luận facebook vào website",
+    "version_cms": "1+",
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/hm_fbcmt/hm_fbcmt.tar.gz"
+  }
+}
