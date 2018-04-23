@@ -35,7 +35,7 @@ if (!in_array($tableName, $result)) {
     $sql = "
 	CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
 	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `filter_group_taxonomy` int(11) NOT NULL,
+	  `filter_group` int(11) NOT NULL,
 	  `name` varchar(255) NOT NULL,
 	  `type` varchar(255) NOT NULL,
 	  `slug` varchar(255) NOT NULL,
@@ -77,7 +77,7 @@ if (!in_array($tableName, $result)) {
     $sql = "
 	CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
 	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `filter_group_taxonomy` int(11) NOT NULL,
+	  `filter_group` int(11) NOT NULL,
 	  `name` varchar(255) NOT NULL,
 	  `type` varchar(255) NOT NULL,
 	  `slug` varchar(255) NOT NULL,
@@ -100,7 +100,6 @@ $filter_type = get_option(array(
 switch ($filter_type) {
     case 'taxonomy':
         hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/taxonomy.php');
-        register_action('before_hm_footer', 'hm_filter_asset');
 				register_action('hm_admin_head', 'hm_filter_asset');
         function hm_filter_asset() {
             echo '<script src="' . PLUGIN_URI . 'hm_filter/asset/filter_taxonomy.js"></script>';
@@ -109,7 +108,6 @@ switch ($filter_type) {
         break;
     case 'content':
         hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/content.php');
-        register_action('before_hm_footer', 'hm_filter_asset');
 				register_action('hm_admin_head', 'hm_filter_asset');
         function hm_filter_asset() {
             echo '<script src="' . PLUGIN_URI . 'hm_filter/asset/filter_content.js"></script>';

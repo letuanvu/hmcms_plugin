@@ -24,8 +24,8 @@
     width: 100%;
     float: left;
 }
-.filter_group_taxonomy_value_input,
-.filter_option_taxonomy_value_input {
+.filter_group_content_value_input,
+.filter_option_content_value_input {
     margin-bottom: 10px;
 }
 .filter_step_1_control {
@@ -49,8 +49,8 @@
     padding: 3px;
     background: rgba(255, 255, 255, 0.38);
 }
-.remove_filter_group_taxonomy,
-.remove_filter_option_taxonomy {
+.remove_filter_group_content,
+.remove_filter_option_content {
     position: relative;
     float: right;
     line-height: 16px;
@@ -66,7 +66,7 @@
 .filter_extends_wrapper{
 	margin:10px 0px;
 }
-.edit_filter_group_taxonomy_input_type {
+.edit_filter_group_content_input_type {
     float: right;
     height: 20px;
     width: 20%;

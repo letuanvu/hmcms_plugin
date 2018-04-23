@@ -645,7 +645,7 @@ function show_filter($taxonomy_id = '0',$args=array()){
 			$group_slug = $row->slug;
 			
 			$group_input_type = 'radio';
-			if($row->input_type == 'checkbox'){ $group_input_type = 'checbox'; }
+			if($row->input_type == 'checkbox'){ $group_input_type = 'checkbox'; }
 			if($row->input_type == 'radio'){ $group_input_type = 'radio'; }
 			
 			$tableName = DB_PREFIX.'filter_option_taxonomy';
