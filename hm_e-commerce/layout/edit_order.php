@@ -5,33 +5,48 @@
 	<form action="" method="post">
 		<div class="col-md-6">
 			<div class="row admin_mainbar_box">
-				
+
 				<div class="form-group">
-					<div class="form-group-handle"></div>	
+					<div class="form-group-handle"></div>
 					<label for=""><?php echo hme_lang('customer_name'); ?></label>
 					<input name="name" type="text" class="form-control " disabled value="<?php echo $data['customer']->name; ?>">
 				</div>
 				<div class="form-group">
-					<div class="form-group-handle"></div>	
+					<div class="form-group-handle"></div>
 					<label for=""><?php echo hme_lang('phone_number'); ?></label>
 					<input name="mobile" type="text" class="form-control " disabled value="<?php echo $data['customer']->mobile; ?>">
 				</div>
 				<div class="form-group">
-					<div class="form-group-handle"></div>	
+					<div class="form-group-handle"></div>
 					<label for=""><?php echo hme_lang('email'); ?></label>
 					<input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->email; ?>">
 				</div>
 				<div class="form-group">
-					<div class="form-group-handle"></div>	
+					<div class="form-group-handle"></div>
+					<label for=""><?php echo hme_lang('address'); ?></label>
+					<input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->address; ?>">
+				</div>
+				<div class="form-group">
+					<div class="form-group-handle"></div>
+					<label for=""><?php echo hme_lang('payment_method'); ?></label>
+					<input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->payment_method; ?>">
+				</div>
+				<div class="form-group">
+					<div class="form-group-handle"></div>
+					<label for=""><?php echo hme_lang('ship_method'); ?></label>
+					<input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->ship_method; ?>">
+				</div>
+				<div class="form-group">
+					<div class="form-group-handle"></div>
 					<label for=""><?php echo hme_lang('title'); ?></label>
 					<input name="subject" type="text" class="form-control " disabled value="<?php echo $data['customer']->subject; ?>">
 				</div>
 				<div class="form-group">
-					<div class="form-group-handle"></div>	
+					<div class="form-group-handle"></div>
 					<label for=""><?php echo hme_lang('message'); ?></label>
 					<textarea name="message" type="text" class="form-control " disabled ><?php echo $data['customer']->message; ?></textarea>
 				</div>
-				
+
 				<?php
 					$field_array['default_value']=$data['customer']->status;
 					$field_array['input_type']='select';
@@ -46,13 +61,13 @@
 					build_input_form($field_array);
 					unset($field_array);
 				?>
-				
+
 			</div>
 		</div>
-		
+
 		<div class="col-md-6">
 			<div class="row admin_mainbar_box">
-				
+
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -101,10 +116,10 @@
 						?>
 					</tbody>
 				</table>
-				
+
  			</div>
 		</div>
-		
+
 		<div class="col-md-12">
 			<div class="row admin_mainbar_box">
 				<p class="admin_sidebar_box_title"><?php echo hme_lang('action'); ?></p>
