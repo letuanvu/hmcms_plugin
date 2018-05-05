@@ -1,0 +1,12 @@
+{
+  "type": "success",
+  "info": {
+    "name": "Tag",
+    "key": "tag",
+    "version_number": "1",
+    "version": "1.0",
+    "description": "Quản lý tag cho website",
+    "version_cms": "1.4",
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/post/tag.zip"
+  }
+}

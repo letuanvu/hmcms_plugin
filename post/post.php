@@ -13,9 +13,6 @@ Version Number: 1;
  * Lưu ý : Luôn phải có 1 trường có key là primary_name_field, trường này sẽ được dùng là tên của
  * content, taxonomy và trường này có 'create_slug'=>TRUE để tạo slug - đường dẫn tĩnh cho content, taxonomy này
  */
-
-hook_action('before_web_setup');
-
 $field_array = array(
     'primary_name_field' => array(
         'nice_name' => hm_lang('category_name'),
@@ -78,7 +75,7 @@ $field_array = array(
         'nice_name' => hm_lang('post_description'),
         'description' => hm_lang('briefly_describe_the_contents_of_this_post'),
         'name' => 'description',
-        'input_type' => 'textarea',
+        'input_type' => 'editor',
         'default_value' => '',
         'placeholder' => '',
         'required' => FALSE
