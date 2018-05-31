@@ -65,7 +65,7 @@
 											<span><?php echo $order->id; ?></span>
 										</td>
 										<td>
-											<span><?php echo date('d-m-Y H:i:s',$time); ?></span>
+											<span><?php echo date(DATETIME_FORMAT,$time); ?></span>
 										</td>
 										<td>
 											<span><?php echo $order->name; ?></span>

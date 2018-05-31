@@ -97,7 +97,7 @@
   {
     "name": "Tiny MCE",
     "alias": "hm_tinymce",
-    "description": "Thay thế bộ soạn thảo thành Tiny MCE (Tiếng Việt)"
+    "description": "Thay thế bộ soạn thảo thành Tiny MCE"
   },
   {
     "name": "Không lưu lịch sử",
@@ -113,5 +113,10 @@
     "name": "Bình luận bằng FaceBook",
     "alias": "hm_fbcmt",
     "description": "Nhúng bình luận facebook vào website"
+  },
+  {
+    "name": "Từ khóa",
+    "alias": "tag",
+    "description": "Quản lý từ khóa cho nội dung"
   }
 ]
