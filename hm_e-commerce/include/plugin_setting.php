@@ -223,9 +223,6 @@ register_request('hm_ecommerce_explode_excel', 'hm_ecommerce_explode_excel');
 function hm_ecommerce_explode_excel() {
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/PHPExcel.php');
-    $objPHPExcel = new PHPExcel();
-    $objPHPExcel->setActiveSheetIndex(0);
 
     $sql = "SELECT * FROM `hm_content` WHERE `key` = 'product' AND `status` = 'public' ";
     $hmdb->Query($sql);
@@ -238,7 +235,6 @@ function hm_ecommerce_explode_excel() {
     $product_data[0]['price']          = 'Giá';
     $product_data[0]['product_status'] = 'Tình trạng';
     $product_data[0]['taxonomy']       = 'ID danh mục';
-
 
     $i = 1;
     while ($row_data = $hmdb->RowArray()) {
@@ -257,18 +253,18 @@ function hm_ecommerce_explode_excel() {
         $i++;
     }
 
-    // read data to active sheet
-    $objPHPExcel->getActiveSheet()->fromArray($product_data);
-    for ($col = 'A'; $col !== 'X'; $col++) {
-        $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+    if(!file_exists(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv')){
+      mkdir(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv', 0777, true);
     }
 
-    $file_name = 'Danh-sach-san-pham__' . date('d-m-Y__H:i:s', time()) . '.xls';
-    $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
-    header('Content-type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment; filename="' . $file_name . '"');
-    $objWriter->save('php://output');
-    exit();
-
+    $file_name = 'products__' . date('d-m-Y__H-i-s', time()) . '.csv';
+    $fp = fopen(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv/' .$file_name, 'w');
+    foreach ($product_data as $row) {
+        fputcsv($fp, $row);
+    }
+    header('Content-Type: application/csv');
+    header('Content-Disposition: attachment; filename="'.$file_name.'";');
+    readfile(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv/' .$file_name);
+	exit();
 }
 ?>
