@@ -12,39 +12,35 @@ $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "filter_group_taxonomy";
 if (!in_array($tableName, $result)) {
-
-    $sql = "
-	CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
-	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `taxonomy_id` int(11) NOT NULL,
-	  `name` varchar(255) NOT NULL,
-	  `slug` varchar(255) NOT NULL,
-	  `type` varchar(255) NOT NULL,
-	  `input_type` varchar(255) NOT NULL,
-	  `number_order` int(11) NOT NULL,
-	  PRIMARY KEY (`id`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	";
-    $hmdb->Query($sql);
-
+  $sql = "
+  CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `taxonomy_id` int(11) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `slug` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `input_type` varchar(255) NOT NULL,
+    `number_order` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  ";
+  $hmdb->Query($sql);
 }
 
 $tableName = DB_PREFIX . "filter_option_taxonomy";
 if (!in_array($tableName, $result)) {
-
-    $sql = "
-	CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
-	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `filter_group` int(11) NOT NULL,
-	  `name` varchar(255) NOT NULL,
-	  `type` varchar(255) NOT NULL,
-	  `slug` varchar(255) NOT NULL,
-	  `number_order` int(11) NOT NULL,
-	  PRIMARY KEY (`id`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	";
-    $hmdb->Query($sql);
-
+  $sql = "
+  CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `filter_group_taxonomy` int(11) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `slug` varchar(255) NOT NULL,
+    `number_order` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  ";
+  $hmdb->Query($sql);
 }
 
 
@@ -54,39 +50,35 @@ $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "filter_group_content";
 if (!in_array($tableName, $result)) {
-
-    $sql = "
-	CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
-	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `content_key` varchar(255) NOT NULL,
-	  `name` varchar(255) NOT NULL,
-	  `slug` varchar(255) NOT NULL,
-	  `type` varchar(255) NOT NULL,
-	  `input_type` varchar(255) NOT NULL,
-	  `number_order` int(11) NOT NULL,
-	  PRIMARY KEY (`id`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	";
-    $hmdb->Query($sql);
-
+  $sql = "
+  CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `content_key` varchar(255) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `slug` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `input_type` varchar(255) NOT NULL,
+    `number_order` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  ";
+  $hmdb->Query($sql);
 }
 
 $tableName = DB_PREFIX . "filter_option_content";
 if (!in_array($tableName, $result)) {
-
-    $sql = "
-	CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
-	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `filter_group` int(11) NOT NULL,
-	  `name` varchar(255) NOT NULL,
-	  `type` varchar(255) NOT NULL,
-	  `slug` varchar(255) NOT NULL,
-	  `number_order` int(11) NOT NULL,
-	  PRIMARY KEY (`id`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	";
-    $hmdb->Query($sql);
-
+  $sql = "
+  CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `filter_group_taxonomy` int(11) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `slug` varchar(255) NOT NULL,
+    `number_order` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  ";
+  $hmdb->Query($sql);
 }
 
 
@@ -100,7 +92,7 @@ $filter_type = get_option(array(
 switch ($filter_type) {
     case 'taxonomy':
         hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/taxonomy.php');
-				register_action('hm_admin_head', 'hm_filter_asset');
+        register_action('hm_admin_head', 'hm_filter_asset');
         function hm_filter_asset() {
             echo '<script src="' . PLUGIN_URI . 'hm_filter/asset/filter_taxonomy.js"></script>';
             echo '<link href="' . PLUGIN_URI . 'hm_filter/asset/filter_taxonomy.css" rel="stylesheet" type="text/css" />';
@@ -108,7 +100,7 @@ switch ($filter_type) {
         break;
     case 'content':
         hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/content.php');
-				register_action('hm_admin_head', 'hm_filter_asset');
+        register_action('hm_admin_head', 'hm_filter_asset');
         function hm_filter_asset() {
             echo '<script src="' . PLUGIN_URI . 'hm_filter/asset/filter_content.js"></script>';
             echo '<link href="' . PLUGIN_URI . 'hm_filter/asset/filter_content.css" rel="stylesheet" type="text/css" />';
@@ -128,23 +120,16 @@ $args = array(
 );
 register_admin_setting_page($args);
 function hm_filter_setting() {
-
     if (isset($_POST['submit'])) {
-
         foreach ($_POST as $key => $value) {
-
             $args = array(
                 'section' => 'hm_filter',
                 'key' => $key,
                 'value' => $value
             );
-
             set_option($args);
-
         }
-
     }
-
     hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/admincp/setting.php');
 }
 
