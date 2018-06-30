@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo banner chạy dọc hai bên website",
     "version_cms": "1+",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/float_banner/float_banner.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/float_banner.zip"
   }
 }

@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Giúp bạn tùy chọn giao diện riêng cho mobile hoặc tablet",
     "version_cms": "1.2.06+",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/mobile_detect/mobile_detect.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/mobile_detect.zip"
   }
 }

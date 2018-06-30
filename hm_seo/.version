@@ -7,6 +7,6 @@
     "version": "1.1.2",
     "description": "Thêm các thông tin SEO cho content và taxonomy\n- Tùy biến title, meta description, meta keywords\n- Hỗ trợ sitemap.xml",
     "version_cms": "1+",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/hm_seo/hm_seo.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/hm_seo.zip"
   }
 }

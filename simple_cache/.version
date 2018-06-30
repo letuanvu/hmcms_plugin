@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo cache cho website giúp tăng tốc độ tải trang",
     "version_cms": "1.3.1+",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/simple_cache/simple_cache.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/simple_cache.zip"
   }
 }

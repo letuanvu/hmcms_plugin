@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Thay thế bộ soạn thảo thành CKEditor",
     "version_cms": "1+",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/hm_ckeditor/hm_ckeditor.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/hm_ckeditor.zip"
   }
 }

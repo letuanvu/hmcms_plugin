@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo popup quảng cáo hoặc thông báo sử dụng custombox",
     "version_cms": "1",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/custombox/custombox.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/custombox.zip"
   }
 }

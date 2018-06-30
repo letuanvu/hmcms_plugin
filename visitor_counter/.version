@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Tạo bộ đếm số người online, truy cập hôm nay, tháng này ...",
     "version_cms": "1.2.04+",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/visitor_counter/visitor_counter.tar.gz"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/visitor_counter.zip"
   }
 }

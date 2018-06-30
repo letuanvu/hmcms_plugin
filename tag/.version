@@ -7,6 +7,6 @@
     "version": "1.0",
     "description": "Quản lý tag cho website",
     "version_cms": "1.4",
-    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/post/tag.zip"
+    "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/tag.zip"
   }
 }
