@@ -1,5 +1,5 @@
 <?php
-/** Tạo content box để up ảnh sản phẩm */
+/** Product images */
 $product_photos = get_option(array(
     'section' => 'hme',
     'key' => 'product_photos',
@@ -33,7 +33,7 @@ if ($product_photos == 'yes') {
 }
 
 
-/** Tạo content box thuộc tính sản phẩm */
+/** create content box product option */
 $product_options = get_option(array(
     'section' => 'hme',
     'key' => 'product_options',
@@ -131,6 +131,67 @@ if ($product_options == 'yes') {
         'content_key' => 'product',
         'position' => 'left',
         'function' => 'product_option_panel'
+    );
+    register_content_box($args);
+}
+
+/** create content box product version */
+$product_versions = get_option(array(
+    'section' => 'hme',
+    'key' => 'product_versions',
+    'default_value' => 'yes'
+));
+if ($product_versions == 'yes') {
+    function product_version_panel() {
+
+        $action = hm_get('action');
+        $id     = hm_get('id', 0);
+
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+
+
+
+        echo '<div class="product_version_widget">' . "\n\r";
+        echo '  <div class="product_version_lines">' . "\n\r";
+        echo '    <div class="product_version_line row_margin">' . "\n\r";
+        echo '      <div class="col-md-6">' . hme_lang('version_name') . '</div>' . "\n\r";
+        echo '      <div class="col-md-3">' . hme_lang('version_price') . '</div>' . "\n\r";
+        echo '      <div class="col-md-3">' . hme_lang('delete_vesion') . '</div>' . "\n\r";
+        echo '    </div>' . "\n\r";
+
+        if ($action == 'edit') {
+            $version_names  = get_con_val('name=version_name&id=' . $id);
+            $version_names  = json_decode($version_names, TRUE);
+            $version_prices = get_con_val('name=version_price&id=' . $id);
+            $version_prices = json_decode($version_prices, TRUE);
+            foreach ($version_names as $line => $version_name) {
+
+                echo '    <div class="product_version_line row_margin" data-line="' . $line . '">' . "\n\r";
+                echo '      <div class="col-md-6"><input class="form-control input_version_name" name="version_name[' . $line . ']" value="' . $version_name . '" /></div>' . "\n\r";
+                echo '      <div class="col-md-3"><input type="number" class="form-control input_version_price" name="version_price[' . $line . ']"  value="' . $version_prices[$line] . '" /></div>' . "\n\r";
+                echo '      <div class="col-md-3"><span class="btn btn-danger delete_vesion_btn" data-line="' . $line . '">' . hme_lang('delete') . '</span></div>' . "\n\r";
+                echo '    </div>' . "\n\r";
+
+            }
+        } else {
+            echo '    <div class="product_version_line row_margin" data-line="1">' . "\n\r";
+            echo '      <div class="col-md-6"><input class="form-control input_version_name" name="version_name[1]" /></div>' . "\n\r";
+            echo '      <div class="col-md-3"><input type="number" class="form-control input_version_price" name="version_price[1]" /></div>' . "\n\r";
+            echo '      <div class="col-md-3"><span class="btn btn-danger delete_vesion_btn" data-line="1">' . hme_lang('delete') . '</span></div>' . "\n\r";
+            echo '    </div>' . "\n\r";
+        }
+
+        echo '  </div>' . "\n\r";
+        echo '  <div class="product_version_contror">' . "\n\r";
+        echo '  <span class="btn btn-info add_new_version_btn">' . hme_lang('add_new_version') . '</span>' . "\n\r";
+        echo '  </div>' . "\n\r";
+        echo '</div>' . "\n\r";
+    }
+    $args = array(
+        'label' => hme_lang('product_versions'),
+        'content_key' => 'product',
+        'position' => 'left',
+        'function' => 'product_version_panel'
     );
     register_content_box($args);
 }
