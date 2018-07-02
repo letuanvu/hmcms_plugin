@@ -53,7 +53,7 @@ function hme_cart() {
 }
 
 /*
-Gửi đơn hàng
+submit order
 */
 function hme_submit_cart() {
     if (isset($_SESSION['hmecart']) AND is_array($_SESSION['hmecart'])) {
@@ -133,8 +133,15 @@ function hme_submit_cart() {
             $tableName  = DB_PREFIX . "hme_order_item";
             $cart_total = 0;
             foreach ($cart as $pid => $qty) {
-                $name  = get_con_val("name=name&id=$pid");
-                $price = get_con_val("name=price&id=$pid");
+                $name = get_con_val("name=name&id=$pid");
+                if (isset($_SESSION['version_price'][$pid])) {
+                    $price = $_SESSION['version_price'][$pid];
+                } else {
+                    $price = $_SESSION['price'][$pid];
+                }
+                if (isset($_SESSION['version_name'][$pid])) {
+                    $name = $name . ' <br> (<font color="red">' . $_SESSION['version_name'][$pid] . '</font>)';
+                }
 
                 $values                  = array();
                 $values["order_id"]      = MySQL::SQLValue($insert_id);
