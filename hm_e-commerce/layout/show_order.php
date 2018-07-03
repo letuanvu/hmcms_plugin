@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?php echo BASE_URL.HM_PLUGIN_DIR.'/hm_e-commerce/asset'; ?>/datatables.min.js" charset="UTF-8"></script>
 <div class="container">
 	<div class="row">
- 
+
 		<section class="show_order">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -83,8 +83,8 @@
 									</tr>
 								<?php
 								}
-								?>								
-									
+								?>
+
 								</tbody>
 							</table>
 						</div>
@@ -92,14 +92,14 @@
 				</div>
 			</div>
 		</section>
-		
+
 	</div>
 </div>
 
 <script>
 $(document).ready(function () {
 
-	
+
     $('.ckbox label').on('click', function () {
       $(this).parents('tr').toggleClass('selected');
     });

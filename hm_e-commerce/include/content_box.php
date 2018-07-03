@@ -135,6 +135,25 @@ if ($product_options == 'yes') {
     register_content_box($args);
 }
 
+/** create content box product deal */
+$product_deal = get_option(array(
+    'section' => 'hme',
+    'key' => 'product_deal',
+    'default_value' => 'yes'
+));
+if ($product_deal == 'yes') {
+    function product_deal_panel() {
+
+    }
+    $args = array(
+        'label' => hme_lang('deal'),
+        'content_key' => 'product',
+        'position' => 'left',
+        'function' => 'product_deal_panel'
+    );
+    register_content_box($args);
+}
+
 /** create content box product version */
 $product_versions = get_option(array(
     'section' => 'hme',
@@ -149,14 +168,13 @@ if ($product_versions == 'yes') {
 
         $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-
-
         echo '<div class="product_version_widget">' . "\n\r";
         echo '  <div class="product_version_lines">' . "\n\r";
         echo '    <div class="product_version_line row_margin">' . "\n\r";
-        echo '      <div class="col-md-6">' . hme_lang('version_name') . '</div>' . "\n\r";
+        echo '      <div class="col-md-4">' . hme_lang('version_name') . '</div>' . "\n\r";
         echo '      <div class="col-md-3">' . hme_lang('version_price') . '</div>' . "\n\r";
-        echo '      <div class="col-md-3">' . hme_lang('delete_vesion') . '</div>' . "\n\r";
+        echo '      <div class="col-md-3">' . hme_lang('version_deal_price') . '</div>' . "\n\r";
+        echo '      <div class="col-md-2">' . hme_lang('delete_vesion') . '</div>' . "\n\r";
         echo '    </div>' . "\n\r";
 
         if ($action == 'edit') {
@@ -164,20 +182,24 @@ if ($product_versions == 'yes') {
             $version_names  = json_decode($version_names, TRUE);
             $version_prices = get_con_val('name=version_price&id=' . $id);
             $version_prices = json_decode($version_prices, TRUE);
+            $version_deal_prices = get_con_val('name=version_deal_price&id=' . $id);
+            $version_deal_prices = json_decode($version_deal_prices, TRUE);
             foreach ($version_names as $line => $version_name) {
 
                 echo '    <div class="product_version_line row_margin" data-line="' . $line . '">' . "\n\r";
-                echo '      <div class="col-md-6"><input class="form-control input_version_name" name="version_name[' . $line . ']" value="' . $version_name . '" /></div>' . "\n\r";
+                echo '      <div class="col-md-4"><input class="form-control input_version_name" name="version_name[' . $line . ']" value="' . $version_name . '" /></div>' . "\n\r";
                 echo '      <div class="col-md-3"><input type="number" class="form-control input_version_price" name="version_price[' . $line . ']"  value="' . $version_prices[$line] . '" /></div>' . "\n\r";
-                echo '      <div class="col-md-3"><span class="btn btn-danger delete_vesion_btn" data-line="' . $line . '">' . hme_lang('delete') . '</span></div>' . "\n\r";
+                echo '      <div class="col-md-3"><input type="number" class="form-control input_version_price" name="version_deal_price[' . $line . ']"  value="' . $version_deal_prices[$line] . '" /></div>' . "\n\r";
+                echo '      <div class="col-md-2"><span class="btn btn-danger delete_vesion_btn" data-line="' . $line . '">' . hme_lang('delete') . '</span></div>' . "\n\r";
                 echo '    </div>' . "\n\r";
 
             }
         } else {
             echo '    <div class="product_version_line row_margin" data-line="1">' . "\n\r";
-            echo '      <div class="col-md-6"><input class="form-control input_version_name" name="version_name[1]" /></div>' . "\n\r";
+            echo '      <div class="col-md-4"><input class="form-control input_version_name" name="version_name[1]" /></div>' . "\n\r";
             echo '      <div class="col-md-3"><input type="number" class="form-control input_version_price" name="version_price[1]" /></div>' . "\n\r";
-            echo '      <div class="col-md-3"><span class="btn btn-danger delete_vesion_btn" data-line="1">' . hme_lang('delete') . '</span></div>' . "\n\r";
+            echo '      <div class="col-md-3"><input type="number" class="form-control input_version_price" name="version_deal_price[1]" /></div>' . "\n\r";
+            echo '      <div class="col-md-2"><span class="btn btn-danger delete_vesion_btn" data-line="1">' . hme_lang('delete') . '</span></div>' . "\n\r";
             echo '    </div>' . "\n\r";
         }
 
