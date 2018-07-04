@@ -6,13 +6,13 @@ Version: 1.3;
 Version Number: 4;
 */
 
-/** Tạo các table cần thiết cho kiểu lọc danh mục */
+/** create table for taxonomy filter */
 $hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "filter_group_taxonomy";
 if (!in_array($tableName, $result)) {
-  $sql = "
+    $sql = "
   CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `taxonomy_id` int(11) NOT NULL,
@@ -24,15 +24,15 @@ if (!in_array($tableName, $result)) {
     PRIMARY KEY (`id`)
   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
   ";
-  $hmdb->Query($sql);
+    $hmdb->Query($sql);
 }
 
 $tableName = DB_PREFIX . "filter_option_taxonomy";
 if (!in_array($tableName, $result)) {
-  $sql = "
+    $sql = "
   CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `filter_group` int(11) NOT NULL,
+    `filter_group_taxonomy` int(11) NOT NULL,
     `name` varchar(255) NOT NULL,
     `type` varchar(255) NOT NULL,
     `slug` varchar(255) NOT NULL,
@@ -40,17 +40,17 @@ if (!in_array($tableName, $result)) {
     PRIMARY KEY (`id`)
   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
   ";
-  $hmdb->Query($sql);
+    $hmdb->Query($sql);
 }
 
 
-/** Tạo các table cần thiết cho kiểu lọc content type */
+/** create table for content filter */
 $hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "filter_group_content";
 if (!in_array($tableName, $result)) {
-  $sql = "
+    $sql = "
   CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `content_key` varchar(255) NOT NULL,
@@ -62,15 +62,15 @@ if (!in_array($tableName, $result)) {
     PRIMARY KEY (`id`)
   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
   ";
-  $hmdb->Query($sql);
+    $hmdb->Query($sql);
 }
 
 $tableName = DB_PREFIX . "filter_option_content";
 if (!in_array($tableName, $result)) {
-  $sql = "
+    $sql = "
   CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `filter_group` int(11) NOT NULL,
+    `filter_group_taxonomy` int(11) NOT NULL,
     `name` varchar(255) NOT NULL,
     `type` varchar(255) NOT NULL,
     `slug` varchar(255) NOT NULL,
@@ -78,10 +78,12 @@ if (!in_array($tableName, $result)) {
     PRIMARY KEY (`id`)
   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
   ";
-  $hmdb->Query($sql);
+    $hmdb->Query($sql);
 }
 
-/** load file xử lý theo kiểu lọc */
+
+
+/** include lib file */
 $filter_type = get_option(array(
     'section' => 'hm_filter',
     'key' => 'filter_type',
@@ -107,7 +109,7 @@ switch ($filter_type) {
 }
 
 /*
-Tạo trang cài đặt
+Create seting page
 */
 $args = array(
     'label' => 'Bộ lọc',
@@ -132,7 +134,7 @@ function hm_filter_setting() {
 }
 
 
-/** hiển thị asset ở giao diện */
+/** create theme asset file */
 register_action('before_hm_footer', 'filter_display_asset');
 function filter_display_asset() {
     echo '<!-- Plugin Bộ lọc -->' . "\n\r";
