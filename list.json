@@ -118,5 +118,10 @@
     "name": "Từ khóa",
     "alias": "tag",
     "description": "Quản lý từ khóa cho nội dung"
+  },
+  {
+    "name": "Bình luận",
+    "alias": "hm_comment",
+    "description": "Quản lý bình luận cho nội dung"
   }
 ]
