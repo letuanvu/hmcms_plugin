@@ -143,7 +143,47 @@ $product_deal = get_option(array(
 ));
 if ($product_deal == 'yes') {
     function product_deal_panel() {
-
+        echo '<div class="product_deal_panel row_margin">' . "\n\r";
+        echo '  <div class="col-md-4">' . "\n\r";
+        $args = array(
+            'nice_name' => hme_lang('active_deal'),
+            'name' => 'active_deal',
+            'input_type' => 'select',
+            'input_option' => array(
+                array(
+                    'value' => 'no',
+                    'label' => hme_lang('no')
+                ),
+                array(
+                    'value' => 'yes',
+                    'label' => hme_lang('yes')
+                )
+            ),
+            'required' => False
+        );
+        build_input_form($args);
+        echo '  </div>' . "\n\r";
+        echo '  <div class="col-md-4">' . "\n\r";
+        $args = array(
+            'nice_name' => hme_lang('deal_start'),
+            'name' => 'deal_start',
+            'class' => 'form-control hm_datetimepicker',
+            'input_type' => 'text',
+            'required' => False
+        );
+        build_input_form($args);
+        echo '  </div>' . "\n\r";
+        echo '  <div class="col-md-4">' . "\n\r";
+        $args = array(
+            'nice_name' => hme_lang('deal_end'),
+            'name' => 'deal_end',
+            'class' => 'form-control hm_datetimepicker',
+            'input_type' => 'text',
+            'required' => False
+        );
+        build_input_form($args);
+        echo '  </div>' . "\n\r";
+        echo '</div>' . "\n\r";
     }
     $args = array(
         'label' => hme_lang('deal'),
@@ -178,10 +218,10 @@ if ($product_versions == 'yes') {
         echo '    </div>' . "\n\r";
 
         if ($action == 'edit') {
-            $version_names  = get_con_val('name=version_name&id=' . $id);
-            $version_names  = json_decode($version_names, TRUE);
-            $version_prices = get_con_val('name=version_price&id=' . $id);
-            $version_prices = json_decode($version_prices, TRUE);
+            $version_names       = get_con_val('name=version_name&id=' . $id);
+            $version_names       = json_decode($version_names, TRUE);
+            $version_prices      = get_con_val('name=version_price&id=' . $id);
+            $version_prices      = json_decode($version_prices, TRUE);
             $version_deal_prices = get_con_val('name=version_deal_price&id=' . $id);
             $version_deal_prices = json_decode($version_deal_prices, TRUE);
             foreach ($version_names as $line => $version_name) {
