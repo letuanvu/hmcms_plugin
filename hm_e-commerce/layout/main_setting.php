@@ -102,6 +102,15 @@
         );
         build_input_form($args);
 
+        /* installment interest rate */
+        $args = array(
+          'nice_name'=>hme_lang('installment_interest_rate'). ' (%)',
+          'name'=>'installment_interest_rate',
+          'input_type'=>'number',
+          'required'=>FALSE,
+          'default_value'=>get_option( array('section'=>'hme','key'=>'installment_interest_rate','default_value'=>'10') ),
+        );
+        build_input_form($args);
         ?>
       </div>
     </div>

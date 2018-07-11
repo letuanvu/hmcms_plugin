@@ -8,7 +8,11 @@ function hme_total_price() {
         }
         $hmecart = $_SESSION['hmecart'];
         foreach ($hmecart as $pid => $qty) {
-            $price       = get_con_val("name=price&id=$pid");
+            if(isset($_SESSION['version_price'][$pid])){
+              $price = $_SESSION['version_price'][$pid];
+            }else{
+              $price = $_SESSION['price'][$pid];
+            }
             $price       = $price * $qty;
             $total_price = $total_price + $price;
         }
@@ -52,44 +56,109 @@ function hme_cart() {
 
 }
 
+function hme_get_price($pid, $version = null) {
+    $active_deal          = get_con_val("name=active_deal&id=$pid");
+    $deal_start           = get_con_val("name=deal_start&id=$pid");
+    $deal_end             = get_con_val("name=deal_end&id=$pid");
+    $deal_start_timestamp = '';
+    if ($deal_start != '') {
+        $dtime                = DateTime::createFromFormat("Y/m/d H:i", $deal_start);
+        $deal_start_timestamp = $dtime->getTimestamp();
+    }
+    $deal_end_timestamp = '';
+    if ($deal_end != '') {
+        $dtime              = DateTime::createFromFormat("Y/m/d H:i", $deal_end);
+        $deal_end_timestamp = $dtime->getTimestamp();
+    }
+    if ($version != 0 && is_numeric($version)) {
+        $version_names       = get_con_val('name=version_name&id=' . $pid);
+        $version_names       = json_decode($version_names, TRUE);
+        $version_prices      = get_con_val('name=version_price&id=' . $pid);
+        $version_prices      = json_decode($version_prices, TRUE);
+        $version_deal_prices = get_con_val('name=version_deal_price&id=' . $pid);
+        $version_deal_prices = json_decode($version_deal_prices, TRUE);
+        if (is_array($version_names)) {
+            foreach ($version_names as $line => $version_name) {
+                if($line == $version){
+                    if ($deal_start_timestamp != '' && time() > $deal_start_timestamp && time() < $deal_end_timestamp && $active_deal == 'yes') {
+                        $product_price = $version_deal_prices[$line];
+                    } else {
+                        $product_price = $version_prices[$line];
+                    }
+                }
+            }
+        }
+    } else {
+        if ($deal_start_timestamp != '' && time() > $deal_start_timestamp && time() < $deal_end_timestamp && $active_deal == 'yes') {
+            $product_price = get_con_val("name=deal_price&id=$pid");
+        } else {
+            $product_price = get_con_val("name=price&id=$pid");
+        }
+    }
+    return $product_price;
+}
+
 /*
 submit order
 */
-function hme_submit_cart() {
-    if (isset($_SESSION['hmecart']) AND is_array($_SESSION['hmecart'])) {
+function hme_submit_cart($type = 'cart') {
+
+    $is_installment = 'no';
+    switch ($type) {
+        case 'cart':
+            $session_data = $_SESSION['hmecart'];
+            break;
+        case 'installment':
+            $session_data   = $_SESSION['hmeinstallment'];
+            $is_installment = 'yes';
+            break;
+        default:
+            $session_data = $_SESSION['hmecart'];
+    }
+
+    if (isset($session_data) AND is_array($session_data)) {
 
         /** hme_order */
         $hmdb      = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
         $tableName = DB_PREFIX . "hme_order";
 
-        $name           = hm_post('name', hme_lang('no_declaration'), FALSE);
-        $email          = hm_post('email', hme_lang('no_declaration'), FALSE);
-        $mobile         = hm_post('mobile', hme_lang('no_declaration'), FALSE);
-        $address        = hm_post('address', hme_lang('no_declaration'), FALSE);
-        $payment_method = hm_post('payment_method', hme_lang('no_declaration'), FALSE);
-        $ship_method    = hm_post('ship_method', hme_lang('no_declaration'), FALSE);
-        $subject        = hm_post('subject', hme_lang('no_declaration'), FALSE);
-        $message        = hm_post('message', hme_lang('no_declaration'), FALSE);
-        $status         = 'not_process';
-        $time           = time();
+        $name                      = hm_post('name', hme_lang('no_declaration'), false);
+        $email                     = hm_post('email', hme_lang('no_declaration'), false);
+        $mobile                    = hm_post('mobile', hme_lang('no_declaration'), false);
+        $address                   = hm_post('address', hme_lang('no_declaration'), false);
+        $payment_method            = hm_post('payment_method', hme_lang('no_declaration'), false);
+        $ship_method               = hm_post('ship_method', hme_lang('no_declaration'), false);
+        $message                   = hm_post('message', hme_lang('no_declaration'), false);
+        $installment_month         = hm_post('installment_month', hme_lang('no_declaration'), false);
+        $installment_first_pay     = hm_post('installment_first_pay', hme_lang('no_declaration'), false);
+        $installment_per_month_pay = hm_post('installment_per_month_pay', hme_lang('no_declaration'), false);
+        $installment_total_pay     = hm_post('installment_total_pay', hme_lang('no_declaration'), false);
+        $installment_partner       = hm_post('installment_partner', hme_lang('no_declaration'), false);
+        $status                    = 'not_process';
+        $time                      = time();
 
         $customer_id = '0';
         if (hme_customer_logined()) {
             $customer_id = $_SESSION['customer']->id;
         }
 
-        $values                   = array();
-        $values["name"]           = MySQL::SQLValue($name);
-        $values["email"]          = MySQL::SQLValue($email);
-        $values["mobile"]         = MySQL::SQLValue($mobile);
-        $values["address"]        = MySQL::SQLValue($address);
-        $values["payment_method"] = MySQL::SQLValue($payment_method);
-        $values["ship_method"]    = MySQL::SQLValue($ship_method);
-        $values["subject"]        = MySQL::SQLValue($subject);
-        $values["message"]        = MySQL::SQLValue($message);
-        $values["status"]         = MySQL::SQLValue($status);
-        $values["time"]           = MySQL::SQLValue($time);
-        $values["customer_id"]    = MySQL::SQLValue($customer_id);
+        $values                              = array();
+        $values["name"]                      = MySQL::SQLValue($name);
+        $values["email"]                     = MySQL::SQLValue($email);
+        $values["mobile"]                    = MySQL::SQLValue($mobile);
+        $values["address"]                   = MySQL::SQLValue($address);
+        $values["payment_method"]            = MySQL::SQLValue($payment_method);
+        $values["ship_method"]               = MySQL::SQLValue($ship_method);
+        $values["message"]                   = MySQL::SQLValue($message);
+        $values["installment_month"]         = MySQL::SQLValue($installment_month);
+        $values["installment_first_pay"]     = MySQL::SQLValue($installment_first_pay);
+        $values["installment_per_month_pay"] = MySQL::SQLValue($installment_per_month_pay);
+        $values["installment_total_pay"]     = MySQL::SQLValue($installment_total_pay);
+        $values["installment_partner"]       = MySQL::SQLValue($installment_partner);
+        $values["is_installment"]            = MySQL::SQLValue($is_installment);
+        $values["status"]                    = MySQL::SQLValue($status);
+        $values["time"]                      = MySQL::SQLValue($time);
+        $values["customer_id"]               = MySQL::SQLValue($customer_id);
 
         $letter_content = '';
         $letter_content .= '<p>' . hme_lang('customer_name') . ': ' . $name . '</p>';
@@ -98,8 +167,14 @@ function hme_submit_cart() {
         $letter_content .= '<p>' . hme_lang('address') . ': ' . $address . '</p>';
         $letter_content .= '<p>' . hme_lang('payment_method') . ': ' . $payment_method . '</p>';
         $letter_content .= '<p>' . hme_lang('ship_method') . ': ' . $ship_method . '</p>';
-        $letter_content .= '<p>' . hme_lang('title') . ': ' . $subject . '</p>';
         $letter_content .= '<p>' . hme_lang('message') . ': ' . $message . '</p>';
+        if ($is_installment == 'yes') {
+            $letter_content .= '<p>' . hme_lang('installment_month') . ': ' . $installment_month . '</p>';
+            $letter_content .= '<p>' . hme_lang('installment_first_pay') . ': ' . $installment_first_pay . '</p>';
+            $letter_content .= '<p>' . hme_lang('installment_per_month_pay') . ': ' . $installment_per_month_pay . '</p>';
+            $letter_content .= '<p>' . hme_lang('installment_total_pay') . ': ' . $installment_total_pay . '</p>';
+            $letter_content .= '<p>' . hme_lang('installment_partner') . ': ' . $installment_partner . '</p>';
+        }
         $letter_content .= '<p>' . hme_lang('sent_date') . ': ' . date('d-m-Y h:i:s', $time) . '</p>';
 
         $insert_id = $hmdb->InsertRow($tableName, $values);
@@ -129,7 +204,7 @@ function hme_submit_cart() {
             $letter_content .= '</tr>';
 
             /** hme_order_item */
-            $cart       = $_SESSION['hmecart'];
+            $cart       = $session_data;
             $tableName  = DB_PREFIX . "hme_order_item";
             $cart_total = 0;
             foreach ($cart as $pid => $qty) {
@@ -140,7 +215,7 @@ function hme_submit_cart() {
                     $price = $_SESSION['price'][$pid];
                 }
                 if (isset($_SESSION['version_name'][$pid])) {
-                    $name = $name . ' <br> (<font color="red">' . $_SESSION['version_name'][$pid] . '</font>)';
+                    $name = $name . ' <br> <font color="red">' . $_SESSION['version_name'][$pid] . '</font>';
                 }
 
                 $values                  = array();
@@ -168,7 +243,19 @@ function hme_submit_cart() {
                 $letter_content .= '<td>' . number_format($p_total) . '<td>';
                 $letter_content .= '</tr>';
             }
-            unset($_SESSION['hmecart']);
+
+            switch ($type) {
+                case 'cart':
+                    unset($_SESSION['hmecart']);
+                    break;
+                case 'installment':
+                    unset($_SESSION['hmeinstallment']);
+                    break;
+                default:
+                    unset($_SESSION['hmecart']);
+                    unset($_SESSION['hmeinstallment']);
+            }
+
             $letter_content .= '</table>';
             $letter_content .= '<p>' . hme_lang('total_order_amount') . ': ' . number_format($cart_total) . '</p>';
 
@@ -201,7 +288,7 @@ function hme_submit_cart() {
 }
 
 /*
-Khách hàng đăng nhập
+Login customer
 */
 function hme_customer_login() {
 
@@ -276,7 +363,7 @@ function hme_customer_login_action($args) {
 }
 
 /*
-Khách hàng đăng ký
+Register customer
 */
 function hme_customer_register() {
 

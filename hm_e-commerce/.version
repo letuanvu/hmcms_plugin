@@ -3,8 +3,8 @@
   "info": {
     "name": "HM E-commerce",
     "key": "hm_e-commerce",
-    "version_number": "4",
-    "version": "1.3",
+    "version_number": "5",
+    "version": "1.4",
     "description": "Plugin hỗ trợ tạo website bán hàng, chỉ hoạt động với giao diện có hỗ trợ",
     "version_cms": "1.2.09+",
     "download": "https://raw.githubusercontent.com/manhnam91/hmcms_plugin/master/_zip/hm_e-commerce.zip"

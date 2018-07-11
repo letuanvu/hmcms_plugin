@@ -30,6 +30,7 @@
 										<th><?php echo hme_lang('customer'); ?></th>
 										<th><?php echo hme_lang('phone_number'); ?></th>
 										<th><?php echo hme_lang('status'); ?></th>
+										<th><?php echo hme_lang('installment'); ?></th>
 										<th><?php echo hme_lang('action'); ?></th>
 									</tr>
 								</thead>
@@ -75,6 +76,9 @@
 										</td>
 										<td>
 											<span><?php echo $status_label; ?></span>
+										</td>
+										<td>
+											<span><?php echo $order->is_installment; ?></span>
 										</td>
 										<td>
 											<a href="?run=admin_page.php&key=hm_ecommerce_edit_order&action=edit&id=<?php echo $order->id; ?>" class="btn btn-default btn-xs"><?php echo hme_lang('view'); ?></a>

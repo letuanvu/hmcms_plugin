@@ -77,6 +77,13 @@ $field_array = array(
         'placeholder' => hme_lang('just_enter_the_number')
     ),
     array(
+        'nice_name' => hme_lang('deal_price'),
+        'name' => 'deal_price',
+        'input_type' => 'number',
+        'default_value' => '',
+        'placeholder' => hme_lang('just_enter_the_number')
+    ),
+    array(
         'nice_name' => hme_lang('status'),
         'name' => 'product_status',
         'input_type' => 'select',
