@@ -258,7 +258,7 @@ register_admin_page($args);
 function express_form_del_contact(){
 	$id = hm_get('id');
 	$hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-	$tableName=DB_PREFIX.'object';
+	$tableName=DB_PREFIX.'field';
 	$whereArray = array (
 		'id'=>MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER),
 	);
