@@ -1,7 +1,9 @@
 <?php
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /*
-Đăng ký trang plugin setting
+Plugin setting
 */
 $args = array(
     'label' => hme_lang('e_commercer'),
@@ -37,7 +39,7 @@ function hm_ecommerce_main_setting() {
 }
 
 /*
-Cập nhật sản phẩm từ excel
+Update from xlsx
 */
 function hm_ecommerce_import_excel() {
 
@@ -217,7 +219,7 @@ function hm_ecommerce_import_excel() {
 
 
 /*
-Đăng ký trang in excel
+Export for excel
 */
 register_request('hm_ecommerce_explode_excel', 'hm_ecommerce_explode_excel');
 function hm_ecommerce_explode_excel() {
@@ -227,44 +229,51 @@ function hm_ecommerce_explode_excel() {
     $sql = "SELECT * FROM `hm_content` WHERE `key` = 'product' AND `status` = 'public' ";
     $hmdb->Query($sql);
 
-    $product_data                      = array();
-    $product_data[0]['id']             = 'ID';
-    $product_data[0]['number_order']   = 'STT';
-    $product_data[0]['name']           = 'Tên';
-    $product_data[0]['sku']            = 'Mã (SKU)';
-    $product_data[0]['price']          = 'Giá';
-    $product_data[0]['product_status'] = 'Tình trạng';
-    $product_data[0]['taxonomy']       = 'ID danh mục';
+    $product_data         = array();
+    $product_data[1]['A'] = 'ID';
+    $product_data[1]['B'] = 'STT';
+    $product_data[1]['C'] = 'Tên';
+    $product_data[1]['D'] = 'Mã (SKU)';
+    $product_data[1]['E'] = 'Giá';
+    $product_data[1]['F'] = 'Trạng thái';
+    $product_data[1]['G'] = 'ID danh mục';
 
-    $i = 1;
+    $i = 2;
     while ($row_data = $hmdb->RowArray()) {
 
-        $id                                 = $row_data['id'];
-        $product_data[$i]['id']             = $row_data['id'];
-        $product_data[$i]['number_order']   = get_con_val("name=number_order&id=$id");
-        $product_data[$i]['name']           = get_con_val("name=name&id=$id");
-        $product_data[$i]['sku']            = get_con_val("name=sku&id=$id");
-        $product_data[$i]['price']          = get_con_val("name=price&id=$id");
-        $product_data[$i]['product_status'] = get_con_val("name=product_status&id=$id");
-        $product_taxonomy                   = get_con_val("name=taxonomy&id=$id");
-        $product_taxonomy                   = json_decode($product_taxonomy, TRUE);
-        $product_data[$i]['taxonomy']       = implode(',', $product_taxonomy);
+        $id                    = $row_data['id'];
+        $product_data[$i]['A'] = $row_data['id'];
+        $product_data[$i]['B'] = get_con_val("name=number_order&id=$id");
+        $product_data[$i]['C'] = get_con_val("name=name&id=$id");
+        $product_data[$i]['D'] = get_con_val("name=sku&id=$id");
+        $product_data[$i]['E'] = get_con_val("name=price&id=$id");
+        $product_data[$i]['F'] = get_con_val("name=status&id=$id");
+        $product_taxonomy      = get_con_val("name=taxonomy&id=$id");
+        $product_taxonomy      = json_decode($product_taxonomy, TRUE);
+        $product_data[$i]['G'] = implode(',', $product_taxonomy);
 
         $i++;
     }
 
-    if(!file_exists(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv')){
-      mkdir(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv', 0777, true);
+    $file_name   = 'products__' . date('d-m-Y__H-i-s', time()) . '.xlsx';
+    $spreadsheet = new Spreadsheet();
+    $sheet       = $spreadsheet->getActiveSheet();
+    foreach ($product_data as $row_number => $row_cols) {
+        foreach ($row_cols as $col_label => $col_value)
+            $sheet->setCellValue($col_label . $row_number, $col_value);
+    }
+    $writer = new Xlsx($spreadsheet);
+
+    if (!file_exists(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/xlsx')) {
+        mkdir(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/xlsx', 0777, true);
     }
 
-    $file_name = 'products__' . date('d-m-Y__H-i-s', time()) . '.csv';
-    $fp = fopen(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv/' .$file_name, 'w');
-    foreach ($product_data as $row) {
-        fputcsv($fp, $row);
-    }
+    $fp = BASEPATH . HM_CONTENT_DIR . '/uploads/hme/xlsx/' . $file_name;
+    $writer->save($fp);
+
     header('Content-Type: application/csv');
-    header('Content-Disposition: attachment; filename="'.$file_name.'";');
-    readfile(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv/' .$file_name);
-	exit();
+    header('Content-Disposition: attachment; filename="' . $file_name . '";');
+    readfile(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/xlsx/' . $file_name);
+    exit();
 }
 ?>
