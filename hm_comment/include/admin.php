@@ -58,9 +58,9 @@ function comment_all(){
   $status = hm_get('status',NULL);
   $tableName=DB_PREFIX."comment";
   if($status){
-    $hmdb->Query("SELECT * FROM " . $tableName . " WHERE `parent_id` = 0 AND `status` = '" . $status . "' ORDER BY `created` DESC");
+    $hmdb->Query("SELECT * FROM " . $tableName . " WHERE `status` = '" . $status . "' ORDER BY `created` DESC");
   }else{
-    $hmdb->Query("SELECT * FROM " . $tableName . " WHERE `status` IN ('public','hidden') AND `parent_id` = 0 ORDER BY `created` DESC");
+    $hmdb->Query("SELECT * FROM " . $tableName . " WHERE `status` IN ('public','hidden') ORDER BY `created` DESC");
   }
   if( $hmdb->HasRecords() ){
     while( $row = $hmdb->Row() ){

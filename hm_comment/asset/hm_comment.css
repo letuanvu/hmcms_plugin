@@ -1,0 +1,199 @@
+.hm_comment_wrapper {
+  width: 100%;
+  float: left;
+}
+.hm_comment_name {
+  border: solid 1px #ccc;
+  width: 100%;
+  float: left;
+  padding: 5px;
+  border-radius: 4px;
+  height: 28px;
+  margin-bottom: 10px;
+}
+.hm_comment_content {
+  width: 100%;
+  float: left;
+  padding: 5px;
+  height: 128px;
+  border: none;
+  border-radius: 6px 6px 0px 0px;
+}
+.hm_comment_name_wrapper{
+  margin-bottom: 10px;
+}
+.hm_comment_content_wrapper{
+  border: solid 1px #ccc;
+  width: 100%;
+  float: left;
+  border-radius: 4px 4px 0px 0px;
+  border-bottom: none;
+}
+.hm_comment_input_wrapper.hm_comment_control_wrapper {
+  border: 1px solid #ccc;
+  border-radius: 0px 0px 4px 4px;
+  background: #f9f9f9;
+  overflow: hidden;
+  margin-top: 15px;
+  padding: 5px;
+  border-top: none;
+}
+.hm_comment_rate_wrapper .rate_label{
+  color: #333;
+  margin-right: 10px;
+  text-transform: uppercase;
+  float: left;
+  line-height: 22px;
+}
+span.start_vote {
+  float: left;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.hm_comment_rate_wrapper span.start_vote:hover {
+  background: url('images/star1.png') no-repeat center center;
+  background-size: 20px;
+}
+
+.start_vote_gold {
+  float: left;
+  width: 20px;
+  height: 20px;
+  background: url('images/star1.png') no-repeat center center;
+  background-size: 20px;
+  cursor: pointer;
+}
+
+.start_vote_gray {
+  float: left;
+  width: 20px;
+  height: 20px;
+  background: url('images/star2.png') no-repeat center center;
+  background-size: 20px;
+  cursor: pointer;
+}
+.hm_comment_submit_btn {
+    float: right;
+    padding: 5px;
+    display: block;
+    width: 85px;
+    background: #ffbd00;
+    margin: 0 auto;
+    border-radius: 3px;
+    font-size: 95%;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+}
+.hm_comment_item {
+    border-top: 1px solid #ccc;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0px 10px 10px;
+}
+.hm_comment_item .comment_name {
+    float: left;
+    font-weight: bold;
+    color: #03a9f4;
+    margin-right: 10px;
+    line-height: 22px;
+}
+.hm_comment_item .comment_time {
+  font-size: 12px;
+  line-height: 22px;
+  color: #666;
+  float: left;
+  margin-right: 10px;
+}
+.hm_comment_item .comment_content {
+  width: 100%;
+  float: left;
+  clear: both;
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 4px 4px 0px 0px;
+}
+.hm_comment_item .comment_vote .start_vote_gold {
+  float: left;
+  width: 15px;
+  height: 15px;
+  background: url('images/star1.png') no-repeat center center;
+  background-size: 15px;
+  cursor: pointer;
+}
+
+.hm_comment_item .comment_vote .start_vote_gray {
+  float: left;
+  width: 15px;
+  height: 15px;
+  background: url('images/star2.png') no-repeat center center;
+  background-size: 15px;
+  cursor: pointer;
+}
+.hm_comment_item .comment_vote {
+    float: left;
+    padding: 2px 0px;
+}
+.hm_comment_item .comment_user_role_label {
+    float: left;
+    font-size: 12px;
+    line-height: 22px;
+    margin-right: 10px;
+    font-style: italic;
+    color: #ccc;
+}
+.hm_comment_item .comment_name_1 {
+    color: red;
+}
+.hm_comment_item .comment_name_2 {
+    color: red;
+}
+.hm_comment_item .comment_bar {
+  float: left;
+  width: 100%;
+  font-size: 12px;
+  background: #f5f5f5;
+  padding: 0px 5px 5px 0px;
+  border-radius: 0px 0px 4px 4px;
+}
+.hm_comment_item .comment_bar .comment_reply{
+  float: right;
+  padding: 5px;
+  display: block;
+  background: #ffbd00;
+  margin: 0 auto;
+  border-radius: 3px;
+  font-size: 95%;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+}
+.hm_comment_item .comment_bar .comment_reply:hover{
+
+}
+.hm_comment_item .comment_bar .comment_reply.reply_active {
+    background: #f00 !important;
+}
+.hm_comment_item.reply_active {
+    background: #dbf0ff;
+    padding: 10px;
+}
+.comment_reply_wrapper {
+    margin-top: 10px;
+    float: left;
+    width: 100%;
+}
+.comment_reply_wrapper .hm_comment_content {
+    height: 48px;
+}

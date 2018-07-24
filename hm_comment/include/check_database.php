@@ -13,6 +13,10 @@ if (!in_array($tableName, $result)) {
     `object_type` varchar(255) NOT NULL,
     `parent_id` int(11) NOT NULL,
     `status` varchar(255) NOT NULL,
+    `vote_value` int(11) NOT NULL,
+    `like` int(11) NOT NULL,
+    `un_like` int(11) NOT NULL,
+    `user_role` int(11) NOT NULL,
     `created` int(11) NOT NULL,
     `updated` int(11) NOT NULL,
     PRIMARY KEY (`id`)

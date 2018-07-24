@@ -8,7 +8,6 @@
 			$class="start_vote start_vote_gray";
 		}
 		echo '<span class="'.$class.'" data-vote="'.$i.'" data-id="'.$id.'" data-option-name="'.$option.'" data-name="'.$name.'"></span>';
-
 	}
 	?>
 	<div class="vote_label">
