@@ -1,7 +1,9 @@
 <?php
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /*
-Đăng ký trang plugin setting
+Plugin setting
 */
 $args = array(
     'label' => hme_lang('e_commercer'),
@@ -37,17 +39,14 @@ function hm_ecommerce_main_setting() {
 }
 
 /*
-Cập nhật sản phẩm từ excel
+Update from xlsx
 */
 function hm_ecommerce_import_excel() {
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/PHPExcel.php');
-
-    $dir = BASEPATH . HM_CONTENT_DIR . '/uploads/hm_ecommerce';
+    $dir  = BASEPATH . HM_CONTENT_DIR . '/uploads/hme_uploaded/xlsx';
     if (!file_exists($dir)) {
-        mkdir($dir);
-        chmod($dir, 0777);
+        mkdir($dir, 0777, true);
     }
     $file   = $_FILES['excel'];
     $handle = new Upload($file, LANG);
@@ -55,7 +54,7 @@ function hm_ecommerce_import_excel() {
         $handle->Process($dir);
         if ($handle->processed) {
 
-            /** tạo .htaccess */
+            /** create .htaccess */
             $fp               = fopen($dir . '/.htaccess', 'w');
             $content_htaccess = 'RemoveHandler .php .phtml .php3' . "\n" . 'RemoveType .php .phtml .php3';
             fwrite($fp, $content_htaccess);
@@ -72,144 +71,176 @@ function hm_ecommerce_import_excel() {
             $file_info['file_dst_name_ext']  = $handle->file_dst_name_ext;
             $file_info['file_is_image']      = $handle->file_is_image;
 
-            $saved_file      = BASEPATH . HM_CONTENT_DIR . '/uploads/hm_ecommerce/' . $file_info['file_src_name'];
-            $objPHPExcel     = PHPExcel_IOFactory::load($saved_file);
-            $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
-            foreach ($cell_collection as $cell) {
-                $column     = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-                $row        = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
-                $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-                if ($row == 1) {
-                    $header[$row][$column] = $data_value;
-                } else {
-                    $arr_data[$row][$column] = $data_value;
+            $saved_file = $dir . '/' . $file_info['file_dst_name'];
+
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($saved_file);
+            $worksheet   = $spreadsheet->getActiveSheet();
+
+            $i          = 1;
+            $data_table = '<table class="table table-striped">';
+            foreach ($worksheet->getRowIterator() as $row) {
+                $data_table   = $data_table . '<tr>';
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(FALSE);
+
+                $id             = null;
+                $number_order   = null;
+                $name           = null;
+                $sku            = null;
+                $price          = null;
+                $product_status = null;
+                $taxonomy       = null;
+
+                foreach ($cellIterator as $cell) {
+
+                    $cell_value  = $cell->getValue();
+                    $cell_column = $cell->getColumn();
+
+                    switch ($cell_column) {
+                        case 'A':
+                            $id = $cell_value;
+                            break;
+                        case 'B':
+                            $number_order = $cell_value;
+                            break;
+                        case 'C':
+                            $name = $cell_value;
+                            break;
+                        case 'D':
+                            $sku = $cell_value;
+                            break;
+                        case 'E':
+                            $price = $cell_value;
+                            break;
+                        case 'F':
+                            $product_status = $cell_value;
+                            break;
+                        case 'G':
+                            $taxonomy = $cell_value;
+                            break;
+                    }
+
+                    $cell_column_process = array('A','B','C','D','E','F','G');
+                    if( in_array($cell_column, $cell_column_process) ){
+                      $data_table  = $data_table . '<td>';
+
+                      if ($i > 1) {
+                          preg_match_all('!\d+!', $number_order, $matches);
+                          if (isset($matches[0][0])) {
+                              $number_order = $matches[0][0];
+                          } else {
+                              $number_order = 0;
+                          }
+
+                          preg_match_all('!\d+!', $price, $matches);
+                          if (isset($matches[0][0])) {
+                              $price = $matches[0][0];
+                          } else {
+                              $price = 0;
+                          }
+
+                          if (isset_content_id($id)) {
+                              content_update_val(array(
+                                  'id' => $id,
+                                  'value' => array(
+                                      'name' => $name
+                                  )
+                              ));
+                              update_con_val(array(
+                                  'id' => $id,
+                                  'name' => 'number_order',
+                                  'value' => $number_order
+                              ));
+                              update_con_val(array(
+                                  'id' => $id,
+                                  'name' => 'sku',
+                                  'value' => $sku
+                              ));
+                              update_con_val(array(
+                                  'id' => $id,
+                                  'name' => 'price',
+                                  'value' => $price
+                              ));
+                              update_con_val(array(
+                                  'id' => $id,
+                                  'name' => 'product_status',
+                                  'value' => $product_status
+                              ));
+
+                              $ex             = explode(',', $taxonomy);
+                              $ex             = array_map("trim", $ex);
+                              $taxonomy_array = array();
+                              foreach ($ex as $tax_id) {
+                                  if (isset_taxonomy_id($tax_id)) {
+                                      $taxonomy_array[] = $tax_id;
+                                  }
+                              }
+
+                              update_con_val(array(
+                                  'id' => $id,
+                                  'name' => 'taxonomy',
+                                  'value' => json_encode($taxonomy_array)
+                              ));
+
+                              /** Save relationship content - taxonomy */
+                              $tableName = DB_PREFIX . 'relationship';
+                              if (isset($taxonomy_array) AND is_array($taxonomy_array)) {
+
+                                  foreach ($taxonomy_array as $taxonomy_id) {
+                                      $values["object_id"]    = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+                                      $values["target_id"]    = MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER);
+                                      $values["relationship"] = MySQL::SQLValue('contax');
+                                      $hmdb->AutoInsertUpdate($tableName, $values, $values);
+                                      unset($values);
+                                  }
+
+                              }
+
+                              /** Remove old contax */
+                              $id_deletes = array();
+                              $whereArray = array(
+                                  'object_id' => MySQL::SQLValue($id),
+                                  'relationship' => MySQL::SQLValue('contax')
+                              );
+                              $hmdb->SelectRows($tableName, $whereArray);
+                              if ($hmdb->HasRecords()) {
+                                  while ($row = $hmdb->Row()) {
+                                      $id_relationship = $row->id;
+                                      $target_id       = $row->target_id;
+                                      if (!in_array($target_id, $taxonomy_array)) {
+                                          $id_deletes[] = $id_relationship;
+                                      }
+                                  }
+                              } else {
+                                  $id_deletes = array();
+                              }
+                              foreach ($id_deletes as $id_delete) {
+                                  $whereArray = array(
+                                      'id' => MySQL::SQLValue($id_delete, MySQL::SQLVALUE_NUMBER)
+                                  );
+                                  $hmdb->DeleteRows($tableName, $whereArray);
+                              }
+
+                          }
+
+                      }
+
+                      $data_table = $data_table . $cell_value;
+                      $data_table = $data_table . '</td>';
+                    }
+                    if ($cell_column == 'H'){
+                      $data_table = $data_table . '<td><a href="/admin?run=content.php&action=edit&id='.$id.'" target="_blank">Xem</a></td>';
+                    }
                 }
+                $data_table = $data_table . '</tr>';
+                $i++;
             }
-
-            foreach ($arr_data as $row => $col) {
-                $col = array_map("trim", $col);
-                $col = array_map("strip_tags", $col);
-
-                $default_array = array(
-                    'A' => 0,
-                    'B' => 0,
-                    'C' => '',
-                    'D' => '',
-                    'E' => '',
-                    'F' => '',
-                    'G' => ''
-                );
-                $col           = hm_parse_args($col, $default_array);
-
-                $id             = $col['A'];
-                $number_order   = $col['B'];
-                $name           = $col['C'];
-                $sku            = $col['D'];
-                $price          = $col['E'];
-                $product_status = $col['F'];
-                $taxonomy       = $col['G'];
-
-                preg_match_all('!\d+!', $number_order, $matches);
-                if (isset($matches[0][0])) {
-                    $number_order = $matches[0][0];
-                } else {
-                    $number_order = 0;
-                }
-
-                preg_match_all('!\d+!', $price, $matches);
-                if (isset($matches[0][0])) {
-                    $price = $matches[0][0];
-                } else {
-                    $price = 0;
-                }
-
-                if (isset_content_id($id)) {
-                    content_update_val(array(
-                        'id' => $id,
-                        'value' => array(
-                            'name' => $name
-                        )
-                    ));
-                    update_con_val(array(
-                        'id' => $id,
-                        'name' => 'number_order',
-                        'value' => $number_order
-                    ));
-                    update_con_val(array(
-                        'id' => $id,
-                        'name' => 'sku',
-                        'value' => $sku
-                    ));
-                    update_con_val(array(
-                        'id' => $id,
-                        'name' => 'price',
-                        'value' => $price
-                    ));
-                    update_con_val(array(
-                        'id' => $id,
-                        'name' => 'product_status',
-                        'value' => $product_status
-                    ));
-
-                    $ex             = explode(',', $taxonomy);
-                    $ex             = array_map("trim", $ex);
-                    $taxonomy_array = array();
-                    foreach ($ex as $tax_id) {
-                        if (isset_taxonomy_id($tax_id)) {
-                            $taxonomy_array[] = $tax_id;
-                        }
-                    }
-
-                    update_con_val(array(
-                        'id' => $id,
-                        'name' => 'taxonomy',
-                        'value' => json_encode($taxonomy_array)
-                    ));
-
-                    /** lưu relationship content - taxonomy */
-                    $tableName = DB_PREFIX . 'relationship';
-                    if (isset($taxonomy_array) AND is_array($taxonomy_array)) {
-
-                        foreach ($taxonomy_array as $taxonomy_id) {
-                            $values["object_id"]    = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-                            $values["target_id"]    = MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER);
-                            $values["relationship"] = MySQL::SQLValue('contax');
-                            $hmdb->AutoInsertUpdate($tableName, $values, $values);
-                            unset($values);
-                        }
-
-                    }
-
-                    /** Gỡ bỏ contax đã bỏ chọn */
-                    $id_deletes = array();
-                    $whereArray = array(
-                        'object_id' => MySQL::SQLValue($id),
-                        'relationship' => MySQL::SQLValue('contax')
-                    );
-                    $hmdb->SelectRows($tableName, $whereArray);
-                    if ($hmdb->HasRecords()) {
-                        while ($row = $hmdb->Row()) {
-                            $id_relationship = $row->id;
-                            $target_id       = $row->target_id;
-                            if (!in_array($target_id, $taxonomy_array)) {
-                                $id_deletes[] = $id_relationship;
-                            }
-                        }
-                    } else {
-                        $id_deletes = array();
-                    }
-                    foreach ($id_deletes as $id_delete) {
-                        $whereArray = array(
-                            'id' => MySQL::SQLValue($id_delete, MySQL::SQLVALUE_NUMBER)
-                        );
-                        $hmdb->DeleteRows($tableName, $whereArray);
-                    }
-
-
-                }
-
-            }
+            $data_table = $data_table . '</table>';
             unlink($saved_file);
+            echo '<div class="alert alert-success" role="alert">Cập nhật thành công</div>';
+            echo $data_table;
         }
     }
 
@@ -217,54 +248,61 @@ function hm_ecommerce_import_excel() {
 
 
 /*
-Đăng ký trang in excel
+Export for excel
 */
 register_request('hm_ecommerce_explode_excel', 'hm_ecommerce_explode_excel');
 function hm_ecommerce_explode_excel() {
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $sql = "SELECT * FROM `hm_content` WHERE `key` = 'product' AND `status` = 'public' ";
+    $sql = "SELECT * FROM `hm_content` WHERE `key` = 'product'";
     $hmdb->Query($sql);
 
-    $product_data                      = array();
-    $product_data[0]['id']             = 'ID';
-    $product_data[0]['number_order']   = 'STT';
-    $product_data[0]['name']           = 'Tên';
-    $product_data[0]['sku']            = 'Mã (SKU)';
-    $product_data[0]['price']          = 'Giá';
-    $product_data[0]['product_status'] = 'Tình trạng';
-    $product_data[0]['taxonomy']       = 'ID danh mục';
+    $product_data         = array();
+    $product_data[1]['A'] = 'ID';
+    $product_data[1]['B'] = 'STT';
+    $product_data[1]['C'] = 'Tên';
+    $product_data[1]['D'] = 'Mã (SKU)';
+    $product_data[1]['E'] = 'Giá';
+    $product_data[1]['F'] = 'Trạng thái';
+    $product_data[1]['G'] = 'ID danh mục';
 
-    $i = 1;
+    $i = 2;
     while ($row_data = $hmdb->RowArray()) {
 
-        $id                                 = $row_data['id'];
-        $product_data[$i]['id']             = $row_data['id'];
-        $product_data[$i]['number_order']   = get_con_val("name=number_order&id=$id");
-        $product_data[$i]['name']           = get_con_val("name=name&id=$id");
-        $product_data[$i]['sku']            = get_con_val("name=sku&id=$id");
-        $product_data[$i]['price']          = get_con_val("name=price&id=$id");
-        $product_data[$i]['product_status'] = get_con_val("name=product_status&id=$id");
-        $product_taxonomy                   = get_con_val("name=taxonomy&id=$id");
-        $product_taxonomy                   = json_decode($product_taxonomy, TRUE);
-        $product_data[$i]['taxonomy']       = implode(',', $product_taxonomy);
+        $id                    = $row_data['id'];
+        $product_data[$i]['A'] = $row_data['id'];
+        $product_data[$i]['B'] = get_con_val("name=number_order&id=$id");
+        $product_data[$i]['C'] = get_con_val("name=name&id=$id");
+        $product_data[$i]['D'] = get_con_val("name=sku&id=$id");
+        $product_data[$i]['E'] = get_con_val("name=price&id=$id");
+        $product_data[$i]['F'] = get_con_val("name=status&id=$id");
+        $product_taxonomy      = get_con_val("name=taxonomy&id=$id");
+        $product_taxonomy      = json_decode($product_taxonomy, TRUE);
+        $product_data[$i]['G'] = implode(',', $product_taxonomy);
 
         $i++;
     }
 
-    if(!file_exists(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv')){
-      mkdir(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv', 0777, true);
+    $file_name   = 'products__' . date('d-m-Y__H-i-s', time()) . '.xlsx';
+    $spreadsheet = new Spreadsheet();
+    $sheet       = $spreadsheet->getActiveSheet();
+    foreach ($product_data as $row_number => $row_cols) {
+        foreach ($row_cols as $col_label => $col_value)
+            $sheet->setCellValue($col_label . $row_number, $col_value);
+    }
+    $writer = new Xlsx($spreadsheet);
+
+    if (!file_exists(BASEPATH . HM_CONTENT_DIR . '/uploads/hme_downloaded/xlsx')) {
+        mkdir(BASEPATH . HM_CONTENT_DIR . '/uploads/hme_downloaded/xlsx', 0777, true);
     }
 
-    $file_name = 'products__' . date('d-m-Y__H-i-s', time()) . '.csv';
-    $fp = fopen(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv/' .$file_name, 'w');
-    foreach ($product_data as $row) {
-        fputcsv($fp, $row);
-    }
+    $fp = BASEPATH . HM_CONTENT_DIR . '/uploads/hme_downloaded/xlsx/' . $file_name;
+    $writer->save($fp);
+
     header('Content-Type: application/csv');
-    header('Content-Disposition: attachment; filename="'.$file_name.'";');
-    readfile(BASEPATH . HM_CONTENT_DIR . '/uploads/hme/csv/' .$file_name);
-	exit();
+    header('Content-Disposition: attachment; filename="' . $file_name . '";');
+    readfile(BASEPATH . HM_CONTENT_DIR . '/uploads/hme_downloaded/xlsx/' . $file_name);
+    exit();
 }
 ?>
