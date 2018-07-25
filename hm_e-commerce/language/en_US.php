@@ -116,7 +116,7 @@ $hme_lang = array(
   'installment_total_pay' => 'Installment partner total pay',
   'installment_partner' => 'Installment partner',
   'installment' => 'Installment',
-  '' => '',
+  'customer_details' => 'Customer details',
   '' => '',
   '' => '',
 );

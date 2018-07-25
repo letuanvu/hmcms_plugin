@@ -116,7 +116,7 @@ $hme_lang = array(
   'installment_total_pay' => 'Tổng số tiền phải trả',
   'installment_partner' => 'Đối tác trả góp',
   'installment' => 'Trả góp',
-  '' => '',
+  'customer_details' => 'Chi tiết khách hàng',
   '' => '',
   '' => '',
 );

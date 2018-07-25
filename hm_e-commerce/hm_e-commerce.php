@@ -18,6 +18,7 @@ hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/admincp_product_op
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/theme_function.php');
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/theme_request.php');
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/ajax.php');
+hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/admincp_customer.php');
 
 /** admin asset */
 register_action('hm_admin_head','add_hme_asset');
