@@ -490,6 +490,34 @@ function hme_customer_register_action($args) {
                     $insert_id = $hmdb->InsertRow($tableName, $values);
                 }
 
+                /* save field */
+                foreach ($_POST as $post_key => $post_val) {
+                    if (is_array($post_val)) {
+                        $post_val = hm_json_encode($post_val);
+                    }
+                    if (is_numeric($insert_id)) {
+                        if (is_array($post_val)) {
+                            $post_val = hm_json_encode($post_val);
+                        }
+                        $tableName             = DB_PREFIX . 'field';
+                        $values["name"]        = MySQL::SQLValue($post_key);
+                        $values["val"]         = MySQL::SQLValue($post_val);
+                        $values["object_id"]   = MySQL::SQLValue($insert_id, MySQL::SQLVALUE_NUMBER);
+                        $values["object_type"] = MySQL::SQLValue('customer');
+                        if (is_numeric($id_update)) {
+                            $whereArray = array(
+                                'object_id' => MySQL::SQLValue($id_update, MySQL::SQLVALUE_NUMBER),
+                                'object_type' => MySQL::SQLValue('customer'),
+                                'name' => MySQL::SQLValue($post_key)
+                            );
+                            $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
+                        } else {
+                            $hmdb->InsertRow($tableName, $values);
+                        }
+                        unset($values);
+                    }
+                }
+
                 /** login */
                 hme_customer_login(array(
                     'email' => $email,
