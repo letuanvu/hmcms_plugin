@@ -1,5 +1,4 @@
 <?php
-
 function hme_total_price() {
     $total_price = 0;
     if (isset($_SESSION['hmecart'])) {
@@ -724,4 +723,24 @@ function hme_get_option($field = 'name', $id = 0) {
     }
 }
 
+function hme_get_cumtomer_field($args = array()) {
+    if (!is_array($args)) {
+        parse_str($args, $args);
+    }
+    $name       = $args['name'];
+    $id         = $args['id'];
+    $tableName  = DB_PREFIX . "field";
+    $whereArray = array(
+        'name' => MySQL::SQLValue($name),
+        'object_type' => MySQL::SQLValue('customer'),
+        'object_id' => MySQL::SQLValue($id)
+    );
+    $this->SelectRows($tableName, $whereArray);
+    if ($this->HasRecords()) {
+        $row = $this->Row();
+        return $row->val;
+    } else {
+        return NULL;
+    }
+}
 ?>
