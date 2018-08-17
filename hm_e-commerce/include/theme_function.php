@@ -729,15 +729,16 @@ function hme_get_cumtomer_field($args = array()) {
     }
     $name       = $args['name'];
     $id         = $args['id'];
+    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName  = DB_PREFIX . "field";
     $whereArray = array(
         'name' => MySQL::SQLValue($name),
         'object_type' => MySQL::SQLValue('customer'),
         'object_id' => MySQL::SQLValue($id)
     );
-    $this->SelectRows($tableName, $whereArray);
-    if ($this->HasRecords()) {
-        $row = $this->Row();
+    $hmdb->SelectRows($tableName, $whereArray);
+    if ($hmdb->HasRecords()) {
+        $row = $hmdb->Row();
         return $row->val;
     } else {
         return NULL;
