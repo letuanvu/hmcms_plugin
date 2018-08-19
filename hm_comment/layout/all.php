@@ -14,7 +14,7 @@
                   <div class="btn-group">
                     <a href="?run=admin_page.php&key=comment_all" class="btn btn-info btn-filter">Tất cả</a>
                     <a href="?run=admin_page.php&key=comment_all&status=public" class="btn btn-success btn-filter">Đang công khai</a>
-                    <a href="?run=admin_page.php&key=comment_all&status=hidden" class="btn btn-warning btn-filter">Đang chờ kiểm duyệt</a>
+                    <a href="?run=admin_page.php&key=comment_all&status=pending" class="btn btn-warning btn-filter">Đang chờ kiểm duyệt</a>
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@
                       <span data-status="hide" data-id="<?php echo $comment->id; ?>" class="btn btn-warning btn-xs ajax_update_cmt_status"><?php echo hm_lang('hide'); ?></span>
                       <?php
                         break;
-                        case 'hidden':
+                        case 'pending':
                       ?>
                       <span data-status="public" data-id="<?php echo $comment->id; ?>" class="btn btn-success btn-xs ajax_update_cmt_status"><?php echo hm_lang('public'); ?></span>
                       <?php
