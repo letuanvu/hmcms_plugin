@@ -105,7 +105,7 @@ if ($product_options == 'yes') {
                         $option_slug = $row->slug;
                         $group_id    = $row->group_id;
                         echo '<div class="product_option_item">' . "\n\r";
-                        if (is_numeric($row->option_image)) {
+                        if (is_numeric($row->option_image) && $row->option_image != 0) {
                             echo '	<img class="option_image" src="' . get_file_url($row->option_image) . '" >';
                         }
                         if (in_array($option_id, $product_option)) {
