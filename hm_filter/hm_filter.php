@@ -32,7 +32,7 @@ if (!in_array($tableName, $result)) {
     $sql = "
   CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `filter_group_taxonomy` int(11) NOT NULL,
+    `filter_group` int(11) NOT NULL,
     `name` varchar(255) NOT NULL,
     `type` varchar(255) NOT NULL,
     `slug` varchar(255) NOT NULL,
@@ -70,7 +70,7 @@ if (!in_array($tableName, $result)) {
     $sql = "
   CREATE TABLE IF NOT EXISTS `" . $tableName . "` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `filter_group_taxonomy` int(11) NOT NULL,
+    `filter_group` int(11) NOT NULL,
     `name` varchar(255) NOT NULL,
     `type` varchar(255) NOT NULL,
     `slug` varchar(255) NOT NULL,
