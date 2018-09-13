@@ -110,6 +110,7 @@
               $product_id = $item->product_id;
               $qty = $item->qty;
               $product_option = $item->product_option;
+              $product_attributes = $item->product_attributes;
               $content_thumbnail = get_con_val("name=content_thumbnail&id=$product_id");
               $img = create_image("file=$content_thumbnail&w=100&h=100");
               $link = '?run=content.php&action=edit&id='.$product_id;
@@ -129,6 +130,12 @@
                       $group_name = hme_get_option_group('name',$group_id);
                       $option_name = hme_get_option('name',$option_id);
                       echo '<p>- '.$group_name.': '.$option_name.'</p>';
+                    }
+                  }
+                  $product_attributes = json_decode($product_attributes,TRUE);
+                  if(sizeof($product_attributes)>0){
+                    foreach($product_attributes as $attribute_key => $attribute_value){
+                      echo '<p>- '.$attribute_key.': '.$attribute_value.'</p>';
                     }
                   }
                 ?>

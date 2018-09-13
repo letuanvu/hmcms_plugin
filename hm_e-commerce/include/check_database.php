@@ -125,7 +125,14 @@ if (!isset($columns['customer_id'])) {
 $tableName = DB_PREFIX . "hme_order_item";
 $columns   = $hmdb->GetColumnNames($tableName);
 if (!isset($columns['product_option'])) {
-    $sql = "ALTER TABLE `" . $tableName . "` ADD `product_option` varchar(255) NOT NULL";
+    $sql = "ALTER TABLE `" . $tableName . "` ADD `product_option` TEXT NOT NULL";
+    $hmdb->Query($sql);
+}
+
+$tableName = DB_PREFIX . "hme_order_item";
+$columns   = $hmdb->GetColumnNames($tableName);
+if (!isset($columns['product_attributes'])) {
+    $sql = "ALTER TABLE `" . $tableName . "` ADD `product_attributes` TEXT NOT NULL";
     $hmdb->Query($sql);
 }
 

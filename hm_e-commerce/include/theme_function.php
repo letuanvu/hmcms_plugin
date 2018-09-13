@@ -1,4 +1,5 @@
 <?php
+
 function hme_total_price() {
     $total_price = 0;
     if (isset($_SESSION['hmecart'])) {
@@ -7,10 +8,10 @@ function hme_total_price() {
         }
         $hmecart = $_SESSION['hmecart'];
         foreach ($hmecart as $pid => $qty) {
-            if(isset($_SESSION['version_price'][$pid])){
-              $price = $_SESSION['version_price'][$pid];
-            }else{
-              $price = $_SESSION['price'][$pid];
+            if (isset($_SESSION['version_price'][$pid])) {
+                $price = $_SESSION['version_price'][$pid];
+            } else {
+                $price = $_SESSION['price'][$pid];
             }
             $price       = $price * $qty;
             $total_price = $total_price + $price;
@@ -78,7 +79,7 @@ function hme_get_price($pid, $version = null) {
         $version_deal_prices = json_decode($version_deal_prices, TRUE);
         if (is_array($version_names)) {
             foreach ($version_names as $line => $version_name) {
-                if($line == $version){
+                if ($line == $version) {
                     if ($deal_start_timestamp != '' && time() > $deal_start_timestamp && time() < $deal_end_timestamp && $active_deal == 'yes') {
                         $product_price = $version_deal_prices[$line];
                     } else {
@@ -228,8 +229,13 @@ function hme_submit_cart($type = 'cart') {
                 if (isset($_SESSION['hmecart_product_option'][$pid])) {
                     $product_option = json_encode($_SESSION['hmecart_product_option'][$pid]);
                 }
-
                 $values["product_option"] = MySQL::SQLValue($product_option);
+
+                $product_attributes = array();
+                if (isset($_SESSION['hmecart_product_attributes'][$pid])) {
+                    $product_attributes = json_encode($_SESSION['hmecart_product_attributes'][$pid]);
+                }
+                $values["product_attributes"] = MySQL::SQLValue($product_attributes);
 
                 $hmdb->InsertRow($tableName, $values);
 
@@ -489,34 +495,6 @@ function hme_customer_register_action($args) {
                     $insert_id = $hmdb->InsertRow($tableName, $values);
                 }
 
-                /* save field */
-                foreach ($_POST as $post_key => $post_val) {
-                    if (is_array($post_val)) {
-                        $post_val = hm_json_encode($post_val);
-                    }
-                    if (is_numeric($insert_id)) {
-                        if (is_array($post_val)) {
-                            $post_val = hm_json_encode($post_val);
-                        }
-                        $tableName             = DB_PREFIX . 'field';
-                        $values["name"]        = MySQL::SQLValue($post_key);
-                        $values["val"]         = MySQL::SQLValue($post_val);
-                        $values["object_id"]   = MySQL::SQLValue($insert_id, MySQL::SQLVALUE_NUMBER);
-                        $values["object_type"] = MySQL::SQLValue('customer');
-                        if (is_numeric($id_update)) {
-                            $whereArray = array(
-                                'object_id' => MySQL::SQLValue($id_update, MySQL::SQLVALUE_NUMBER),
-                                'object_type' => MySQL::SQLValue('customer'),
-                                'name' => MySQL::SQLValue($post_key)
-                            );
-                            $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
-                        } else {
-                            $hmdb->InsertRow($tableName, $values);
-                        }
-                        unset($values);
-                    }
-                }
-
                 /** login */
                 hme_customer_login(array(
                     'email' => $email,
@@ -723,25 +701,4 @@ function hme_get_option($field = 'name', $id = 0) {
     }
 }
 
-function hme_get_cumtomer_field($args = array()) {
-    if (!is_array($args)) {
-        parse_str($args, $args);
-    }
-    $name       = $args['name'];
-    $id         = $args['id'];
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . "field";
-    $whereArray = array(
-        'name' => MySQL::SQLValue($name),
-        'object_type' => MySQL::SQLValue('customer'),
-        'object_id' => MySQL::SQLValue($id)
-    );
-    $hmdb->SelectRows($tableName, $whereArray);
-    if ($hmdb->HasRecords()) {
-        $row = $hmdb->Row();
-        return $row->val;
-    } else {
-        return NULL;
-    }
-}
 ?>
