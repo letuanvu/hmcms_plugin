@@ -4,12 +4,13 @@ Ajax add product to cart
 */
 register_request('ajaxcart', 'hme_ajaxcart');
 function hme_ajaxcart() {
-    $pid            = hm_post('id', FALSE);
-    $quantity       = hm_post('quantity', FALSE);
-    $action         = hm_post('action', FALSE);
-    $product_option = hm_post('product_option', FALSE);
-    $version        = hm_post('version', FALSE);
-    $type           = hm_post('type', 'cart');
+    $pid                = hm_post('id', FALSE);
+    $quantity           = hm_post('quantity', FALSE);
+    $action             = hm_post('action', FALSE);
+    $product_option     = hm_post('product_option', array());
+    $version            = hm_post('version', FALSE);
+    $type               = hm_post('type', 'cart');
+    $product_attributes = hm_post('product_attributes', array());
     /* get from sesion */
     switch ($type) {
         case 'cart':
@@ -24,6 +25,10 @@ function hme_ajaxcart() {
 
     if (!is_array($product_option)) {
         parse_str($product_option, $product_option);
+    }
+
+    if (!is_array($product_attributes)) {
+        parse_str($product_attributes, $product_attributes);
     }
 
     if (!is_array($session_data)) {
@@ -46,9 +51,10 @@ function hme_ajaxcart() {
 
         switch ($action) {
             case 'add':
-                $session_data[$pid]                       = $quantity;
-                $_SESSION['hmecart_product_option'][$pid] = $product_option;
-                $_SESSION['version'][$pid]                = $version;
+                $session_data[$pid]                           = $quantity;
+                $_SESSION['hmecart_product_option'][$pid]     = $product_option;
+                $_SESSION['hmecart_product_attributes'][$pid] = $product_attributes;
+                $_SESSION['version'][$pid]                    = $version;
                 break;
             case 'remove':
                 if (isset($session_data[$pid])) {
@@ -56,6 +62,9 @@ function hme_ajaxcart() {
                 }
                 if (isset($_SESSION['hmecart_product_option'][$pid])) {
                     unset($_SESSION['hmecart_product_option'][$pid]);
+                }
+                if (isset($_SESSION['hmecart_product_attributes'][$pid])) {
+                    unset($_SESSION['hmecart_product_attributes'][$pid]);
                 }
                 if (isset($_SESSION['version'][$pid])) {
                     unset($_SESSION['version'][$pid]);
@@ -89,7 +98,7 @@ function hme_ajaxcart() {
                 $version_deal_prices = json_decode($version_deal_prices, TRUE);
                 if (is_array($version_names)) {
                     foreach ($version_names as $line => $version_name) {
-                        if($line == $version){
+                        if ($line == $version) {
                             $_SESSION['version_name'][$pid] = $version_name;
                             if ($deal_start_timestamp != '' && time() > $deal_start_timestamp && time() < $deal_end_timestamp && $active_deal == 'yes') {
                                 $_SESSION['version_price'][$pid] = $version_deal_prices[$line];
