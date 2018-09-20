@@ -166,13 +166,12 @@ function hme_submit_cart($type = 'cart')
         $values["customer_id"]               = MySQL::SQLValue($customer_id);
 
         $letter_content = '';
-        $letter_content .= '<p>' . hme_lang('customer_name') . ': ' . $name . '</p>';
-        $letter_content .= '<p>' . hme_lang('email') . ': ' . $email . '</p>';
-        $letter_content .= '<p>' . hme_lang('phone_number') . ': ' . $mobile . '</p>';
-        $letter_content .= '<p>' . hme_lang('address') . ': ' . $address . '</p>';
-        $letter_content .= '<p>' . hme_lang('payment_method') . ': ' . $payment_method . '</p>';
-        $letter_content .= '<p>' . hme_lang('ship_method') . ': ' . $ship_method . '</p>';
-        $letter_content .= '<p>' . hme_lang('message') . ': ' . $message . '</p>';
+        $fields = hme_payment_field_config();
+        foreach ($fields as $field) {
+            $field_name = $field['name'];
+            $field_nice_name = $field['nice_name'];
+            $letter_content .= '<p>' . $field_nice_name . ': ' . $_POST[$field_name] . '</p>';
+        }
         if ($is_installment == 'yes') {
             $letter_content .= '<p>' . hme_lang('installment_month') . ': ' . $installment_month . '</p>';
             $letter_content .= '<p>' . hme_lang('installment_first_pay') . ': ' . $installment_first_pay . '</p>';
