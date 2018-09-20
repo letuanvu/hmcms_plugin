@@ -1,13 +1,19 @@
 <?php
 /*
 Plugin Name: HM E-commerce;
-Description: Thêm tính năng bán hàng, chỉ dùng cho giao diện có hỗ trợ;
+Description: Added sales features, only for supported theme;
 Version: 1.3;
 Version Number: 4;
 */
 
-/** Include */
+/** Language */
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/lang.php');
+
+/** Config */
+hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/config/customer.php');
+hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/config/payment.php');
+
+/** Include */
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/check_database.php');
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/con_tax.php');
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/content_box.php');
@@ -18,7 +24,6 @@ hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/admincp_product_op
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/theme_function.php');
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/theme_request.php');
 hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/ajax.php');
-hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_e-commerce/include/admincp_customer.php');
 
 /** admin asset */
 register_action('hm_admin_head','add_hme_asset');

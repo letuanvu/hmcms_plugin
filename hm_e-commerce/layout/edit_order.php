@@ -5,43 +5,12 @@
   <form action="" method="post">
     <div class="col-md-6">
       <div class="row admin_mainbar_box">
-
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('customer_name'); ?></label>
-          <input name="name" type="text" class="form-control " disabled value="<?php echo $data['customer']->name; ?>">
-        </div>
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('phone_number'); ?></label>
-          <input name="mobile" type="text" class="form-control " disabled value="<?php echo $data['customer']->mobile; ?>">
-        </div>
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('email'); ?></label>
-          <input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->email; ?>">
-        </div>
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('address'); ?></label>
-          <input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->address; ?>">
-        </div>
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('message'); ?></label>
-          <textarea name="message" type="text" class="form-control " disabled ><?php echo $data['customer']->message; ?></textarea>
-        </div>
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('payment_method'); ?></label>
-          <input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->payment_method; ?>">
-        </div>
-        <div class="form-group">
-          <div class="form-group-handle"></div>
-          <label for=""><?php echo hme_lang('ship_method'); ?></label>
-          <input name="email" type="text" class="form-control " disabled value="<?php echo $data['customer']->ship_method; ?>">
-        </div>
         <?php
+        $fields = hme_payment_field_config();
+        foreach($fields as $field){
+          $field['default_value'] = $order_field[$field['name']];
+          build_input_form($field);
+        }
         if($data['customer']->is_installment == 'yes'){
         ?>
         <div class="form-group">

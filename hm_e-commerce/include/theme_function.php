@@ -1,6 +1,6 @@
 <?php
-
-function hme_total_price() {
+function hme_total_price()
+{
     $total_price = 0;
     if (isset($_SESSION['hmecart'])) {
         if (!is_array($_SESSION['hmecart'])) {
@@ -20,7 +20,8 @@ function hme_total_price() {
     return $total_price;
 }
 
-function hme_total_product() {
+function hme_total_product()
+{
     $total_product = 0;
     if (isset($_SESSION['hmecart'])) {
         if (!is_array($_SESSION['hmecart'])) {
@@ -31,7 +32,8 @@ function hme_total_product() {
     return $total_product;
 }
 
-function hme_in_cart($pid) {
+function hme_in_cart($pid)
+{
     if (!isset($_SESSION['hmecart'])) {
         $_SESSION['hmecart'] = array();
     }
@@ -42,7 +44,8 @@ function hme_in_cart($pid) {
     }
 }
 
-function hme_cart() {
+function hme_cart()
+{
 
     if (isset($_SESSION['hmecart']) AND is_array($_SESSION['hmecart'])) {
         if (sizeof($_SESSION['hmecart']) > 0) {
@@ -56,7 +59,8 @@ function hme_cart() {
 
 }
 
-function hme_get_price($pid, $version = null) {
+function hme_get_price($pid, $version = null)
+{
     $active_deal          = get_con_val("name=active_deal&id=$pid");
     $deal_start           = get_con_val("name=deal_start&id=$pid");
     $deal_end             = get_con_val("name=deal_end&id=$pid");
@@ -101,7 +105,8 @@ function hme_get_price($pid, $version = null) {
 /*
 submit order
 */
-function hme_submit_cart($type = 'cart') {
+function hme_submit_cart($type = 'cart')
+{
 
     $is_installment = 'no';
     switch ($type) {
@@ -295,7 +300,8 @@ function hme_submit_cart($type = 'cart') {
 /*
 Login customer
 */
-function hme_customer_login() {
+function hme_customer_login()
+{
 
     $args             = array();
     $args['email']    = hm_post('email', '', FALSE);
@@ -305,7 +311,8 @@ function hme_customer_login() {
 
 }
 
-function hme_customer_login_action($args) {
+function hme_customer_login_action($args)
+{
 
     $defaults = array(
         'email' => '',
@@ -370,7 +377,8 @@ function hme_customer_login_action($args) {
 /*
 Register customer
 */
-function hme_customer_register() {
+function hme_customer_register()
+{
 
     $args                   = array();
     $args['name']           = hm_post('name', '', FALSE);
@@ -383,7 +391,8 @@ function hme_customer_register() {
 
 }
 
-function hme_customer_register_action($args) {
+function hme_customer_register_action($args)
+{
 
     $defaults = array(
         'name' => '',
@@ -541,7 +550,8 @@ function hme_customer_register_action($args) {
 }
 
 
-function hme_customer_logined() {
+function hme_customer_logined()
+{
 
     $return = FALSE;
 
@@ -556,7 +566,8 @@ function hme_customer_logined() {
 
 }
 
-function hme_customer_order($status = FALSE) {
+function hme_customer_order($status = FALSE)
+{
 
     $data = array();
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
@@ -578,7 +589,8 @@ function hme_customer_order($status = FALSE) {
     return $data;
 }
 
-function hme_data_order($oid = 0) {
+function hme_data_order($oid = 0)
+{
 
     $data = FALSE;
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
@@ -609,7 +621,8 @@ function hme_data_order($oid = 0) {
     return $data;
 }
 
-function hme_customer_update_customer($id = FALSE) {
+function hme_customer_update_customer($id = FALSE)
+{
 
     if (!is_numeric($id)) {
         if (hme_customer_logined()) {
@@ -630,7 +643,8 @@ function hme_customer_update_customer($id = FALSE) {
 
 }
 
-function hme_product_option($id = FALSE) {
+function hme_product_option($id = FALSE)
+{
     $hmdb                 = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $product_group_option = get_con_val('name=product_group_option&id=' . $id);
     $product_group_option = json_decode($product_group_option, TRUE);
@@ -669,8 +683,8 @@ function hme_product_option($id = FALSE) {
     }
 }
 
-function hme_get_option_group($field = 'name', $id = 0) {
-
+function hme_get_option_group($field = 'name', $id = 0)
+{
     $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName  = DB_PREFIX . "hme_product_option_group";
     $whereArray = array(
@@ -685,8 +699,8 @@ function hme_get_option_group($field = 'name', $id = 0) {
     }
 }
 
-function hme_get_option($field = 'name', $id = 0) {
-
+function hme_get_option($field = 'name', $id = 0)
+{
     $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName  = DB_PREFIX . "hme_product_option";
     $whereArray = array(
@@ -698,6 +712,17 @@ function hme_get_option($field = 'name', $id = 0) {
         return $row->$field;
     } else {
         return FALSE;
+    }
+}
+
+
+function hme_payment_form($fields = null, $input_args = array())
+{
+    if ($field == null) {
+        $fields = hme_payment_field_config();
+    }
+    foreach ($fields as $field) {
+        build_input_form(array_merge($field, $input_args));
     }
 }
 
