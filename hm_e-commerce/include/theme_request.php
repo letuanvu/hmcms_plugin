@@ -3,14 +3,15 @@
 Ajax add product to cart
 */
 register_request('ajaxcart', 'hme_ajaxcart');
-function hme_ajaxcart() {
-    $pid                = hm_post('id', FALSE);
-    $quantity           = hm_post('quantity', FALSE);
-    $action             = hm_post('action', FALSE);
-    $product_option     = hm_post('product_option', array());
-    $version            = hm_post('version', FALSE);
-    $type               = hm_post('type', 'cart');
-    $product_attributes = hm_post('product_attributes', array());
+function hme_ajaxcart()
+{
+    $pid = hm_post('id', false);
+    $quantity = hm_post('quantity', false);
+    $action = hm_post('action', false);
+    $product_option = hm_post('product_option', []);
+    $version = hm_post('version', false);
+    $type = hm_post('type', 'cart');
+    $product_attributes = hm_post('product_attributes', []);
     /* get from sesion */
     switch ($type) {
         case 'cart':
@@ -32,7 +33,7 @@ function hme_ajaxcart() {
     }
 
     if (!is_array($session_data)) {
-        $session_data = array();
+        $session_data = [];
     }
 
     if (!is_numeric($quantity)) {
@@ -51,10 +52,10 @@ function hme_ajaxcart() {
 
         switch ($action) {
             case 'add':
-                $session_data[$pid]                           = $quantity;
-                $_SESSION['hmecart_product_option'][$pid]     = $product_option;
+                $session_data[$pid] = $quantity;
+                $_SESSION['hmecart_product_option'][$pid] = $product_option;
                 $_SESSION['hmecart_product_attributes'][$pid] = $product_attributes;
-                $_SESSION['version'][$pid]                    = $version;
+                $_SESSION['version'][$pid] = $version;
                 break;
             case 'remove':
                 if (isset($session_data[$pid])) {
@@ -74,28 +75,28 @@ function hme_ajaxcart() {
 
 
         $total_product = sizeof($session_data);
-        $total_price   = 0;
+        $total_price = 0;
         foreach ($session_data as $pid => $qty) {
-            $active_deal          = get_con_val("name=active_deal&id=$pid");
-            $deal_start           = get_con_val("name=deal_start&id=$pid");
-            $deal_end             = get_con_val("name=deal_end&id=$pid");
+            $active_deal = get_con_val("name=active_deal&id=$pid");
+            $deal_start = get_con_val("name=deal_start&id=$pid");
+            $deal_end = get_con_val("name=deal_end&id=$pid");
             $deal_start_timestamp = '';
             if ($deal_start != '') {
-                $dtime                = DateTime::createFromFormat("Y/m/d H:i", $deal_start);
+                $dtime = DateTime::createFromFormat("Y/m/d H:i", $deal_start);
                 $deal_start_timestamp = $dtime->getTimestamp();
             }
             $deal_end_timestamp = '';
             if ($deal_end != '') {
-                $dtime              = DateTime::createFromFormat("Y/m/d H:i", $deal_end);
+                $dtime = DateTime::createFromFormat("Y/m/d H:i", $deal_end);
                 $deal_end_timestamp = $dtime->getTimestamp();
             }
             if ($version != 0 && is_numeric($version)) {
-                $version_names       = get_con_val('name=version_name&id=' . $pid);
-                $version_names       = json_decode($version_names, TRUE);
-                $version_prices      = get_con_val('name=version_price&id=' . $pid);
-                $version_prices      = json_decode($version_prices, TRUE);
+                $version_names = get_con_val('name=version_name&id=' . $pid);
+                $version_names = json_decode($version_names, true);
+                $version_prices = get_con_val('name=version_price&id=' . $pid);
+                $version_prices = json_decode($version_prices, true);
                 $version_deal_prices = get_con_val('name=version_deal_price&id=' . $pid);
-                $version_deal_prices = json_decode($version_deal_prices, TRUE);
+                $version_deal_prices = json_decode($version_deal_prices, true);
                 if (is_array($version_names)) {
                     foreach ($version_names as $line => $version_name) {
                         if ($line == $version) {
@@ -117,11 +118,11 @@ function hme_ajaxcart() {
                 }
                 $_SESSION['price'][$pid] = $price;
             }
-            $price       = $price * $qty;
+            $price = $price * $qty;
             $total_price = $total_price + $price;
         }
 
-        $total_price_num   = number_format($total_price);
+        $total_price_num = number_format($total_price);
         $total_product_num = number_format($total_product);
 
         /* set to sesion */
@@ -136,19 +137,20 @@ function hme_ajaxcart() {
                 $_SESSION['hmecart'] = $session_data;
         }
 
-        echo json_encode(array(
+        echo json_encode([
             'status' => 'success',
             'total_price' => $total_price,
             'total_product' => $total_product,
             'total_price_num' => $total_price_num,
             'total_product_num' => $total_product_num
-        ));
+        ]);
     } else {
-        echo json_encode(array(
+        echo json_encode([
             'status' => 'error',
             'mes' => 'invalid id'
-        ));
+        ]);
     }
 
 }
+
 ?>
