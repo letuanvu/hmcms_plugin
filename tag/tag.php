@@ -62,7 +62,7 @@ $args=array(
 register_admin_page($args);
 
 function all_tag(){
-  $url = BASE_URL . HM_ADMINCP_DIR . '?run=taxonomy.php&key=tag&status=public';
+  $url = BASE_URL . HM_ADMINCP_DIR . '?run=controller/taxonomy.php&key=tag&status=public';
   hm_redirect($url);
 }
 ?>
