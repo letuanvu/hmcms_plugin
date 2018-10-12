@@ -3,14 +3,15 @@
 /*
 Content box
 */
-$args = array(
+$args = [
     'label' => 'Bộ lọc',
     'position' => 'left',
     'function' => 'hm_filter_box_content'
-);
+];
 register_content_box($args);
 
-function hm_filter_box_content() {
+function hm_filter_box_content()
+{
     hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/layout/filter_box_content_content.php');
 }
 
@@ -18,16 +19,17 @@ function hm_filter_box_content() {
 /*
 Request ajax
 */
-$args = array(
+$args = [
     'key' => 'hm_filter_ajax',
     'function' => 'hm_filter_ajax',
-    'method' => array(
+    'method' => [
         'post'
-    )
-);
+    ]
+];
 register_admin_ajax_page($args);
 
-function hm_filter_ajax() {
+function hm_filter_ajax()
+{
 
     $action = hm_post('action');
 
@@ -42,17 +44,17 @@ function hm_filter_ajax() {
             ajaxfilter_del_group($id);
             break;
         case 'edit_group':
-            $id   = hm_post('id');
+            $id = hm_post('id');
             $name = hm_post('new_name');
             ajaxfilter_edit_group($id, $name);
             break;
         case 'edit_group_input_type':
-            $id   = hm_post('id');
+            $id = hm_post('id');
             $type = hm_post('type');
             ajaxfilter_edit_group_input_type($id, $type);
             break;
         case 'sort_group':
-            $id           = hm_post('id');
+            $id = hm_post('id');
             $number_order = hm_post('number_order');
             ajaxfilter_sort_group($id, $number_order);
             break;
@@ -61,7 +63,7 @@ function hm_filter_ajax() {
             ajaxfilter_group_content_option_list($id);
             break;
         case 'group_option_add':
-            $id  = hm_post('id');
+            $id = hm_post('id');
             $val = hm_post('val');
             ajaxfilter_add_group_option($id, $val);
             break;
@@ -70,12 +72,12 @@ function hm_filter_ajax() {
             ajaxfilter_del_group_option($id, $val);
             break;
         case 'edit_group_option':
-            $id   = hm_post('id');
+            $id = hm_post('id');
             $name = hm_post('new_name');
             ajaxfilter_edit_group_option($id, $name);
             break;
         case 'sort_group_option':
-            $id           = hm_post('id');
+            $id = hm_post('id');
             $number_order = hm_post('number_order');
             ajaxfilter_sort_group_option($id, $number_order);
             break;
@@ -83,27 +85,28 @@ function hm_filter_ajax() {
 
 }
 
-function ajaxfilter_add_group($content_key = FALSE, $val = FALSE) {
+function ajaxfilter_add_group($content_key = false, $val = false)
+{
 
-    if ($val != FALSE) {
+    if ($val != false) {
         $val = trim($val);
         if ($val != '') {
 
             $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-            $slug                  = 'ft_' . sanitize_title($val);
-            $tableName             = DB_PREFIX . 'filter_group_content';
-            $whereArray            = array(
+            $slug = 'ft_' . sanitize_title($val);
+            $tableName = DB_PREFIX . 'filter_group_content';
+            $whereArray = [
                 'content_key' => MySQL::SQLValue($content_key, MySQL::SQLVALUE_NUMBER),
                 'name' => MySQL::SQLValue($val),
                 'type' => MySQL::SQLValue('public')
-            );
-            $values                = array();
+            ];
+            $values = [];
             $values["content_key"] = MySQL::SQLValue($content_key);
-            $values["name"]        = MySQL::SQLValue($val);
-            $values["slug"]        = MySQL::SQLValue($slug);
-            $values["type"]        = MySQL::SQLValue('public');
-            $values["input_type"]  = MySQL::SQLValue('checkbox');
+            $values["name"] = MySQL::SQLValue($val);
+            $values["slug"] = MySQL::SQLValue($slug);
+            $values["type"] = MySQL::SQLValue('public');
+            $values["input_type"] = MySQL::SQLValue('checkbox');
 
             $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
 
@@ -115,65 +118,68 @@ function ajaxfilter_add_group($content_key = FALSE, $val = FALSE) {
 }
 
 
-function ajaxfilter_edit_group($id = 0, $name = '') {
+function ajaxfilter_edit_group($id = 0, $name = '')
+{
 
     $name = trim($name);
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $row      = $hmdb->Row();
+        $row = $hmdb->Row();
         $old_name = $row->name;
         $old_slug = $row->slug;
 
         if ($name != '') {
-            $slug   = 'ft_' . sanitize_title($name);
-            $values = array(
+            $slug = 'ft_' . sanitize_title($name);
+            $values = [
                 'name' => MySQL::SQLValue($name),
                 'slug' => MySQL::SQLValue($slug)
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
         }
     }
 
 }
 
-function ajaxfilter_edit_group_input_type($id = 0, $type = '') {
+function ajaxfilter_edit_group_input_type($id = 0, $type = '')
+{
 
     $type = trim($type);
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
         $row = $hmdb->Row();
         if ($type != '') {
-            $values = array(
+            $values = [
                 'input_type' => MySQL::SQLValue($type)
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
         }
     }
 
 }
 
-function filter_group_list($content_key = FALSE) {
+function filter_group_list($content_key = false)
+{
 
     if ($content_key != '') {
 
-        $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-        $tableName  = DB_PREFIX . 'filter_group_content';
-        $whereArray = array(
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $tableName = DB_PREFIX . 'filter_group_content';
+        $whereArray = [
             'content_key' => MySQL::SQLValue($content_key)
-        );
-        $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+        ];
+        $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
         if ($hmdb->HasRecords()) {
             while ($row = $hmdb->Row()) {
@@ -206,62 +212,65 @@ function filter_group_list($content_key = FALSE) {
 
 }
 
-function ajaxfilter_del_group($id = 0) {
+function ajaxfilter_del_group($id = 0)
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'filter_group' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
 }
 
-function ajaxfilter_sort_group($id = 0, $number_order = 1) {
+function ajaxfilter_sort_group($id = 0, $number_order = 1)
+{
 
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $values = array(
+        $values = [
             'number_order' => MySQL::SQLValue($number_order, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->UpdateRows($tableName, $values, $whereArray);
     }
 
 }
 
-function ajaxfilter_group_content_option_list($group_id = 0) {
+function ajaxfilter_group_content_option_list($group_id = 0)
+{
 
     if (is_numeric($group_id) AND $group_id != '0') {
 
-        $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-        $tableName  = DB_PREFIX . 'filter_group_content';
-        $whereArray = array(
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $tableName = DB_PREFIX . 'filter_group_content';
+        $whereArray = [
             'id' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->SelectRows($tableName, $whereArray);
         if ($hmdb->HasRecords()) {
 
-            $row         = $hmdb->Row();
+            $row = $hmdb->Row();
             $content_key = $row->content_key;
             echo '<div class="alert alert-success" role="alert">Bạn đang thêm các lựa chọn cho <b>' . $row->name . '</b></div>';
 
-            $tableName  = DB_PREFIX . 'filter_option_content';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_content';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             if ($hmdb->HasRecords()) {
                 while ($row = $hmdb->Row()) {
@@ -285,26 +294,27 @@ function ajaxfilter_group_content_option_list($group_id = 0) {
 
 }
 
-function ajaxfilter_add_group_option($group_id = '0', $val = FALSE) {
+function ajaxfilter_add_group_option($group_id = '0', $val = false)
+{
 
-    if ($val != FALSE) {
+    if ($val != false) {
         $val = trim($val);
         if ($val != '') {
 
             $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-            $slug                   = sanitize_title($val);
-            $tableName              = DB_PREFIX . 'filter_option_content';
-            $whereArray             = array(
+            $slug = sanitize_title($val);
+            $tableName = DB_PREFIX . 'filter_option_content';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER),
                 'name' => MySQL::SQLValue($val),
                 'type' => MySQL::SQLValue('public')
-            );
-            $values                 = array();
+            ];
+            $values = [];
             $values["filter_group"] = MySQL::SQLValue($group_id);
-            $values["name"]         = MySQL::SQLValue($val);
-            $values["slug"]         = MySQL::SQLValue($slug);
-            $values["type"]         = MySQL::SQLValue('public');
+            $values["name"] = MySQL::SQLValue($val);
+            $values["slug"] = MySQL::SQLValue($slug);
+            $values["type"] = MySQL::SQLValue('public');
             $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
 
         }
@@ -313,74 +323,76 @@ function ajaxfilter_add_group_option($group_id = '0', $val = FALSE) {
     ajaxfilter_group_content_option_list($group_id);
 }
 
-function ajaxfilter_del_group_option($id = 0) {
+function ajaxfilter_del_group_option($id = 0)
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_option_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_option_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
 }
 
-function ajaxfilter_edit_group_option($id = 0, $name = '') {
+function ajaxfilter_edit_group_option($id = 0, $name = '')
+{
 
     $name = trim($name);
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_option_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_option_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $row                  = $hmdb->Row();
-        $old_name             = $row->name;
-        $old_slug             = $row->slug;
+        $row = $hmdb->Row();
+        $old_name = $row->name;
+        $old_slug = $row->slug;
         $filter_group_content = $row->filter_group_content;
 
         /* update option */
         if ($name != '') {
-            $slug   = sanitize_title($name);
-            $values = array(
+            $slug = sanitize_title($name);
+            $values = [
                 'name' => MySQL::SQLValue($name),
                 'slug' => MySQL::SQLValue($slug)
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
         }
 
         /* update field */
-        $whereArray = array(
+        $whereArray = [
             'id' => MySQL::SQLValue($filter_group_content, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->SelectRows(DB_PREFIX . 'filter_group_content', $whereArray);
         if ($hmdb->HasRecords()) {
-            $row        = $hmdb->Row();
+            $row = $hmdb->Row();
             $group_name = $row->name;
             $group_slug = $row->slug;
 
             /* find field by group_slug */
-            $whereArray = array(
+            $whereArray = [
                 'name' => MySQL::SQLValue($group_slug)
-            );
+            ];
             $hmdb->SelectRows(DB_PREFIX . 'field', $whereArray);
-            $updates = array();
+            $updates = [];
             while ($row = $hmdb->Row()) {
-                $field_id           = $row->id;
-                $field_val          = $row->val;
-                $field_val_new      = str_replace('"' . $old_slug . '"', '"' . $slug . '"', $field_val);
+                $field_id = $row->id;
+                $field_val = $row->val;
+                $field_val_new = str_replace('"' . $old_slug . '"', '"' . $slug . '"', $field_val);
                 $updates[$field_id] = $field_val_new;
             }
 
             foreach ($updates as $field_id => $field_val) {
 
-                $values        = array();
+                $values = [];
                 $values["val"] = MySQL::SQLValue($field_val);
-                $whereArray    = array(
+                $whereArray = [
                     'id' => MySQL::SQLValue($field_id)
-                );
+                ];
                 $hmdb->UpdateRows(DB_PREFIX . 'field', $values, $whereArray);
 
             }
@@ -391,32 +403,34 @@ function ajaxfilter_edit_group_option($id = 0, $name = '') {
 
 }
 
-function ajaxfilter_sort_group_option($id = 0, $number_order = 1) {
+function ajaxfilter_sort_group_option($id = 0, $number_order = 1)
+{
 
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . 'filter_option_content';
-    $whereArray = array(
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . 'filter_option_content';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $values = array(
+        $values = [
             'number_order' => MySQL::SQLValue($number_order, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->UpdateRows($tableName, $values, $whereArray);
     }
 
 }
 
 
-function ajaxfilter_filter_content($content_key = FALSE) {
+function ajaxfilter_filter_content($content_key = false)
+{
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'content_key' => MySQL::SQLValue($content_key)
-    );
-    $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+    ];
+    $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
     if ($hmdb->HasRecords()) {
 
@@ -425,15 +439,15 @@ function ajaxfilter_filter_content($content_key = FALSE) {
             $groups[] = $row;
         }
         foreach ($groups as $row) {
-            $group_id   = $row->id;
+            $group_id = $row->id;
             $group_name = $row->name;
             $group_slug = $row->slug;
 
-            $tableName  = DB_PREFIX . 'filter_option_content';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_content';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             echo '<div class="filter_content_box filter_content_box' . $group_id . '">';
             echo '	<div class="filter_content_box_title bg-success">' . $group_name . '</div>';
@@ -441,20 +455,20 @@ function ajaxfilter_filter_content($content_key = FALSE) {
             echo '		<ul>';
             if ($hmdb->HasRecords()) {
 
-                $action     = hm_get('action');
+                $action = hm_get('action');
                 $content_id = hm_get('id');
                 if ($action == 'edit') {
-                    $option_val = get_con_val(array(
+                    $option_val = get_con_val([
                         'name' => $group_slug,
                         'id' => $content_id
-                    ));
-                    $option_val = json_decode($option_val, TRUE);
+                    ]);
+                    $option_val = json_decode($option_val, true);
                 } else {
-                    $option_val = array();
+                    $option_val = [];
                 }
 
                 if (!is_array($option_val)) {
-                    $option_val = array();
+                    $option_val = [];
                 }
 
                 while ($row = $hmdb->Row()) {
@@ -476,27 +490,27 @@ function ajaxfilter_filter_content($content_key = FALSE) {
 }
 
 
-
 /** show filter on theme */
-function show_filter($content_key = '', $args = array()) {
+function show_filter($content_key = '', $args = [])
+{
 
-    $default_array = array(
-        'slug' => FALSE,
-        'input_hidden' => array()
-    );
-    $args          = hm_parse_args($args, $default_array);
+    $default_array = [
+        'slug' => false,
+        'input_hidden' => []
+    ];
+    $args = hm_parse_args($args, $default_array);
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'content_key' => MySQL::SQLValue($content_key)
-    );
-    $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+    ];
+    $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
     if ($hmdb->HasRecords()) {
 
-        if ($args['slug'] == FALSE) {
+        if ($args['slug'] == false) {
             $base_link = BASE_URL . get_current_uri();
         } else {
             $base_link = BASE_URL . $args['slug'];
@@ -510,7 +524,7 @@ function show_filter($content_key = '', $args = array()) {
             $groups[] = $row;
         }
         foreach ($groups as $row) {
-            $group_id   = $row->id;
+            $group_id = $row->id;
             $group_name = $row->name;
             $group_slug = $row->slug;
 
@@ -522,11 +536,11 @@ function show_filter($content_key = '', $args = array()) {
                 $group_input_type = 'radio';
             }
 
-            $tableName  = DB_PREFIX . 'filter_option_content';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_content';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             echo '<div class="filter_content_box filter_content_box' . $group_id . '">';
             echo '	<div class="filter_content_box_title"><span>' . $group_name . '</span></div>';
@@ -534,7 +548,7 @@ function show_filter($content_key = '', $args = array()) {
             echo '		<ul>';
             if ($hmdb->HasRecords()) {
 
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 while ($row = $hmdb->Row()) {
                     $this_option_val = $row->slug;
                     if (in_array($this_option_val, $option_val)) {
@@ -563,25 +577,26 @@ function show_filter($content_key = '', $args = array()) {
 
 }
 
-function show_filter_dropdown($content_key = '', $args = array()) {
+function show_filter_dropdown($content_key = '', $args = [])
+{
 
-    $default_array = array(
-        'slug' => FALSE,
-        'input_hidden' => array()
-    );
-    $args          = hm_parse_args($args, $default_array);
+    $default_array = [
+        'slug' => false,
+        'input_hidden' => []
+    ];
+    $args = hm_parse_args($args, $default_array);
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_content';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_content';
+    $whereArray = [
         'content_key' => MySQL::SQLValue($content_key)
-    );
-    $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+    ];
+    $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
     if ($hmdb->HasRecords()) {
 
-        if ($args['slug'] == FALSE) {
+        if ($args['slug'] == false) {
             $base_link = BASE_URL . get_current_uri();
         } else {
             $base_link = BASE_URL . $args['slug'];
@@ -595,15 +610,15 @@ function show_filter_dropdown($content_key = '', $args = array()) {
             $groups[] = $row;
         }
         foreach ($groups as $row) {
-            $group_id   = $row->id;
+            $group_id = $row->id;
             $group_name = $row->name;
             $group_slug = $row->slug;
 
-            $tableName  = DB_PREFIX . 'filter_option_content';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_content';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             echo '<div class="filter_content_box filter_content_box' . $group_id . '">';
             echo '	<div class="filter_content_box_title"><span>' . $group_name . '</span></div>';
@@ -611,7 +626,7 @@ function show_filter_dropdown($content_key = '', $args = array()) {
             echo '		<select name="' . $group_slug . '[]">';
             if ($hmdb->HasRecords()) {
                 echo '<option ' . $selected . ' value="">' . $group_name . '</option>';
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 while ($row = $hmdb->Row()) {
                     $this_option_val = $row->slug;
                     if (in_array($this_option_val, $option_val)) {
@@ -644,53 +659,54 @@ function show_filter_dropdown($content_key = '', $args = array()) {
 
 /** hook for query_content */
 register_filter('before_query_content', 'filter_query_content');
-function filter_query_content($args) {
+function filter_query_content($args)
+{
     if (hm_get('use_hm_filter') == '1') {
 
-        $use_filter  = FALSE;
-        $content_key = FALSE;
+        $use_filter = false;
+        $content_key = false;
         if (isset($args['content_key'])) {
             $content_key = $args['content_key'];
         }
 
-        $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-        $tableName  = DB_PREFIX . 'filter_group_content';
-        $whereArray = array(
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $tableName = DB_PREFIX . 'filter_group_content';
+        $whereArray = [
             'content_key' => MySQL::SQLValue($content_key)
-        );
-        $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+        ];
+        $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
         if ($hmdb->HasRecords()) {
             while ($row = $hmdb->Row()) {
                 $groups[] = $row;
             }
             foreach ($groups as $row) {
-                $group_id   = $row->id;
+                $group_id = $row->id;
                 $group_name = $row->name;
                 $group_slug = $row->slug;
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 if (sizeof($option_val) > 0) {
-                    $use_filter = TRUE;
+                    $use_filter = true;
                 }
             }
         }
 
         /** If url have filter params */
-        if ($use_filter == TRUE) {
+        if ($use_filter == true) {
 
             /** Add query params to $args['field_query'] */
             foreach ($groups as $row) {
-                $group_id   = $row->id;
+                $group_id = $row->id;
                 $group_name = $row->name;
                 $group_slug = $row->slug;
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 if (sizeof($option_val) > 0) {
                     foreach ($option_val as $filter_value) {
                         if ($filter_value != '') {
-                            $args['field_query'][] = array(
+                            $args['field_query'][] = [
                                 'field' => $group_slug,
                                 'compare' => 'like%',
                                 'value' => $filter_value
-                            );
+                            ];
                         }
                     }
                 }

@@ -7,7 +7,7 @@ Version Number: 4;
 */
 
 /** create table for taxonomy filter */
-$hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+$hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "filter_group_taxonomy";
@@ -45,7 +45,7 @@ if (!in_array($tableName, $result)) {
 
 
 /** create table for content filter */
-$hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+$hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "filter_group_content";
@@ -82,51 +82,55 @@ if (!in_array($tableName, $result)) {
 }
 
 
-
 /** include lib file */
-$filter_type = get_option(array(
+$filter_type = get_option([
     'section' => 'hm_filter',
     'key' => 'filter_type',
     'default_value' => 'taxonomy'
-));
+]);
 switch ($filter_type) {
     case 'taxonomy':
         hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/taxonomy.php');
         register_action('hm_admin_head', 'hm_filter_asset');
-        function hm_filter_asset() {
+        function hm_filter_asset()
+        {
             echo '<script src="' . PLUGIN_URI . 'hm_filter/asset/filter_taxonomy.js"></script>';
             echo '<link href="' . PLUGIN_URI . 'hm_filter/asset/filter_taxonomy.css" rel="stylesheet" type="text/css" />';
         }
+
         break;
     case 'content':
         hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/content.php');
         register_action('hm_admin_head', 'hm_filter_asset');
-        function hm_filter_asset() {
+        function hm_filter_asset()
+        {
             echo '<script src="' . PLUGIN_URI . 'hm_filter/asset/filter_content.js"></script>';
             echo '<link href="' . PLUGIN_URI . 'hm_filter/asset/filter_content.css" rel="stylesheet" type="text/css" />';
         }
+
         break;
 }
 
 /*
 Create seting page
 */
-$args = array(
+$args = [
     'label' => 'Bộ lọc',
     'key' => 'hm_filter_setting',
     'function' => 'hm_filter_setting',
-    'function_input' => array(),
-    'child_of' => FALSE
-);
+    'function_input' => [],
+    'child_of' => false
+];
 register_admin_setting_page($args);
-function hm_filter_setting() {
+function hm_filter_setting()
+{
     if (isset($_POST['submit'])) {
         foreach ($_POST as $key => $value) {
-            $args = array(
+            $args = [
                 'section' => 'hm_filter',
                 'key' => $key,
                 'value' => $value
-            );
+            ];
             set_option($args);
         }
     }
@@ -136,7 +140,8 @@ function hm_filter_setting() {
 
 /** create theme asset file */
 register_action('before_hm_footer', 'filter_display_asset');
-function filter_display_asset() {
+function filter_display_asset()
+{
     echo '<!-- Plugin Bộ lọc -->' . "\n\r";
     echo '<link rel="stylesheet" type="text/css" href="' . BASE_URL . HM_PLUGIN_DIR . '/hm_filter/asset/theme.css">' . "\n\r";
     echo '<script src="' . BASE_URL . HM_PLUGIN_DIR . '/hm_filter/asset/theme.js" charset="UTF-8"></script>' . "\n\r";

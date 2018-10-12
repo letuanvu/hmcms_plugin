@@ -1,12 +1,12 @@
 <?php
 /** Tạo các table cần thiết */
-$hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+$hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "comment";
 if (!in_array($tableName, $result)) {
 
-  $sql = "
+    $sql = "
   CREATE TABLE IF NOT EXISTS `$tableName` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `object_id` int(11) NOT NULL,
@@ -22,7 +22,7 @@ if (!in_array($tableName, $result)) {
     PRIMARY KEY (`id`)
   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
   ";
-  $hmdb->Query($sql);
+    $hmdb->Query($sql);
 
 }
 

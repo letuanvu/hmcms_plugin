@@ -4,7 +4,7 @@ function hme_total_price()
     $total_price = 0;
     if (isset($_SESSION['hmecart'])) {
         if (!is_array($_SESSION['hmecart'])) {
-            $_SESSION['hmecart'] = array();
+            $_SESSION['hmecart'] = [];
         }
         $hmecart = $_SESSION['hmecart'];
         foreach ($hmecart as $pid => $qty) {
@@ -13,7 +13,7 @@ function hme_total_price()
             } else {
                 $price = $_SESSION['price'][$pid];
             }
-            $price       = $price * $qty;
+            $price = $price * $qty;
             $total_price = $total_price + $price;
         }
     }
@@ -25,7 +25,7 @@ function hme_total_product()
     $total_product = 0;
     if (isset($_SESSION['hmecart'])) {
         if (!is_array($_SESSION['hmecart'])) {
-            $_SESSION['hmecart'] = array();
+            $_SESSION['hmecart'] = [];
         }
         $total_product = sizeof($_SESSION['hmecart']);
     }
@@ -35,12 +35,12 @@ function hme_total_product()
 function hme_in_cart($pid)
 {
     if (!isset($_SESSION['hmecart'])) {
-        $_SESSION['hmecart'] = array();
+        $_SESSION['hmecart'] = [];
     }
     if (isset($_SESSION['hmecart'][$pid])) {
-        return TRUE;
+        return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
@@ -51,36 +51,36 @@ function hme_cart()
         if (sizeof($_SESSION['hmecart']) > 0) {
             return $_SESSION['hmecart'];
         } else {
-            return FALSE;
+            return false;
         }
     } else {
-        return FALSE;
+        return false;
     }
 
 }
 
 function hme_get_price($pid, $version = null)
 {
-    $active_deal          = get_con_val("name=active_deal&id=$pid");
-    $deal_start           = get_con_val("name=deal_start&id=$pid");
-    $deal_end             = get_con_val("name=deal_end&id=$pid");
+    $active_deal = get_con_val("name=active_deal&id=$pid");
+    $deal_start = get_con_val("name=deal_start&id=$pid");
+    $deal_end = get_con_val("name=deal_end&id=$pid");
     $deal_start_timestamp = '';
     if ($deal_start != '') {
-        $dtime                = DateTime::createFromFormat("Y/m/d H:i", $deal_start);
+        $dtime = DateTime::createFromFormat("Y/m/d H:i", $deal_start);
         $deal_start_timestamp = $dtime->getTimestamp();
     }
     $deal_end_timestamp = '';
     if ($deal_end != '') {
-        $dtime              = DateTime::createFromFormat("Y/m/d H:i", $deal_end);
+        $dtime = DateTime::createFromFormat("Y/m/d H:i", $deal_end);
         $deal_end_timestamp = $dtime->getTimestamp();
     }
     if ($version != 0 && is_numeric($version)) {
-        $version_names       = get_con_val('name=version_name&id=' . $pid);
-        $version_names       = json_decode($version_names, TRUE);
-        $version_prices      = get_con_val('name=version_price&id=' . $pid);
-        $version_prices      = json_decode($version_prices, TRUE);
+        $version_names = get_con_val('name=version_name&id=' . $pid);
+        $version_names = json_decode($version_names, true);
+        $version_prices = get_con_val('name=version_price&id=' . $pid);
+        $version_prices = json_decode($version_prices, true);
         $version_deal_prices = get_con_val('name=version_deal_price&id=' . $pid);
-        $version_deal_prices = json_decode($version_deal_prices, TRUE);
+        $version_deal_prices = json_decode($version_deal_prices, true);
         if (is_array($version_names)) {
             foreach ($version_names as $line => $version_name) {
                 if ($line == $version) {
@@ -114,7 +114,7 @@ function hme_submit_cart($type = 'cart')
             $session_data = $_SESSION['hmecart'];
             break;
         case 'installment':
-            $session_data   = $_SESSION['hmeinstallment'];
+            $session_data = $_SESSION['hmeinstallment'];
             $is_installment = 'yes';
             break;
         default:
@@ -124,46 +124,46 @@ function hme_submit_cart($type = 'cart')
     if (isset($session_data) AND is_array($session_data)) {
 
         /** hme_order */
-        $hmdb      = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
         $tableName = DB_PREFIX . "hme_order";
 
-        $name                      = hm_post('name', hme_lang('no_declaration'), false);
-        $email                     = hm_post('email', hme_lang('no_declaration'), false);
-        $mobile                    = hm_post('mobile', hme_lang('no_declaration'), false);
-        $address                   = hm_post('address', hme_lang('no_declaration'), false);
-        $payment_method            = hm_post('payment_method', hme_lang('no_declaration'), false);
-        $ship_method               = hm_post('ship_method', hme_lang('no_declaration'), false);
-        $message                   = hm_post('message', hme_lang('no_declaration'), false);
-        $installment_month         = hm_post('installment_month', hme_lang('no_declaration'), false);
-        $installment_first_pay     = hm_post('installment_first_pay', hme_lang('no_declaration'), false);
+        $name = hm_post('name', hme_lang('no_declaration'), false);
+        $email = hm_post('email', hme_lang('no_declaration'), false);
+        $mobile = hm_post('mobile', hme_lang('no_declaration'), false);
+        $address = hm_post('address', hme_lang('no_declaration'), false);
+        $payment_method = hm_post('payment_method', hme_lang('no_declaration'), false);
+        $ship_method = hm_post('ship_method', hme_lang('no_declaration'), false);
+        $message = hm_post('message', hme_lang('no_declaration'), false);
+        $installment_month = hm_post('installment_month', hme_lang('no_declaration'), false);
+        $installment_first_pay = hm_post('installment_first_pay', hme_lang('no_declaration'), false);
         $installment_per_month_pay = hm_post('installment_per_month_pay', hme_lang('no_declaration'), false);
-        $installment_total_pay     = hm_post('installment_total_pay', hme_lang('no_declaration'), false);
-        $installment_partner       = hm_post('installment_partner', hme_lang('no_declaration'), false);
-        $status                    = 'not_process';
-        $time                      = time();
+        $installment_total_pay = hm_post('installment_total_pay', hme_lang('no_declaration'), false);
+        $installment_partner = hm_post('installment_partner', hme_lang('no_declaration'), false);
+        $status = 'not_process';
+        $time = time();
 
         $customer_id = '0';
         if (hme_customer_logined()) {
             $customer_id = $_SESSION['customer']->id;
         }
 
-        $values                              = array();
-        $values["name"]                      = MySQL::SQLValue($name);
-        $values["email"]                     = MySQL::SQLValue($email);
-        $values["mobile"]                    = MySQL::SQLValue($mobile);
-        $values["address"]                   = MySQL::SQLValue($address);
-        $values["payment_method"]            = MySQL::SQLValue($payment_method);
-        $values["ship_method"]               = MySQL::SQLValue($ship_method);
-        $values["message"]                   = MySQL::SQLValue($message);
-        $values["installment_month"]         = MySQL::SQLValue($installment_month);
-        $values["installment_first_pay"]     = MySQL::SQLValue($installment_first_pay);
+        $values = [];
+        $values["name"] = MySQL::SQLValue($name);
+        $values["email"] = MySQL::SQLValue($email);
+        $values["mobile"] = MySQL::SQLValue($mobile);
+        $values["address"] = MySQL::SQLValue($address);
+        $values["payment_method"] = MySQL::SQLValue($payment_method);
+        $values["ship_method"] = MySQL::SQLValue($ship_method);
+        $values["message"] = MySQL::SQLValue($message);
+        $values["installment_month"] = MySQL::SQLValue($installment_month);
+        $values["installment_first_pay"] = MySQL::SQLValue($installment_first_pay);
         $values["installment_per_month_pay"] = MySQL::SQLValue($installment_per_month_pay);
-        $values["installment_total_pay"]     = MySQL::SQLValue($installment_total_pay);
-        $values["installment_partner"]       = MySQL::SQLValue($installment_partner);
-        $values["is_installment"]            = MySQL::SQLValue($is_installment);
-        $values["status"]                    = MySQL::SQLValue($status);
-        $values["time"]                      = MySQL::SQLValue($time);
-        $values["customer_id"]               = MySQL::SQLValue($customer_id);
+        $values["installment_total_pay"] = MySQL::SQLValue($installment_total_pay);
+        $values["installment_partner"] = MySQL::SQLValue($installment_partner);
+        $values["is_installment"] = MySQL::SQLValue($is_installment);
+        $values["status"] = MySQL::SQLValue($status);
+        $values["time"] = MySQL::SQLValue($time);
+        $values["customer_id"] = MySQL::SQLValue($customer_id);
 
         $letter_content = '';
         $fields = hme_payment_field_config();
@@ -186,15 +186,15 @@ function hme_submit_cart($type = 'cart')
 
             /** field */
             $_POST['customer_id'] = $customer_id;
-            $tableName            = DB_PREFIX . 'field';
+            $tableName = DB_PREFIX . 'field';
             foreach ($_POST as $post_key => $post_val) {
                 if (is_array($post_val)) {
                     $post_val = hm_json_encode($post_val);
                 }
-                $values                = array();
-                $values["name"]        = MySQL::SQLValue($post_key);
-                $values["val"]         = MySQL::SQLValue($post_val);
-                $values["object_id"]   = MySQL::SQLValue($insert_id, MySQL::SQLVALUE_NUMBER);
+                $values = [];
+                $values["name"] = MySQL::SQLValue($post_key);
+                $values["val"] = MySQL::SQLValue($post_val);
+                $values["object_id"] = MySQL::SQLValue($insert_id, MySQL::SQLVALUE_NUMBER);
                 $values["object_type"] = MySQL::SQLValue('hme_order');
                 $hmdb->InsertRow($tableName, $values);
             }
@@ -208,8 +208,8 @@ function hme_submit_cart($type = 'cart')
             $letter_content .= '</tr>';
 
             /** hme_order_item */
-            $cart       = $session_data;
-            $tableName  = DB_PREFIX . "hme_order_item";
+            $cart = $session_data;
+            $tableName = DB_PREFIX . "hme_order_item";
             $cart_total = 0;
             foreach ($cart as $pid => $qty) {
                 $name = get_con_val("name=name&id=$pid");
@@ -222,20 +222,20 @@ function hme_submit_cart($type = 'cart')
                     $name = $name . ' <br> <font color="red">' . $_SESSION['version_name'][$pid] . '</font>';
                 }
 
-                $values                  = array();
-                $values["order_id"]      = MySQL::SQLValue($insert_id);
-                $values["product_id"]    = MySQL::SQLValue($pid);
-                $values["product_name"]  = MySQL::SQLValue($name);
+                $values = [];
+                $values["order_id"] = MySQL::SQLValue($insert_id);
+                $values["product_id"] = MySQL::SQLValue($pid);
+                $values["product_name"] = MySQL::SQLValue($name);
                 $values["product_price"] = MySQL::SQLValue($price);
-                $values["qty"]           = MySQL::SQLValue($qty);
+                $values["qty"] = MySQL::SQLValue($qty);
 
-                $product_option = array();
+                $product_option = [];
                 if (isset($_SESSION['hmecart_product_option'][$pid])) {
                     $product_option = json_encode($_SESSION['hmecart_product_option'][$pid]);
                 }
                 $values["product_option"] = MySQL::SQLValue($product_option);
 
-                $product_attributes = array();
+                $product_attributes = [];
                 if (isset($_SESSION['hmecart_product_attributes'][$pid])) {
                     $product_attributes = json_encode($_SESSION['hmecart_product_attributes'][$pid]);
                 }
@@ -243,7 +243,7 @@ function hme_submit_cart($type = 'cart')
 
                 $hmdb->InsertRow($tableName, $values);
 
-                $p_total    = $price * $qty;
+                $p_total = $price * $qty;
                 $cart_total = $cart_total + $p_total;
                 $letter_content .= '<tr>';
                 $letter_content .= '<td>' . $name . '<td>';
@@ -268,31 +268,31 @@ function hme_submit_cart($type = 'cart')
             $letter_content .= '</table>';
             $letter_content .= '<p>' . hme_lang('total_order_amount') . ': ' . number_format($cart_total) . '</p>';
 
-            $noti_email = get_option(array(
+            $noti_email = get_option([
                 'section' => 'hme',
                 'key' => 'noti_email',
                 'default_value' => ''
-            ));
-            $ex         = explode(',', $noti_email);
+            ]);
+            $ex = explode(',', $noti_email);
             foreach ($ex as $mail) {
                 $mail = trim($mail);
                 hm_mail($mail, hme_lang('order_notification'), $letter_content);
             }
-            return array(
+            return [
                 'type' => 'success',
                 'insert_id' => $insert_id
-            );
+            ];
         } else {
-            return array(
+            return [
                 'type' => 'error',
                 'mes' => hme_lang('error_adding_order_please_try_again')
-            );
+            ];
         }
     } else {
-        return array(
+        return [
             'type' => 'error',
             'mes' => hme_lang('you_can_not_send_an_order_without_the_product_in_the_cart')
-        );
+        ];
     }
 }
 
@@ -302,9 +302,9 @@ Login customer
 function hme_customer_login()
 {
 
-    $args             = array();
-    $args['email']    = hm_post('email', '', FALSE);
-    $args['password'] = hm_post('password', '', FALSE);
+    $args = [];
+    $args['email'] = hm_post('email', '', false);
+    $args['password'] = hm_post('password', '', false);
 
     return hme_customer_login_action($args);
 
@@ -313,63 +313,63 @@ function hme_customer_login()
 function hme_customer_login_action($args)
 {
 
-    $defaults = array(
+    $defaults = [
         'email' => '',
         'password' => ''
-    );
-    $args     = hm_parse_args($args, $defaults);
+    ];
+    $args = hm_parse_args($args, $defaults);
 
-    $email    = $args['email'];
+    $email = $args['email'];
     $password = $args['password'];
 
     /** hme_customer */
-    $hmdb      = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName = DB_PREFIX . "hme_customer";
 
-    $whereArray = array(
+    $whereArray = [
         'email' => MySQL::SQLValue($email)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
 
-        $row             = $hmdb->Row();
-        $password_db     = $row->password;
-        $id              = $row->id;
+        $row = $hmdb->Row();
+        $password_db = $row->password;
+        $id = $row->id;
         $password_encode = md5($password);
 
         if ($password_encode == $password_db) {
 
-            $time       = time();
-            $ip         = hm_ip();
-            $values     = array(
+            $time = time();
+            $ip = hm_ip();
+            $values = [
                 'last_login_time' => MySQL::SQLValue($time),
                 'ip' => MySQL::SQLValue($ip)
-            );
-            $whereArray = array(
+            ];
+            $whereArray = [
                 'id' => $id
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
 
             $_SESSION['customer'] = $row;
 
-            return array(
+            return [
                 'type' => 'success',
                 'mes' => hme_lang('logged_in_successfully'),
                 'id' => $id
-            );
+            ];
 
         } else {
-            return array(
+            return [
                 'type' => 'error',
                 'mes' => hme_lang('wrong_password')
-            );
+            ];
         }
 
     } else {
-        return array(
+        return [
             'type' => 'error',
             'mes' => hme_lang('this_email_is_not_registered_account')
-        );
+        ];
     }
 }
 
@@ -379,12 +379,12 @@ Register customer
 function hme_customer_register()
 {
 
-    $args                   = array();
-    $args['name']           = hm_post('name', '', FALSE);
-    $args['email']          = hm_post('email', '', FALSE);
-    $args['mobile']         = hm_post('mobile', '', FALSE);
-    $args['password']       = hm_post('password', '', FALSE);
-    $args['password_again'] = hm_post('password_again', '', FALSE);
+    $args = [];
+    $args['name'] = hm_post('name', '', false);
+    $args['email'] = hm_post('email', '', false);
+    $args['mobile'] = hm_post('mobile', '', false);
+    $args['password'] = hm_post('password', '', false);
+    $args['password_again'] = hm_post('password_again', '', false);
 
     return hme_customer_register_action($args);
 
@@ -393,7 +393,7 @@ function hme_customer_register()
 function hme_customer_register_action($args)
 {
 
-    $defaults = array(
+    $defaults = [
         'name' => '',
         'password' => '',
         'password_again' => '',
@@ -408,53 +408,53 @@ function hme_customer_register_action($args)
         'register_time' => time(),
         'last_login_time' => time(),
         'id_update' => ''
-    );
-    $args     = hm_parse_args($args, $defaults);
+    ];
+    $args = hm_parse_args($args, $defaults);
 
     /** hme_customer */
-    $hmdb      = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName = DB_PREFIX . "hme_customer";
 
-    $name            = $args['name'];
-    $password        = $args['password'];
-    $password_again  = $args['password_again'];
-    $email           = $args['email'];
-    $mobile          = $args['mobile'];
-    $customer_group  = $args['customer_group'];
-    $note            = $args['note'];
-    $user_id         = $args['user_id'];
-    $discount        = $args['discount'];
-    $discount_type   = $args['discount_type'];
+    $name = $args['name'];
+    $password = $args['password'];
+    $password_again = $args['password_again'];
+    $email = $args['email'];
+    $mobile = $args['mobile'];
+    $customer_group = $args['customer_group'];
+    $note = $args['note'];
+    $user_id = $args['user_id'];
+    $discount = $args['discount'];
+    $discount_type = $args['discount_type'];
     $activation_code = $args['activation_code'];
-    $register_time   = $args['register_time'];
+    $register_time = $args['register_time'];
     $last_login_time = $args['last_login_time'];
-    $id_update       = $args['id_update'];
+    $id_update = $args['id_update'];
 
-    $register_time   = $args['register_time'];
+    $register_time = $args['register_time'];
     $last_login_time = $args['last_login_time'];
-    $ip              = hm_ip();
+    $ip = hm_ip();
 
-    $password_req = FALSE;
+    $password_req = false;
     if (is_numeric($id_update)) {
-        $password_req = TRUE;
+        $password_req = true;
     } else {
         if ($password != '') {
-            $password_req = TRUE;
+            $password_req = true;
         }
     }
 
-    if ($name != '' AND $email != '' AND $mobile != '' AND $password_req != FALSE) {
+    if ($name != '' AND $email != '' AND $mobile != '' AND $password_req != false) {
         if ($password == $password_again) {
 
             /** check trùng email */
-            $check_email = TRUE;
+            $check_email = true;
             if (!is_numeric($id_update)) {
-                $whereArray = array(
+                $whereArray = [
                     'email' => MySQL::SQLValue($email)
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
                 if ($hmdb->HasRecords()) {
-                    $check_email = FALSE;
+                    $check_email = false;
                 }
             }
 
@@ -462,12 +462,12 @@ function hme_customer_register_action($args)
 
                 if (is_numeric($id_update)) {
                     if (trim($password) == '') {
-                        $whereArray = array(
+                        $whereArray = [
                             'id' => MySQL::SQLValue($id_update, MySQL::SQLVALUE_NUMBER)
-                        );
+                        ];
                         $hmdb->SelectRows($tableName, $whereArray);
                         if ($hmdb->HasRecords()) {
-                            $row             = $hmdb->Row();
+                            $row = $hmdb->Row();
                             $password_encode = $row->password;
                         }
                     } else {
@@ -477,7 +477,7 @@ function hme_customer_register_action($args)
                     $password_encode = md5($password);
                 }
 
-                $values = array(
+                $values = [
                     'name' => MySQL::SQLValue($name),
                     'password' => MySQL::SQLValue($password_encode),
                     'email' => MySQL::SQLValue($email),
@@ -491,12 +491,12 @@ function hme_customer_register_action($args)
                     'register_time' => MySQL::SQLValue($register_time),
                     'last_login_time' => MySQL::SQLValue($last_login_time),
                     'ip' => MySQL::SQLValue($ip)
-                );
+                ];
 
                 if (is_numeric($id_update)) {
-                    $whereArray = array(
+                    $whereArray = [
                         'id' => $id_update
-                    );
+                    ];
                     $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
                     $insert_id = $id_update;
                 } else {
@@ -504,10 +504,10 @@ function hme_customer_register_action($args)
                 }
 
                 /** login */
-                hme_customer_login(array(
+                hme_customer_login([
                     'email' => $email,
                     'password' => $password
-                ));
+                ]);
 
                 if (is_numeric($id_update)) {
                     $mes = hme_lang('account_updated');
@@ -515,25 +515,25 @@ function hme_customer_register_action($args)
                     $mes = hme_lang('account_registration_successful');
                 }
 
-                return array(
+                return [
                     'type' => 'success',
                     'mes' => $mes,
                     'insert_id' => $insert_id
-                );
+                ];
 
 
             } else {
-                return array(
+                return [
                     'type' => 'error',
                     'mes' => hme_lang('this_email_was_used_by_another_account')
-                );
+                ];
             }
 
         } else {
-            return array(
+            return [
                 'type' => 'error',
                 'mes' => hme_lang('the_two_passwords_you_entered_do_not_match')
-            );
+            ];
         }
     } else {
         if (is_numeric($id_update)) {
@@ -541,10 +541,10 @@ function hme_customer_register_action($args)
         } else {
             $mes = hme_lang('names_email_and_passwords_are_fields_that_can_not_be_left_blank');
         }
-        return array(
+        return [
             'type' => 'error',
             'mes' => $mes
-        );
+        ];
     }
 }
 
@@ -552,12 +552,12 @@ function hme_customer_register_action($args)
 function hme_customer_logined()
 {
 
-    $return = FALSE;
+    $return = false;
 
     if (isset($_SESSION['customer'])) {
         $customer = $_SESSION['customer'];
         if (property_exists($customer, 'id')) {
-            $return = TRUE;
+            $return = true;
         }
     }
 
@@ -565,16 +565,16 @@ function hme_customer_logined()
 
 }
 
-function hme_customer_order($status = FALSE)
+function hme_customer_order($status = false)
 {
 
-    $data = array();
+    $data = [];
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
     if (hme_customer_logined()) {
-        $customer    = $_SESSION['customer'];
+        $customer = $_SESSION['customer'];
         $customer_id = $customer->id;
-        if ($status != FALSE) {
+        if ($status != false) {
             $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order WHERE `status`='$status' AND `customer_id` = $customer_id ");
         } else {
             $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order WHERE `customer_id`='$customer_id'");
@@ -591,7 +591,7 @@ function hme_customer_order($status = FALSE)
 function hme_data_order($oid = 0)
 {
 
-    $data = FALSE;
+    $data = false;
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order WHERE `id` = '$oid'");
     if ($hmdb->HasRecords()) {
@@ -599,59 +599,59 @@ function hme_data_order($oid = 0)
         $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order WHERE `id` = '$oid'");
         $order = $hmdb->Row();
 
-        $order_item = array();
+        $order_item = [];
         $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order_item WHERE `order_id` = '$oid'");
         while ($row = $hmdb->Row()) {
             $order_item[] = $row;
         }
 
-        $order_field = array();
+        $order_field = [];
         $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "field WHERE `object_id` = '$oid' AND `object_type` = 'hme_order'");
         while ($row = $hmdb->Row()) {
             $order_field[] = $row;
         }
 
-        $data = array(
+        $data = [
             'order' => $order,
             'item' => $order_item,
             'field' => $order_field
-        );
+        ];
     }
     return $data;
 }
 
-function hme_customer_update_customer($id = FALSE)
+function hme_customer_update_customer($id = false)
 {
 
     if (!is_numeric($id)) {
         if (hme_customer_logined()) {
             $customer = $_SESSION['customer'];
-            $id       = $customer->id;
+            $id = $customer->id;
         }
     }
 
-    $args                   = array();
-    $args['name']           = hm_post('name', '', FALSE);
-    $args['email']          = hm_post('email', '', FALSE);
-    $args['mobile']         = hm_post('mobile', '', FALSE);
-    $args['password']       = hm_post('password', '', FALSE);
-    $args['password_again'] = hm_post('password_again', '', FALSE);
-    $args['id_update']      = $id;
+    $args = [];
+    $args['name'] = hm_post('name', '', false);
+    $args['email'] = hm_post('email', '', false);
+    $args['mobile'] = hm_post('mobile', '', false);
+    $args['password'] = hm_post('password', '', false);
+    $args['password_again'] = hm_post('password_again', '', false);
+    $args['id_update'] = $id;
 
     return hme_customer_register_action($args);
 
 }
 
-function hme_product_option($id = FALSE)
+function hme_product_option($id = false)
 {
-    $hmdb                 = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $product_group_option = get_con_val('name=product_group_option&id=' . $id);
-    $product_group_option = json_decode($product_group_option, TRUE);
-    $product_option       = get_con_val('name=product_option&id=' . $id);
-    $product_option       = json_decode($product_option, TRUE);
-    $tableName            = DB_PREFIX . 'hme_product_option';
+    $product_group_option = json_decode($product_group_option, true);
+    $product_option = get_con_val('name=product_option&id=' . $id);
+    $product_option = json_decode($product_option, true);
+    $tableName = DB_PREFIX . 'hme_product_option';
     if (!is_array($product_group_option)) {
-        $product_group_option = array();
+        $product_group_option = [];
     }
     foreach ($product_group_option as $group_id) {
         $group_name = hme_get_option_group('name', $group_id);
@@ -659,16 +659,16 @@ function hme_product_option($id = FALSE)
         echo '  <div class="hme_product_option_title">' . $group_name . '</div>' . "\n\r";
         echo '  <div class="hme_product_option_content">' . "\n\r";
 
-        $whereArray = array(
+        $whereArray = [
             'group_id' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->SelectRows($tableName, $whereArray);
         if ($hmdb->HasRecords()) {
             while ($row = $hmdb->Row()) {
-                $option_id   = $row->id;
+                $option_id = $row->id;
                 $option_name = $row->name;
                 $option_slug = $row->slug;
-                $group_id    = $row->group_id;
+                $group_id = $row->group_id;
                 if (in_array($option_id, $product_option)) {
                     echo '<div class="hme_product_option_item">' . "\n\r";
                     echo '  <input type="radio" class="hme_input_product_option" data-id="' . $group_id . '" name="product_option[' . $group_id . ']" value="' . $option_id . '"><span>' . $option_name . '</span>' . "\n\r";
@@ -684,38 +684,38 @@ function hme_product_option($id = FALSE)
 
 function hme_get_option_group($field = 'name', $id = 0)
 {
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . "hme_product_option_group";
-    $whereArray = array(
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . "hme_product_option_group";
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
         $row = $hmdb->Row();
         return $row->$field;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
 function hme_get_option($field = 'name', $id = 0)
 {
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . "hme_product_option";
-    $whereArray = array(
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . "hme_product_option";
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
         $row = $hmdb->Row();
         return $row->$field;
     } else {
-        return FALSE;
+        return false;
     }
 }
 
 
-function hme_payment_form($fields = null, $input_args = array())
+function hme_payment_form($fields = null, $input_args = [])
 {
     if ($field == null) {
         $fields = hme_payment_field_config();

@@ -2,28 +2,30 @@
 /*
 Taxonomy box
 */
-$args = array(
+$args = [
     'label' => 'Bộ lọc',
     'position' => 'left',
     'function' => 'hm_filter_box_taxonomy'
-);
+];
 register_taxonomy_box($args);
 
-function hm_filter_box_taxonomy() {
+function hm_filter_box_taxonomy()
+{
     hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/layout/filter_box_taxonomy.php');
 }
 
 /*
 Content box
 */
-$args = array(
+$args = [
     'label' => 'Bộ lọc',
     'position' => 'left',
     'function' => 'hm_filter_box_content'
-);
+];
 register_content_box($args);
 
-function hm_filter_box_content() {
+function hm_filter_box_content()
+{
     hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_filter/layout/filter_box_content_taxonomy.php');
 }
 
@@ -31,22 +33,23 @@ function hm_filter_box_content() {
 /*
 Request ajax
 */
-$args = array(
+$args = [
     'key' => 'hm_filter_ajax',
     'function' => 'hm_filter_ajax',
-    'method' => array(
+    'method' => [
         'post'
-    )
-);
+    ]
+];
 register_admin_ajax_page($args);
 
-function hm_filter_ajax() {
+function hm_filter_ajax()
+{
 
     $action = hm_post('action');
 
     switch ($action) {
         case 'add_group':
-            $id  = hm_post('id');
+            $id = hm_post('id');
             $val = hm_post('val');
             ajaxfilter_add_group($id, $val);
             break;
@@ -55,17 +58,17 @@ function hm_filter_ajax() {
             ajaxfilter_del_group($id);
             break;
         case 'edit_group':
-            $id   = hm_post('id');
+            $id = hm_post('id');
             $name = hm_post('new_name');
             ajaxfilter_edit_group($id, $name);
             break;
         case 'edit_group_input_type':
-            $id   = hm_post('id');
+            $id = hm_post('id');
             $type = hm_post('type');
             ajaxfilter_edit_group_input_type($id, $type);
             break;
         case 'sort_group':
-            $id           = hm_post('id');
+            $id = hm_post('id');
             $number_order = hm_post('number_order');
             ajaxfilter_sort_group($id, $number_order);
             break;
@@ -74,7 +77,7 @@ function hm_filter_ajax() {
             ajaxfilter_group_taxonomy_option_list($id);
             break;
         case 'group_option_add':
-            $id  = hm_post('id');
+            $id = hm_post('id');
             $val = hm_post('val');
             ajaxfilter_add_group_option($id, $val);
             break;
@@ -83,7 +86,7 @@ function hm_filter_ajax() {
             ajaxfilter_del_group_option($id, $val);
             break;
         case 'edit_group_option':
-            $id   = hm_post('id');
+            $id = hm_post('id');
             $name = hm_post('new_name');
             ajaxfilter_edit_group_option($id, $name);
             break;
@@ -92,7 +95,7 @@ function hm_filter_ajax() {
             ajaxfilter_filter_content($id);
             break;
         case 'sort_group_option':
-            $id           = hm_post('id');
+            $id = hm_post('id');
             $number_order = hm_post('number_order');
             ajaxfilter_sort_group_option($id, $number_order);
             break;
@@ -104,27 +107,28 @@ function hm_filter_ajax() {
 Hook action for save taxonomy filter
 */
 register_filter('taxonomy_ajax_add', 'ajaxfilter_tax_add');
-function ajaxfilter_tax_add($taxonomy_id) {
+function ajaxfilter_tax_add($taxonomy_id)
+{
 
-    $hmdb      = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName = DB_PREFIX . 'filter_group_taxonomy';
 
-    $valuesArray = array(
+    $valuesArray = [
         'type' => MySQL::SQLValue('public'),
         'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER)
-    );
-    $whereArray  = array(
+    ];
+    $whereArray = [
         'type' => MySQL::SQLValue('tmp')
-    );
+    ];
     $hmdb->UpdateRows($tableName, $valuesArray, $whereArray);
 
-    $tableName   = DB_PREFIX . 'filter_option_taxonomy';
-    $valuesArray = array(
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $valuesArray = [
         'type' => MySQL::SQLValue('public')
-    );
-    $whereArray  = array(
+    ];
+    $whereArray = [
         'type' => MySQL::SQLValue('tmp')
-    );
+    ];
     $hmdb->UpdateRows($tableName, $valuesArray, $whereArray);
 
 
@@ -132,27 +136,28 @@ function ajaxfilter_tax_add($taxonomy_id) {
 
 
 register_action('taxonomy_ajax_edit', 'ajaxfilter_tax_edit');
-function ajaxfilter_tax_edit() {
+function ajaxfilter_tax_edit()
+{
 
     $taxonomy_id = hm_get('id');
-    $hmdb        = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName   = DB_PREFIX . 'filter_group_taxonomy';
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
 
-    $valuesArray = array(
+    $valuesArray = [
         'type' => MySQL::SQLValue('public')
-    );
-    $whereArray  = array(
+    ];
+    $whereArray = [
         'type' => MySQL::SQLValue('tmp')
-    );
+    ];
     $hmdb->UpdateRows($tableName, $valuesArray, $whereArray);
 
-    $tableName   = DB_PREFIX . 'filter_option_taxonomy';
-    $valuesArray = array(
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $valuesArray = [
         'type' => MySQL::SQLValue('public')
-    );
-    $whereArray  = array(
+    ];
+    $whereArray = [
         'type' => MySQL::SQLValue('tmp')
-    );
+    ];
     $hmdb->UpdateRows($tableName, $valuesArray, $whereArray);
 
 
@@ -160,15 +165,16 @@ function ajaxfilter_tax_edit() {
 
 
 register_action('taxonomy_delete_permanently', 'ajaxfilter_tax_delete');
-function ajaxfilter_tax_delete() {
+function ajaxfilter_tax_delete()
+{
 
     $taxonomy_id = hm_post('id');
-    $hmdb        = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName   = DB_PREFIX . 'filter_group_taxonomy';
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
 
-    $whereArray = array(
+    $whereArray = [
         'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
 
     if ($hmdb->HasRecords()) {
@@ -180,20 +186,21 @@ function ajaxfilter_tax_delete() {
 
 }
 
-function filter_group_taxonomy($taxonomy_id = '0') {
+function filter_group_taxonomy($taxonomy_id = '0')
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'type' => MySQL::SQLValue('tmp')
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
-    $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $whereArray = [
         'type' => MySQL::SQLValue('tmp')
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
     filter_group_list($taxonomy_id);
@@ -201,53 +208,55 @@ function filter_group_taxonomy($taxonomy_id = '0') {
 }
 
 
-function filter_extends($taxonomy_id) {
+function filter_extends($taxonomy_id)
+{
 
     if (is_numeric($taxonomy_id)) {
         $tax_data = taxonomy_data_by_id($taxonomy_id);
-        $tax_key  = $tax_data['taxonomy']->key;
+        $tax_key = $tax_data['taxonomy']->key;
     } else {
         $tax_key = $taxonomy_id;
     }
 
 
-    $args   = array(
+    $args = [
         'name' => 'filter_extends',
         'nice_name' => 'Kế thừa bộ lọc',
         'description' => 'Nếu danh mục này có bộ lọc giống hệt một danh mục khác, bạn có thể kế thừa lại luôn bộ lọc đã tạo trước đó mà không cần tạo bộ lọc mới',
         'no_parent' => 'Không kế thừa'
-    );
+    ];
     $action = hm_get('action');
     if ($action == 'edit') {
-        $tax_id                = hm_get('id');
-        $value                 = get_tax_val("name=filter_extends&id=$tax_id");
+        $tax_id = hm_get('id');
+        $value = get_tax_val("name=filter_extends&id=$tax_id");
         $args['default_value'] = $value;
     }
     taxonomy_select_parent($tax_key, 0, $args);
 
 }
 
-function ajaxfilter_add_group($taxonomy_id = '0', $val = FALSE) {
+function ajaxfilter_add_group($taxonomy_id = '0', $val = false)
+{
 
-    if ($val != FALSE) {
+    if ($val != false) {
         $val = trim($val);
         if ($val != '') {
 
             $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-            $slug                  = 'ft_' . sanitize_title($val);
-            $tableName             = DB_PREFIX . 'filter_group_taxonomy';
-            $whereArray            = array(
+            $slug = 'ft_' . sanitize_title($val);
+            $tableName = DB_PREFIX . 'filter_group_taxonomy';
+            $whereArray = [
                 'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER),
                 'name' => MySQL::SQLValue($val),
                 'type' => MySQL::SQLValue('tmp')
-            );
-            $values                = array();
+            ];
+            $values = [];
             $values["taxonomy_id"] = MySQL::SQLValue($taxonomy_id);
-            $values["name"]        = MySQL::SQLValue($val);
-            $values["slug"]        = MySQL::SQLValue($slug);
-            $values["type"]        = MySQL::SQLValue('tmp');
-            $values["input_type"]  = MySQL::SQLValue('checkbox');
+            $values["name"] = MySQL::SQLValue($val);
+            $values["slug"] = MySQL::SQLValue($slug);
+            $values["type"] = MySQL::SQLValue('tmp');
+            $values["input_type"] = MySQL::SQLValue('checkbox');
 
             $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
 
@@ -259,16 +268,17 @@ function ajaxfilter_add_group($taxonomy_id = '0', $val = FALSE) {
 }
 
 
-function filter_group_list($taxonomy_id = '0') {
+function filter_group_list($taxonomy_id = '0')
+{
 
     if (is_numeric($taxonomy_id)) {
 
-        $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-        $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-        $whereArray = array(
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $tableName = DB_PREFIX . 'filter_group_taxonomy';
+        $whereArray = [
             'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER)
-        );
-        $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+        ];
+        $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
         if ($hmdb->HasRecords()) {
             while ($row = $hmdb->Row()) {
@@ -301,122 +311,128 @@ function filter_group_list($taxonomy_id = '0') {
 
 }
 
-function ajaxfilter_del_group($id = 0) {
+function ajaxfilter_del_group($id = 0)
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
-    $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $whereArray = [
         'filter_group' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
 }
 
-function ajaxfilter_edit_group($id = 0, $name = '') {
+function ajaxfilter_edit_group($id = 0, $name = '')
+{
 
     $name = trim($name);
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $row      = $hmdb->Row();
+        $row = $hmdb->Row();
         $old_name = $row->name;
         $old_slug = $row->slug;
 
         if ($name != '') {
-            $slug   = 'ft_' . sanitize_title($name);
-            $values = array(
+            $slug = 'ft_' . sanitize_title($name);
+            $values = [
                 'name' => MySQL::SQLValue($name),
                 'slug' => MySQL::SQLValue($slug)
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
         }
     }
 
 }
 
-function ajaxfilter_edit_group_input_type($id = 0, $type = '') {
+function ajaxfilter_edit_group_input_type($id = 0, $type = '')
+{
 
     $type = trim($type);
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
         $row = $hmdb->Row();
         if ($type != '') {
-            $values = array(
+            $values = [
                 'input_type' => MySQL::SQLValue($type)
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
         }
     }
 
 }
 
-function ajaxfilter_sort_group($id = 0, $number_order = 1) {
+function ajaxfilter_sort_group($id = 0, $number_order = 1)
+{
 
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $values = array(
+        $values = [
             'number_order' => MySQL::SQLValue($number_order, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->UpdateRows($tableName, $values, $whereArray);
     }
 
 }
 
-function ajaxfilter_del_group_option($id = 0) {
+function ajaxfilter_del_group_option($id = 0)
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->DeleteRows($tableName, $whereArray);
 
 }
 
-function ajaxfilter_group_taxonomy_option_list($group_id = 0) {
+function ajaxfilter_group_taxonomy_option_list($group_id = 0)
+{
 
     if (is_numeric($group_id) AND $group_id != '0') {
 
-        $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-        $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-        $whereArray = array(
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $tableName = DB_PREFIX . 'filter_group_taxonomy';
+        $whereArray = [
             'id' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->SelectRows($tableName, $whereArray);
         if ($hmdb->HasRecords()) {
 
             $row = $hmdb->Row();
             echo '<div class="alert alert-success" role="alert">Bạn đang thêm các lựa chọn cho <b>' . $row->name . '</b></div>';
 
-            $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_taxonomy';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             if ($hmdb->HasRecords()) {
                 while ($row = $hmdb->Row()) {
@@ -441,26 +457,27 @@ function ajaxfilter_group_taxonomy_option_list($group_id = 0) {
 }
 
 
-function ajaxfilter_add_group_option($group_id = '0', $val = FALSE) {
+function ajaxfilter_add_group_option($group_id = '0', $val = false)
+{
 
-    if ($val != FALSE) {
+    if ($val != false) {
         $val = trim($val);
         if ($val != '') {
 
             $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-            $slug                   = sanitize_title($val);
-            $tableName              = DB_PREFIX . 'filter_option_taxonomy';
-            $whereArray             = array(
+            $slug = sanitize_title($val);
+            $tableName = DB_PREFIX . 'filter_option_taxonomy';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER),
                 'name' => MySQL::SQLValue($val),
                 'type' => MySQL::SQLValue('tmp')
-            );
-            $values                 = array();
+            ];
+            $values = [];
             $values["filter_group"] = MySQL::SQLValue($group_id);
-            $values["name"]         = MySQL::SQLValue($val);
-            $values["slug"]         = MySQL::SQLValue($slug);
-            $values["type"]         = MySQL::SQLValue('tmp');
+            $values["name"] = MySQL::SQLValue($val);
+            $values["slug"] = MySQL::SQLValue($slug);
+            $values["type"] = MySQL::SQLValue('tmp');
 
             $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
 
@@ -471,62 +488,63 @@ function ajaxfilter_add_group_option($group_id = '0', $val = FALSE) {
 }
 
 
-function ajaxfilter_edit_group_option($id = 0, $name = '') {
+function ajaxfilter_edit_group_option($id = 0, $name = '')
+{
 
     $name = trim($name);
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $row                   = $hmdb->Row();
-        $old_name              = $row->name;
-        $old_slug              = $row->slug;
+        $row = $hmdb->Row();
+        $old_name = $row->name;
+        $old_slug = $row->slug;
         $filter_group_taxonomy = $row->filter_group_taxonomy;
 
         /* update option */
         if ($name != '') {
-            $slug   = sanitize_title($name);
-            $values = array(
+            $slug = sanitize_title($name);
+            $values = [
                 'name' => MySQL::SQLValue($name),
                 'slug' => MySQL::SQLValue($slug)
-            );
+            ];
             $hmdb->UpdateRows($tableName, $values, $whereArray);
         }
 
         /* update field */
-        $whereArray = array(
+        $whereArray = [
             'id' => MySQL::SQLValue($filter_group_taxonomy, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->SelectRows(DB_PREFIX . 'filter_group_taxonomy', $whereArray);
         if ($hmdb->HasRecords()) {
-            $row        = $hmdb->Row();
+            $row = $hmdb->Row();
             $group_name = $row->name;
             $group_slug = $row->slug;
 
             /* find field by group_slug */
-            $whereArray = array(
+            $whereArray = [
                 'name' => MySQL::SQLValue($group_slug)
-            );
+            ];
             $hmdb->SelectRows(DB_PREFIX . 'field', $whereArray);
-            $updates = array();
+            $updates = [];
             while ($row = $hmdb->Row()) {
-                $field_id           = $row->id;
-                $field_val          = $row->val;
-                $field_val_new      = str_replace('"' . $old_slug . '"', '"' . $slug . '"', $field_val);
+                $field_id = $row->id;
+                $field_val = $row->val;
+                $field_val_new = str_replace('"' . $old_slug . '"', '"' . $slug . '"', $field_val);
                 $updates[$field_id] = $field_val_new;
             }
 
             foreach ($updates as $field_id => $field_val) {
 
-                $values        = array();
+                $values = [];
                 $values["val"] = MySQL::SQLValue($field_val);
-                $whereArray    = array(
+                $whereArray = [
                     'id' => MySQL::SQLValue($field_id)
-                );
+                ];
                 $hmdb->UpdateRows(DB_PREFIX . 'field', $values, $whereArray);
 
             }
@@ -538,36 +556,37 @@ function ajaxfilter_edit_group_option($id = 0, $name = '') {
 }
 
 
-function ajaxfilter_filter_content($taxonomy_id = '0') {
+function ajaxfilter_filter_content($taxonomy_id = '0')
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER)
-    );
-    $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+    ];
+    $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
     if ($hmdb->HasRecords()) {
 
-        $taxonomy_name = get_tax_val(array(
+        $taxonomy_name = get_tax_val([
             'name' => 'name',
             'id' => $taxonomy_id
-        ));
+        ]);
 
         while ($row = $hmdb->Row()) {
             $groups[] = $row;
         }
         foreach ($groups as $row) {
-            $group_id   = $row->id;
+            $group_id = $row->id;
             $group_name = $row->name;
             $group_slug = $row->slug;
 
-            $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_taxonomy';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             echo '<div class="filter_content_box filter_content_box' . $group_id . '">';
             echo '	<div class="filter_content_box_title bg-success">[<b>' . $taxonomy_name . '</b>] ' . $group_name . '</div>';
@@ -575,20 +594,20 @@ function ajaxfilter_filter_content($taxonomy_id = '0') {
             echo '		<ul>';
             if ($hmdb->HasRecords()) {
 
-                $action     = hm_get('action');
+                $action = hm_get('action');
                 $content_id = hm_get('id');
                 if ($action == 'edit') {
-                    $option_val = get_con_val(array(
+                    $option_val = get_con_val([
                         'name' => $group_slug,
                         'id' => $content_id
-                    ));
-                    $option_val = json_decode($option_val, TRUE);
+                    ]);
+                    $option_val = json_decode($option_val, true);
                 } else {
-                    $option_val = array();
+                    $option_val = [];
                 }
 
                 if (!is_array($option_val)) {
-                    $option_val = array();
+                    $option_val = [];
                 }
 
                 while ($row = $hmdb->Row()) {
@@ -610,31 +629,33 @@ function ajaxfilter_filter_content($taxonomy_id = '0') {
 }
 
 
-function ajaxfilter_sort_group_option($id = 0, $number_order = 1) {
+function ajaxfilter_sort_group_option($id = 0, $number_order = 1)
+{
 
-    $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-    $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-    $whereArray = array(
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $tableName = DB_PREFIX . 'filter_option_taxonomy';
+    $whereArray = [
         'id' => MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER)
-    );
+    ];
     $hmdb->SelectRows($tableName, $whereArray);
     if ($hmdb->HasRecords()) {
-        $values = array(
+        $values = [
             'number_order' => MySQL::SQLValue($number_order, MySQL::SQLVALUE_NUMBER)
-        );
+        ];
         $hmdb->UpdateRows($tableName, $values, $whereArray);
     }
 
 }
 
 /** show filter on theme */
-function show_filter($taxonomy_id = '0', $args = array()) {
+function show_filter($taxonomy_id = '0', $args = [])
+{
     $taxonomy_id_call = $taxonomy_id;
-    $default_array    = array(
-        'slug' => FALSE,
-        'input_hidden' => array()
-    );
-    $args             = hm_parse_args($args, $default_array);
+    $default_array = [
+        'slug' => false,
+        'input_hidden' => []
+    ];
+    $args = hm_parse_args($args, $default_array);
 
     $filter_extends = get_tax_val("name=filter_extends&id=$taxonomy_id");
     if (is_numeric($filter_extends) AND $filter_extends != 0) {
@@ -643,15 +664,15 @@ function show_filter($taxonomy_id = '0', $args = array()) {
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER)
-    );
-    $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+    ];
+    $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
     if ($hmdb->HasRecords()) {
 
-        if ($args['slug'] == FALSE) {
+        if ($args['slug'] == false) {
             $taxonomy_link = request_uri("type=taxonomy&id=$taxonomy_id_call");
         } else {
             $taxonomy_link = BASE_URL . $args['slug'];
@@ -661,16 +682,16 @@ function show_filter($taxonomy_id = '0', $args = array()) {
         echo '<div class="filter_wrapper">';
         echo '<form action="' . $taxonomy_link . '" class="filter_form" method="get">';
 
-        $taxonomy_name = get_tax_val(array(
+        $taxonomy_name = get_tax_val([
             'name' => 'name',
             'id' => $taxonomy_id
-        ));
+        ]);
 
         while ($row = $hmdb->Row()) {
             $groups[] = $row;
         }
         foreach ($groups as $row) {
-            $group_id   = $row->id;
+            $group_id = $row->id;
             $group_name = $row->name;
             $group_slug = $row->slug;
 
@@ -682,11 +703,11 @@ function show_filter($taxonomy_id = '0', $args = array()) {
                 $group_input_type = 'radio';
             }
 
-            $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_taxonomy';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             echo '<div class="filter_content_box filter_content_box' . $group_id . '">';
             echo '	<div class="filter_content_box_title"><span>' . $group_name . '</span></div>';
@@ -694,7 +715,7 @@ function show_filter($taxonomy_id = '0', $args = array()) {
             echo '		<ul>';
             if ($hmdb->HasRecords()) {
 
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 while ($row = $hmdb->Row()) {
                     $this_option_val = $row->slug;
                     if (in_array($this_option_val, $option_val)) {
@@ -723,13 +744,14 @@ function show_filter($taxonomy_id = '0', $args = array()) {
 
 }
 
-function show_filter_dropdown($taxonomy_id = '0', $args = array()) {
+function show_filter_dropdown($taxonomy_id = '0', $args = [])
+{
 
-    $default_array = array(
-        'slug' => FALSE,
-        'input_hidden' => array()
-    );
-    $args          = hm_parse_args($args, $default_array);
+    $default_array = [
+        'slug' => false,
+        'input_hidden' => []
+    ];
+    $args = hm_parse_args($args, $default_array);
 
     $filter_extends = get_tax_val("name=filter_extends&id=$taxonomy_id");
     if (is_numeric($filter_extends) AND $filter_extends != 0) {
@@ -738,15 +760,15 @@ function show_filter_dropdown($taxonomy_id = '0', $args = array()) {
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 
-    $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-    $whereArray = array(
+    $tableName = DB_PREFIX . 'filter_group_taxonomy';
+    $whereArray = [
         'taxonomy_id' => MySQL::SQLValue($taxonomy_id, MySQL::SQLVALUE_NUMBER)
-    );
-    $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+    ];
+    $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
     if ($hmdb->HasRecords()) {
 
-        if ($args['slug'] == FALSE) {
+        if ($args['slug'] == false) {
             $taxonomy_link = request_uri("type=taxonomy&id=$taxonomy_id");
         } else {
             $taxonomy_link = BASE_URL . $args['slug'];
@@ -756,24 +778,24 @@ function show_filter_dropdown($taxonomy_id = '0', $args = array()) {
         echo '<div class="filter_wrapper">';
         echo '<form action="' . $taxonomy_link . '" class="filter_form" method="get">';
 
-        $taxonomy_name = get_tax_val(array(
+        $taxonomy_name = get_tax_val([
             'name' => 'name',
             'id' => $taxonomy_id
-        ));
+        ]);
 
         while ($row = $hmdb->Row()) {
             $groups[] = $row;
         }
         foreach ($groups as $row) {
-            $group_id   = $row->id;
+            $group_id = $row->id;
             $group_name = $row->name;
             $group_slug = $row->slug;
 
-            $tableName  = DB_PREFIX . 'filter_option_taxonomy';
-            $whereArray = array(
+            $tableName = DB_PREFIX . 'filter_option_taxonomy';
+            $whereArray = [
                 'filter_group' => MySQL::SQLValue($group_id, MySQL::SQLVALUE_NUMBER)
-            );
-            $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+            ];
+            $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
 
             echo '<div class="filter_content_box filter_content_box' . $group_id . '">';
             echo '	<div class="filter_content_box_title"><span>' . $group_name . '</span></div>';
@@ -781,7 +803,7 @@ function show_filter_dropdown($taxonomy_id = '0', $args = array()) {
             echo '		<select name="' . $group_slug . '[]">';
             if ($hmdb->HasRecords()) {
                 echo '<option ' . $selected . ' value="">' . $group_name . '</option>';
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 while ($row = $hmdb->Row()) {
                     $this_option_val = $row->slug;
                     if (in_array($this_option_val, $option_val)) {
@@ -814,11 +836,12 @@ function show_filter_dropdown($taxonomy_id = '0', $args = array()) {
 
 /** hook for query_content */
 register_filter('before_query_content', 'filter_query_content');
-function filter_query_content($args) {
+function filter_query_content($args)
+{
     if (hm_get('use_hm_filter') == '1') {
 
-        $use_filter  = FALSE;
-        $taxonomy_id = FALSE;
+        $use_filter = false;
+        $taxonomy_id = false;
         if (is_numeric($args['taxonomy'])) {
             $taxonomy_id = $args['taxonomy'];
         }
@@ -830,44 +853,44 @@ function filter_query_content($args) {
             $filter_group_taxonomy_id = $taxonomy_id;
         }
 
-        $hmdb       = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
-        $tableName  = DB_PREFIX . 'filter_group_taxonomy';
-        $whereArray = array(
+        $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+        $tableName = DB_PREFIX . 'filter_group_taxonomy';
+        $whereArray = [
             'taxonomy_id' => MySQL::SQLValue($filter_group_taxonomy_id, MySQL::SQLVALUE_NUMBER)
-        );
-        $hmdb->SelectRows($tableName, $whereArray, NULL, 'number_order', TRUE);
+        ];
+        $hmdb->SelectRows($tableName, $whereArray, null, 'number_order', true);
         if ($hmdb->HasRecords()) {
             while ($row = $hmdb->Row()) {
                 $groups[] = $row;
             }
             foreach ($groups as $row) {
-                $group_id   = $row->id;
+                $group_id = $row->id;
                 $group_name = $row->name;
                 $group_slug = $row->slug;
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 if (sizeof($option_val) > 0) {
-                    $use_filter = TRUE;
+                    $use_filter = true;
                 }
             }
         }
 
         /** If url have filter params */
-        if ($use_filter == TRUE) {
+        if ($use_filter == true) {
 
             /** Add query params to $args['field_query'] */
             foreach ($groups as $row) {
-                $group_id   = $row->id;
+                $group_id = $row->id;
                 $group_name = $row->name;
                 $group_slug = $row->slug;
-                $option_val = hm_get($group_slug, array());
+                $option_val = hm_get($group_slug, []);
                 if (sizeof($option_val) > 0) {
                     foreach ($option_val as $filter_value) {
                         if ($filter_value != '') {
-                            $args['field_query'][] = array(
+                            $args['field_query'][] = [
                                 'field' => $group_slug,
                                 'compare' => 'like%',
                                 'value' => $filter_value
-                            );
+                            ];
                         }
                     }
                 }
@@ -881,4 +904,5 @@ function filter_query_content($args) {
     }
     return $args;
 }
+
 ?>

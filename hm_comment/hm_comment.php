@@ -7,9 +7,9 @@ Version Number: 1;
 */
 
 /** Include */
-hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_comment/include/lang.php');
-hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_comment/include/check_database.php');
-hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_comment/include/theme.php');
-hm_include(BASEPATH.'/'.HM_PLUGIN_DIR.'/hm_comment/include/admin.php');
+hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_comment/include/lang.php');
+hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_comment/include/check_database.php');
+hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_comment/include/theme.php');
+hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_comment/include/admin.php');
 
 ?>

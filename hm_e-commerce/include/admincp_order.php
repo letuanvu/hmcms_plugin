@@ -3,22 +3,23 @@
 /*
 Register show order page
 */
-$args = array(
+$args = [
     'label' => hme_lang('purchase_order'),
-    'admin_menu' => TRUE,
+    'admin_menu' => true,
     'key' => 'hm_ecommerce_show_order',
     'function' => 'hm_ecommerce_show_order',
     'icon' => 'fa-cart-plus',
-    'child_of' => FALSE
-);
+    'child_of' => false
+];
 register_admin_page($args);
 
-function hm_ecommerce_show_order() {
+function hm_ecommerce_show_order()
+{
 
-    $hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+    $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $status = hm_get('status');
-    $data   = array();
-    if ($status != NULL) {
+    $data = [];
+    if ($status != null) {
         $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order WHERE `status`='$status' ");
     } else {
         $hmdb->Query(" SELECT * FROM " . DB_PREFIX . "hme_order ");
@@ -37,17 +38,18 @@ function hm_ecommerce_show_order() {
 /*
 Register edit order page
 */
-$args = array(
+$args = [
     'label' => hme_lang('order_details'),
-    'admin_menu' => FALSE,
+    'admin_menu' => false,
     'key' => 'hm_ecommerce_edit_order',
     'function' => 'hm_ecommerce_edit_order',
     'icon' => 'fa-cart-plus',
-    'child_of' => FALSE
-);
+    'child_of' => false
+];
 register_admin_page($args);
 
-function hm_ecommerce_edit_order() {
+function hm_ecommerce_edit_order()
+{
 
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     switch (hm_get('action')) {
@@ -60,11 +62,11 @@ function hm_ecommerce_edit_order() {
 
                     $status = hm_post('status');
 
-                    $tableName        = DB_PREFIX . 'hme_order';
+                    $tableName = DB_PREFIX . 'hme_order';
                     $values["status"] = MySQL::SQLValue($status);
-                    $whereArray       = array(
+                    $whereArray = [
                         'id' => MySQL::SQLValue($oid)
-                    );
+                    ];
                     $hmdb->UpdateRows($tableName, $values, $whereArray);
 
                     foreach ($_POST as $post_key => $post_val) {
@@ -73,14 +75,14 @@ function hm_ecommerce_edit_order() {
                             $post_val = hm_json_encode($post_val);
                         }
 
-                        $tableName             = DB_PREFIX . 'field';
-                        $whereArray            = array(
+                        $tableName = DB_PREFIX . 'field';
+                        $whereArray = [
                             'id' => MySQL::SQLValue($oid)
-                        );
-                        $values                = array();
-                        $values["name"]        = MySQL::SQLValue($post_key);
-                        $values["val"]         = MySQL::SQLValue($post_val);
-                        $values["object_id"]   = MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER);
+                        ];
+                        $values = [];
+                        $values["name"] = MySQL::SQLValue($post_key);
+                        $values["val"] = MySQL::SQLValue($post_val);
+                        $values["object_id"] = MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER);
                         $values["object_type"] = MySQL::SQLValue('hme_order');
                         $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
                     }
@@ -88,10 +90,10 @@ function hm_ecommerce_edit_order() {
                 }
 
                 /** get order data */
-                $tableName  = DB_PREFIX . "hme_order";
-                $whereArray = array(
+                $tableName = DB_PREFIX . "hme_order";
+                $whereArray = [
                     'id' => MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER)
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
                 if ($hmdb->HasRecords()) {
                     $order = $hmdb->Row();
@@ -99,12 +101,12 @@ function hm_ecommerce_edit_order() {
                 }
 
                 /** get order item data */
-                $tableName  = DB_PREFIX . "hme_order_item";
-                $whereArray = array(
+                $tableName = DB_PREFIX . "hme_order_item";
+                $whereArray = [
                     'order_id' => MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER)
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
-                $order_item = array();
+                $order_item = [];
                 if ($hmdb->HasRecords()) {
                     while ($row = $hmdb->Row()) {
                         $order_item[] = $row;
@@ -113,13 +115,13 @@ function hm_ecommerce_edit_order() {
                 }
 
                 /** get order field data */
-                $tableName  = DB_PREFIX . "field";
-                $whereArray = array(
+                $tableName = DB_PREFIX . "field";
+                $whereArray = [
                     'object_id' => MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER),
                     'object_type' => MySQL::SQLValue('hme_order')
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
-                $order_field = array();
+                $order_field = [];
                 if ($hmdb->HasRecords()) {
                     while ($row = $hmdb->Row()) {
                         $order_field[$row->name] = $row->val;
@@ -128,11 +130,11 @@ function hm_ecommerce_edit_order() {
                 }
 
 
-                hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/layout/edit_order.php', array(
+                hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/layout/edit_order.php', [
                     'order' => $order,
                     'order_item' => $order_item,
                     'order_field' => $order_field
-                ));
+                ]);
             } else {
                 echo '<div class="alert alert-danger" role="alert">' . hme_lang('orders_do_not_exist') . '</div>';
             }
@@ -146,23 +148,23 @@ function hm_ecommerce_edit_order() {
 
                     $oid = hm_post('id');
 
-                    $tableName  = DB_PREFIX . 'hme_order';
-                    $whereArray = array(
+                    $tableName = DB_PREFIX . 'hme_order';
+                    $whereArray = [
                         'id' => MySQL::SQLValue($oid)
-                    );
+                    ];
                     $hmdb->DeleteRows($tableName, $whereArray);
 
-                    $tableName  = DB_PREFIX . 'hme_order_item';
-                    $whereArray = array(
+                    $tableName = DB_PREFIX . 'hme_order_item';
+                    $whereArray = [
                         'order_id' => MySQL::SQLValue($oid)
-                    );
+                    ];
                     $hmdb->DeleteRows($tableName, $whereArray);
 
-                    $tableName  = DB_PREFIX . 'field';
-                    $whereArray = array(
+                    $tableName = DB_PREFIX . 'field';
+                    $whereArray = [
                         'object_id' => MySQL::SQLValue($oid),
                         'object_type' => MySQL::SQLValue('hme_order')
-                    );
+                    ];
                     $hmdb->DeleteRows($tableName, $whereArray);
 
                     $url = BASE_URL . HM_ADMINCP_DIR . '/?run=admin_page.php&key=hm_ecommerce_show_order';
@@ -172,10 +174,10 @@ function hm_ecommerce_edit_order() {
                 }
 
                 /** get order data */
-                $tableName  = DB_PREFIX . "hme_order";
-                $whereArray = array(
+                $tableName = DB_PREFIX . "hme_order";
+                $whereArray = [
                     'id' => MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER)
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
                 if ($hmdb->HasRecords()) {
                     $order = $hmdb->Row();
@@ -183,12 +185,12 @@ function hm_ecommerce_edit_order() {
                 }
 
                 /** get order item data */
-                $tableName  = DB_PREFIX . "hme_order_item";
-                $whereArray = array(
+                $tableName = DB_PREFIX . "hme_order_item";
+                $whereArray = [
                     'order_id' => MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER)
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
-                $order_item = array();
+                $order_item = [];
                 if ($hmdb->HasRecords()) {
                     while ($row = $hmdb->Row()) {
                         $order_item[] = $row;
@@ -197,13 +199,13 @@ function hm_ecommerce_edit_order() {
                 }
 
                 /** get order field data */
-                $tableName  = DB_PREFIX . "field";
-                $whereArray = array(
+                $tableName = DB_PREFIX . "field";
+                $whereArray = [
                     'object_id' => MySQL::SQLValue($oid, MySQL::SQLVALUE_NUMBER),
                     'object_type' => MySQL::SQLValue('hme_order')
-                );
+                ];
                 $hmdb->SelectRows($tableName, $whereArray);
-                $order_field = array();
+                $order_field = [];
                 if ($hmdb->HasRecords()) {
                     while ($row = $hmdb->Row()) {
                         $order_field[$row->name] = $row->val;
@@ -211,15 +213,16 @@ function hm_ecommerce_edit_order() {
                     $hmdb->Release();
                 }
 
-                hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/layout/delete_order.php', array(
+                hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/layout/delete_order.php', [
                     'customer' => $customer,
                     'order_item' => $order_item,
                     'order_field' => $order_field
-                ));
+                ]);
             } else {
                 echo '<div class="alert alert-danger" role="alert">' . hme_lang('orders_do_not_exist') . '</div>';
             }
             break;
     }
 }
+
 ?>

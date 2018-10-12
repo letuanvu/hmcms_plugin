@@ -13,29 +13,29 @@ Version Number: 1;
  * Lưu ý : Luôn phải có 1 trường có key là primary_name_field, trường này sẽ được dùng là tên của
  * content, taxonomy và trường này có 'create_slug'=>TRUE để tạo slug - đường dẫn tĩnh cho content, taxonomy này
  */
-$field_array = array(
-    'primary_name_field' => array(
+$field_array = [
+    'primary_name_field' => [
         'nice_name' => hm_lang('category_name'),
         'description' => hm_lang('the_name_is_how_it_appears_on_your_site'),
         'name' => 'name',
-        'create_slug' => TRUE,
+        'create_slug' => true,
         'input_type' => 'text',
         'default_value' => '',
         'placeholder' => hm_lang('enter_title_here'),
-        'required' => TRUE
-    ),
-    array(
+        'required' => true
+    ],
+    [
         'nice_name' => hm_lang('category_description'),
         'description' => hm_lang('a_short_text_description_of_this_category'),
         'name' => 'description',
         'input_type' => 'textarea',
         'default_value' => '',
         'placeholder' => '',
-        'required' => FALSE
-    )
-);
+        'required' => false
+    ]
+];
 
-$args = array(
+$args = [
     'taxonomy_name' => hm_lang('category'),
     'taxonomy_key' => 'category',
     'content_key' => 'post',
@@ -51,7 +51,7 @@ $args = array(
     'popular_items' => hm_lang('most_used_category'),
     'taxonomy_field' => $field_array,
     'primary_name_field' => $field_array['primary_name_field']
-);
+];
 register_taxonomy($args);
 
 
@@ -61,35 +61,35 @@ register_taxonomy($args);
  * nên dạng nội dung này sẽ có content_key là "post" để dùng được trong "Danh mục bài viết"
  */
 
-$field_array = array(
-    'primary_name_field' => array(
+$field_array = [
+    'primary_name_field' => [
         'nice_name' => hm_lang('post_name'),
         'name' => 'name',
-        'create_slug' => TRUE,
+        'create_slug' => true,
         'input_type' => 'text',
         'default_value' => '',
         'placeholder' => hm_lang('post_title'),
-        'required' => TRUE
-    ),
-    array(
+        'required' => true
+    ],
+    [
         'nice_name' => hm_lang('post_description'),
         'description' => hm_lang('briefly_describe_the_contents_of_this_post'),
         'name' => 'description',
         'input_type' => 'textarea',
         'default_value' => '',
         'placeholder' => '',
-        'required' => FALSE
-    ),
-    array(
+        'required' => false
+    ],
+    [
         'nice_name' => hm_lang('post_content'),
         'name' => 'content',
         'input_type' => 'wysiwyg',
         'default_value' => '',
         'placeholder' => '',
-        'required' => FALSE
-    )
-);
-$args        = array(
+        'required' => false
+    ]
+];
+$args = [
     'content_name' => hm_lang('post'),
     'taxonomy_key' => 'category',
     'content_key' => 'post',
@@ -99,10 +99,10 @@ $args        = array(
     'update_item' => hm_lang('update_post'),
     'add_new_item' => hm_lang('add_new_post'),
     'new_item_name' => hm_lang('new_post_name'),
-    'chapter' => FALSE,
+    'chapter' => false,
     'search_items' => hm_lang('search_post'),
     'content_field' => $field_array,
     'primary_name_field' => $field_array['primary_name_field']
-);
+];
 register_content($args);
 ?>

@@ -1,6 +1,6 @@
 <?php
 /** Tạo các table cần thiết */
-$hmdb   = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
+$hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
 $result = $hmdb->GetTables();
 
 $tableName = DB_PREFIX . "hme_order";
@@ -116,21 +116,21 @@ if (!in_array($tableName, $result)) {
 
 /** fix for update */
 $tableName = DB_PREFIX . "hme_order";
-$columns   = $hmdb->GetColumnNames($tableName);
+$columns = $hmdb->GetColumnNames($tableName);
 if (!isset($columns['customer_id'])) {
     $sql = "ALTER TABLE `" . $tableName . "` ADD `customer_id` int(11) NOT NULL DEFAULT 0";
     $hmdb->Query($sql);
 }
 
 $tableName = DB_PREFIX . "hme_order_item";
-$columns   = $hmdb->GetColumnNames($tableName);
+$columns = $hmdb->GetColumnNames($tableName);
 if (!isset($columns['product_option'])) {
     $sql = "ALTER TABLE `" . $tableName . "` ADD `product_option` TEXT NOT NULL";
     $hmdb->Query($sql);
 }
 
 $tableName = DB_PREFIX . "hme_order_item";
-$columns   = $hmdb->GetColumnNames($tableName);
+$columns = $hmdb->GetColumnNames($tableName);
 if (!isset($columns['product_attributes'])) {
     $sql = "ALTER TABLE `" . $tableName . "` ADD `product_attributes` TEXT NOT NULL";
     $hmdb->Query($sql);
