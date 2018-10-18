@@ -21,9 +21,11 @@ hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/plugin_setti
 hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/dashboard_box.php');
 hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/admincp_order.php');
 hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/admincp_product_option.php');
+hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/admincp_customer.php');
 hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/theme_function.php');
 hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/theme_request.php');
 hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/include/ajax.php');
+
 
 /** admin asset */
 register_action('hm_admin_head', 'add_hme_asset');

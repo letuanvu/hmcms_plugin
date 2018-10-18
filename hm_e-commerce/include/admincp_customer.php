@@ -49,8 +49,33 @@ function edit_customer()
         'id' => MySQL::SQLValue($cid)
     ];
     $hmdb->SelectRows($tableName, $whereArray);
-    $data = $hmdb->Row();
+    $data = [];
+    $data['system_field'] = $hmdb->Row();
     hm_include(BASEPATH . '/' . HM_PLUGIN_DIR . '/hm_e-commerce/layout/edit_customer.php', $data);
+}
+
+/** customer function */
+function hme_get_customer_val($args = []) {
+    if (!is_array($args)) {
+        parse_str($args, $args);
+    }
+    global $hmdb;
+    $name = $args['name'];
+    $id = $args['id'];
+    $tableName = DB_PREFIX . "field";
+    $whereArray = [
+        'name' => MySQL::SQLValue($name),
+        'object_type' => MySQL::SQLValue('hme_customer'),
+        'object_id' => MySQL::SQLValue($id)
+    ];
+    $hmdb->SelectRows($tableName, $whereArray);
+    if ($hmdb->HasRecords()) {
+        $row = $hmdb->Row();
+        return $row->val;
+    } else {
+        return null;
+    }
+
 }
 
 ?>

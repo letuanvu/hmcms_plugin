@@ -380,25 +380,20 @@ function hme_customer_register()
 {
 
     $args = [];
-    $args['name'] = hm_post('name', '', false);
     $args['email'] = hm_post('email', '', false);
-    $args['mobile'] = hm_post('mobile', '', false);
     $args['password'] = hm_post('password', '', false);
     $args['password_again'] = hm_post('password_again', '', false);
 
     return hme_customer_register_action($args);
-
 }
 
 function hme_customer_register_action($args)
 {
 
     $defaults = [
-        'name' => '',
         'password' => '',
         'password_again' => '',
         'email' => '',
-        'mobile' => '',
         'customer_group' => '0',
         'note' => '',
         'user_id' => '0',
@@ -415,11 +410,9 @@ function hme_customer_register_action($args)
     $hmdb = new MySQL(true, DB_NAME, DB_HOST, DB_USER, DB_PASSWORD, DB_CHARSET);
     $tableName = DB_PREFIX . "hme_customer";
 
-    $name = $args['name'];
     $password = $args['password'];
     $password_again = $args['password_again'];
     $email = $args['email'];
-    $mobile = $args['mobile'];
     $customer_group = $args['customer_group'];
     $note = $args['note'];
     $user_id = $args['user_id'];
@@ -443,7 +436,7 @@ function hme_customer_register_action($args)
         }
     }
 
-    if ($name != '' AND $email != '' AND $mobile != '' AND $password_req != false) {
+    if ($email != '' AND $password_req != false) {
         if ($password == $password_again) {
 
             /** check trùng email */
@@ -478,10 +471,8 @@ function hme_customer_register_action($args)
                 }
 
                 $values = [
-                    'name' => MySQL::SQLValue($name),
                     'password' => MySQL::SQLValue($password_encode),
                     'email' => MySQL::SQLValue($email),
-                    'mobile' => MySQL::SQLValue($mobile),
                     'customer_group' => MySQL::SQLValue($customer_group),
                     'note' => MySQL::SQLValue($note),
                     'user_id' => MySQL::SQLValue($user_id),
@@ -501,6 +492,33 @@ function hme_customer_register_action($args)
                     $insert_id = $id_update;
                 } else {
                     $insert_id = $hmdb->InsertRow($tableName, $values);
+                }
+                unset($values);
+
+                /** save custom field */
+                foreach ($_POST as $post_key => $post_val) {
+                    /** Save the content field to data */
+                    if (is_numeric($insert_id)) {
+                        if (is_array($post_val)) {
+                            $post_val = hm_json_encode($post_val);
+                        }
+                        $tableName             = DB_PREFIX . 'field';
+                        $values["name"]        = MySQL::SQLValue($post_key);
+                        $values["val"]         = MySQL::SQLValue($post_val);
+                        $values["object_id"]   = MySQL::SQLValue($insert_id, MySQL::SQLVALUE_NUMBER);
+                        $values["object_type"] = MySQL::SQLValue('hme_customer');
+                        if (is_numeric($id_update)) {
+                            $whereArray = array(
+                                'object_id' => MySQL::SQLValue($id_update, MySQL::SQLVALUE_NUMBER),
+                                'object_type' => MySQL::SQLValue('hme_customer'),
+                                'name' => MySQL::SQLValue($post_key)
+                            );
+                            $hmdb->AutoInsertUpdate($tableName, $values, $whereArray);
+                        } else {
+                            $hmdb->InsertRow($tableName, $values);
+                        }
+                        unset($values);
+                    }
                 }
 
                 /** login */
@@ -631,9 +649,7 @@ function hme_customer_update_customer($id = false)
     }
 
     $args = [];
-    $args['name'] = hm_post('name', '', false);
     $args['email'] = hm_post('email', '', false);
-    $args['mobile'] = hm_post('mobile', '', false);
     $args['password'] = hm_post('password', '', false);
     $args['password_again'] = hm_post('password_again', '', false);
     $args['id_update'] = $id;

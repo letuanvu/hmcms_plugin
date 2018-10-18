@@ -16,9 +16,14 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th><?php echo hme_lang('name'); ?></th>
                                     <th><?php echo hme_lang('email'); ?></th>
-                                    <th><?php echo hme_lang('phone_number'); ?></th>
+                                    <?php
+                                    foreach (hme_customer_field_config() as $field) {
+                                        if (in_array('list', $field['show_on'])) {
+                                            echo '<th>' . $field['nice_name'] . '</th>';
+                                        }
+                                    }
+                                    ?>
                                     <th><?php echo hme_lang('action'); ?></th>
                                 </tr>
                                 </thead>
@@ -31,14 +36,19 @@
                                             <span><?php echo $customer->id; ?></span>
                                         </td>
                                         <td>
-                                            <span><?php echo $customer->name; ?></span>
-                                        </td>
-                                        <td>
                                             <span><?php echo $customer->email; ?></span>
                                         </td>
-                                        <td>
-                                            <span><?php echo $customer->mobile; ?></span>
-                                        </td>
+                                        <?php
+                                        foreach (hme_customer_field_config() as $field) {
+                                            if (in_array('list', $field['show_on'])) {
+                                                ?>
+                                                <td>
+                                                    <span><?php echo hme_get_customer_val('name=' . $field['name'] . '&id=' . $customer->id); ?></span>
+                                                </td>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
                                         <td>
                                             <a href="?run=admin_page.php&key=edit_customer&id=<?php echo $customer->id; ?>"
                                                class="btn btn-default btn-xs"><?php echo hme_lang('view'); ?></a>
