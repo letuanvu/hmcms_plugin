@@ -2,8 +2,8 @@
 /*
 Plugin Name: HM E-commerce;
 Description: Added sales features, only for supported theme;
-Version: 1.3;
-Version Number: 4;
+Version: 1.4;
+Version Number: 5;
 */
 
 /** Language */
